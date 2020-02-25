@@ -1,0 +1,31 @@
+name: clean-command
+on:
+  repository_dispatch:
+    types: [clean-command]
+jobs:
+  beforeTest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      # Clean up pull requests and branches
+      - name: Close Pull Requests
+        uses: ./.github/close-pull-requests
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      # Clean up pull requests and branches
+      - name: Close Pull Requests
+        uses: ./.github/close-pull-requests
+        with:
+          token: ${{ secrets.REPO_ACCESS_TOKEN }}
+          repository: peter-evans/create-pull-request-tests-remote
+
+      # Add reaction to the comment
+      - name: Add reaction
+        uses: peter-evans/create-or-update-comment@v1
+        with:
+          token: ${{ secrets.ACTIONS_BOT_TOKEN }}
+          repository: ${{ github.event.client_payload.github.payload.repository.full_name }}
+          comment-id: ${{ github.event.client_payload.github.payload.comment.id }}
+          reaction-type: hooray

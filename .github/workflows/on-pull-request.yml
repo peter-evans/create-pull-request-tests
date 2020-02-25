@@ -1,0 +1,8 @@
+name: Pull Request Checks
+on: pull_request
+jobs:
+  pullRequestChecks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pull Request Check
+        run: echo "Check executed successfully"

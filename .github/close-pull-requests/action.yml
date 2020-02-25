@@ -1,0 +1,14 @@
+name: 'Close Pull Requests'
+description: 'Close all repository pull requests and delete respective branches'
+inputs:
+  token:
+    description: 'GitHub auth token (GITHUB_TOKEN)'
+    required: true
+  repository:
+    description: 'The target GitHub repository'
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
+branding:
+  icon: 'delete'  
+  color: 'yellow'

@@ -1,0 +1,74 @@
+name: pytest-command
+on:
+  repository_dispatch:
+    types: [pytest-command]
+jobs:
+  beforeTest:
+    runs-on: ubuntu-latest
+    steps:
+      # Get the branch name
+      - name: Get the target branch name
+        id: vars
+        run: |
+          branch=${{ github.event.client_payload.slash_command.branch }}
+          if [[ -z "$branch" ]]; then branch="master"; fi
+          echo ::set-output name=branch::$branch
+      - name: Check the target branch name
+        run: echo ${{ steps.vars.outputs.branch }}
+      # Checkout the branch to test
+      - uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.ACTIONS_BOT_TOKEN }}
+          repository: peter-evans/create-pull-request
+          ref: ${{ steps.vars.outputs.branch }}
+      # Create an artifact from the action
+      - uses: actions/upload-artifact@v1
+        with:
+          name: create-pull-request
+          path: .
+
+
+  pytest:
+    needs: beforeTest
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      # Download the action artifact
+      - uses: actions/download-artifact@v1
+        with:
+          name: create-pull-request
+          path: create-pull-request-local
+      # Setup Python environment
+      - uses: actions/setup-python@v1
+        with:
+          python-version: '3.8.x'
+      # Install pytest
+      - name: Install pytest
+        run: |
+          pip install -U pytest
+          pytest --version
+      # Install requirements
+      - name: Install requirements
+        working-directory: create-pull-request-local/dist
+        run: pip install -r cpr/requirements.txt --no-index --find-links=vendor
+      # Execute pytest
+      - name: Execute pytest
+        env:
+          COUB_REPO_PATH: ${{ github.workspace }}
+        working-directory: create-pull-request-local
+        run: |
+          pytest ${{ github.event.client_payload.slash_command.unnamed_args }}
+
+
+  afterTest:
+    needs: pytest
+    runs-on: ubuntu-latest
+    steps:
+      # Add reaction to the comment
+      - name: Add reaction
+        uses: peter-evans/create-or-update-comment@v1
+        with:
+          token: ${{ secrets.ACTIONS_BOT_TOKEN }}
+          repository: ${{ github.event.client_payload.github.payload.repository.full_name }}
+          comment-id: ${{ github.event.client_payload.github.payload.comment.id }}
+          reaction-type: hooray
