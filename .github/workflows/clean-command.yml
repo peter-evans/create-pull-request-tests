@@ -3,7 +3,7 @@ on:
   repository_dispatch:
     types: [clean-command]
 jobs:
-  beforeTest:
+  clean:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
