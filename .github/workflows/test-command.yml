@@ -6,10 +6,13 @@ jobs:
   beforeTest:
     runs-on: ubuntu-latest
     steps:
-      # Get the branch name
-      - name: Get the target branch name
+      # Get the target repository and branch
+      - name: Get the target repository and branch
         id: vars
         run: |
+          repository=${{ github.event.client_payload.slash_command.repository }}
+          if [[ -z "$repository" ]]; then repository="peter-evans/create-pull-request"; fi
+          echo ::set-output name=repository::$repository
           branch=${{ github.event.client_payload.slash_command.branch }}
           if [[ -z "$branch" ]]; then branch="master"; fi
           echo ::set-output name=branch::$branch
@@ -19,7 +22,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           token: ${{ secrets.ACTIONS_BOT_TOKEN }}
-          repository: peter-evans/create-pull-request
+          repository: ${{ steps.vars.outputs.repository }}
           ref: ${{ steps.vars.outputs.branch }}
       # Create an artifact from the action
       - uses: actions/upload-artifact@v1
