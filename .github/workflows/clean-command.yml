@@ -31,7 +31,7 @@ jobs:
       - name: Delete fork branches
         working-directory: create-pull-request-machine-user-fork
         run: |
-          git push --force --delete origin refs/heads/tests/push-branch-to-fork
+          git push --force --delete origin refs/heads/tests/push-branch-to-fork || true
 
       # Add reaction to the comment
       - name: Add reaction
