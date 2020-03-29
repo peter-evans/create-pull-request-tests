@@ -28,6 +28,27 @@ jobs:
           path: .
 
 
+  createRunLink:
+    needs: beforeTest
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create URL to the run output
+        id: vars
+        run: echo ::set-output name=run-url::https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
+
+      - name: Update comment
+        uses: peter-evans/create-or-update-comment@v1
+        with:
+          token: ${{ secrets.ACTIONS_BOT_TOKEN }}
+          repository: ${{ github.event.client_payload.github.payload.repository.full_name }}
+          comment-id: ${{ github.event.client_payload.github.payload.comment.id }}
+          body: |
+
+            [Command run output][1]
+
+            [1]: ${{ steps.vars.outputs.run-url }}
+
+
   pytest:
     needs: beforeTest
     runs-on: ubuntu-latest
@@ -61,7 +82,9 @@ jobs:
 
 
   afterTest:
-    needs: pytest
+    needs:
+      - createRunLink
+      - pytest
     runs-on: ubuntu-latest
     steps:
       # Add reaction to the comment
