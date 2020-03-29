@@ -21,6 +21,18 @@ jobs:
           token: ${{ secrets.REPO_ACCESS_TOKEN }}
           repository: peter-evans/create-pull-request-tests-remote
 
+      # Delete the test branch created in the fork
+      - uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.CPR_MACHINE_USER_TOKEN }}
+          repository: create-pull-request-machine-user/create-pull-request-tests
+          ref: tests/push-branch-to-fork
+          path: create-pull-request-machine-user-fork
+      - name: Delete fork branches
+        working-directory: create-pull-request-machine-user-fork
+        run: |
+          git push --force --delete origin refs/heads/tests/push-branch-to-fork
+
       # Add reaction to the comment
       - name: Add reaction
         uses: peter-evans/create-or-update-comment@v1
