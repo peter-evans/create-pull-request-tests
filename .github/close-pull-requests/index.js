@@ -36,11 +36,17 @@ async function run() {
         state: "closed"
       });
 
-      await octokit.git.deleteRef({
-        owner: repo[0],
-        repo: repo[1],
-        ref
-      });
+      // Attempt to delete the ref. This will fail if
+      // the pull request was raised from a fork.
+      try {
+        await octokit.git.deleteRef({
+          owner: repo[0],
+          repo: repo[1],
+          ref
+        });
+      } catch (error) {
+        core.debug(inspect(error));
+      }
     }
   } catch (error) {
     core.debug(inspect(error));
