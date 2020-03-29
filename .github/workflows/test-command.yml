@@ -570,7 +570,9 @@ jobs:
           fetch-depth: 0
       - name: Set the remote URL to the machine user's fork
         run: |
+          git config user.password ${{ secrets.CPR_MACHINE_USER_TOKEN }}
           git remote set-url origin https://github.com/create-pull-request-machine-user/create-pull-request
+          git fetch --unshallow --prune origin
       # Download the action artifact
       - uses: actions/download-artifact@v1
         with:
