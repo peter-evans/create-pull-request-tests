@@ -2,8 +2,8 @@ name: 'Close Pull Requests'
 description: 'Close all repository pull requests and delete respective branches'
 inputs:
   token:
-    description: 'GitHub auth token (GITHUB_TOKEN)'
-    required: true
+    description: 'GitHub auth token'
+    default: ${{ github.token }}
   repository:
     description: 'The target GitHub repository'
 runs:

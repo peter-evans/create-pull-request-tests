@@ -11,8 +11,6 @@ jobs:
       # Clean up pull requests and branches
       - name: Close Pull Requests
         uses: ./.github/close-pull-requests
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
 
       # Clean up pull requests and branches
       - name: Close Pull Requests
