@@ -544,12 +544,10 @@ jobs:
     needs: beforeTest
     runs-on: ubuntu-latest
     steps:
-      # Clone via SSH
-      - uses: peter-evans/ssh-agent@master
+      # Checkout via SSH
+      - uses: actions/checkout@v2
         with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-      - name: Checkout via SSH
-        run: git clone git@github.com:peter-evans/create-pull-request-tests.git .
+          ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
       # Download the action artifact
       - uses: actions/download-artifact@v1
         with:
