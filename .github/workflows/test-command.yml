@@ -428,6 +428,48 @@ jobs:
           branch: tests/git-config-set-committer-author
 
 
+  testCreateDraft:
+    needs: beforeTest
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      # Download the action artifact
+      - uses: actions/download-artifact@v1
+        with:
+          name: create-pull-request
+          path: create-pull-request-local
+      # Test
+      - name: Create report file
+        run: date +%s > report.txt
+      - name: Create Pull Request
+        uses: ./create-pull-request-local
+        with:
+          title: testCreateUpdateDraft
+          branch: tests/create-update-draft
+          draft: true
+
+
+  testUpdateDraft:
+    needs: testCreateDraft
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      # Download the action artifact
+      - uses: actions/download-artifact@v1
+        with:
+          name: create-pull-request
+          path: create-pull-request-local
+      # Test
+      - name: Create report file
+        run: date +%s > report.txt
+      - name: Create Pull Request
+        uses: ./create-pull-request-local
+        with:
+          title: testCreateUpdateDraft
+          branch: tests/create-update-draft
+          draft: true
+
+
   testCreateWithPAT:
     needs: beforeTest
     runs-on: ubuntu-latest
@@ -654,6 +696,7 @@ jobs:
       - testMultiPlatform
       - testGitConfigSetUser
       - testGitConfigSetCommitterAuthor
+      - testUpdateDraft
       - testUpdateWithPAT
       - testCreateInRemoteRepo
       - testCreateWithRelativePath
