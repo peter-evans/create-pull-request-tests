@@ -12,12 +12,17 @@ jobs:
       - name: Close Pull Requests
         uses: ./.github/close-pull-requests
 
-      # Clean up pull requests and branches
       - name: Close Pull Requests
         uses: ./.github/close-pull-requests
         with:
           token: ${{ secrets.REPO_ACCESS_TOKEN }}
           repository: peter-evans/create-pull-request-tests-remote
+
+      - name: Close Pull Requests
+        uses: ./.github/close-pull-requests
+        with:
+          token: ${{ secrets.REPO_ACCESS_TOKEN }}
+          repository: peter-evans/create-pull-request-tests-remote-private
 
       # Delete the test branch created in the fork
       - uses: actions/checkout@v2
