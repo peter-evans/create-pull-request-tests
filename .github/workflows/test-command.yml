@@ -6,6 +6,7 @@ jobs:
   clean:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       # Clean up pull requests and branches
       - name: Close Pull Requests
         uses: ./.github/close-pull-requests
