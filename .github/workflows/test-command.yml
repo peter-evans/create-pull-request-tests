@@ -50,14 +50,30 @@ jobs:
           branch=${{ github.event.client_payload.slash_command.branch }}
           if [[ -z "$branch" ]]; then branch="master"; fi
           echo ::set-output name=branch::$branch
-      - name: Check the target branch name
-        run: echo ${{ steps.vars.outputs.branch }}
+          build=${{ github.event.client_payload.slash_command.build }}
+          if [[ -z "$build" ]]; then build="false"; fi
+          echo ::set-output name=build::$build
       # Checkout the branch to test
       - uses: actions/checkout@v2
         with:
           token: ${{ secrets.ACTIONS_BOT_TOKEN }}
           repository: ${{ steps.vars.outputs.repository }}
           ref: ${{ steps.vars.outputs.branch }}
+      # Build
+      - if: steps.vars.outputs.build == 'true'
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+      - if: steps.vars.outputs.build == 'true'
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+      - if: steps.vars.outputs.build == 'true'
+        run: |
+          npm ci
+          npm run clean
+          npm run test
+          npm run package
       # Create an artifact from the action
       - uses: actions/upload-artifact@v1
         with:
