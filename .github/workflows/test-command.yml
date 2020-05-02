@@ -3,7 +3,41 @@ on:
   repository_dispatch:
     types: [test-command]
 jobs:
+  clean:
+    runs-on: ubuntu-latest
+    steps:
+      # Clean up pull requests and branches
+      - name: Close Pull Requests
+        uses: ./.github/close-pull-requests
+
+      - name: Close Pull Requests
+        uses: ./.github/close-pull-requests
+        with:
+          token: ${{ secrets.REPO_ACCESS_TOKEN }}
+          repository: peter-evans/create-pull-request-tests-remote
+
+      - name: Close Pull Requests
+        uses: ./.github/close-pull-requests
+        with:
+          token: ${{ secrets.REPO_ACCESS_TOKEN }}
+          repository: peter-evans/create-pull-request-tests-remote-private
+
+      # Delete the test branch created in the fork
+      - uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.CPR_MACHINE_USER_TOKEN }}
+          repository: create-pull-request-machine-user/create-pull-request-tests
+          ref: master
+          path: create-pull-request-machine-user-fork
+      - name: Delete fork branches
+        working-directory: create-pull-request-machine-user-fork
+        run: |
+          git fetch
+          git push --force --delete origin refs/heads/tests/push-branch-to-fork || true
+
+
   beforeTest:
+    needs: clean
     runs-on: ubuntu-latest
     steps:
       # Get the target repository and branch
