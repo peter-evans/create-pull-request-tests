@@ -3,24 +3,79 @@ on:
   repository_dispatch:
     types: [pytest-command]
 jobs:
-  beforeTest:
+  clean:
     runs-on: ubuntu-latest
     steps:
-      # Get the branch name
-      - name: Get the target branch name
+      - uses: actions/checkout@v2
+      # Clean up pull requests and branches
+      - name: Close Pull Requests
+        uses: ./.github/close-pull-requests
+
+      - name: Close Pull Requests
+        uses: ./.github/close-pull-requests
+        with:
+          token: ${{ secrets.REPO_ACCESS_TOKEN }}
+          repository: peter-evans/create-pull-request-tests-remote
+
+      - name: Close Pull Requests
+        uses: ./.github/close-pull-requests
+        with:
+          token: ${{ secrets.REPO_ACCESS_TOKEN }}
+          repository: peter-evans/create-pull-request-tests-remote-private
+
+      # Delete the test branch created in the fork
+      - uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.CPR_MACHINE_USER_TOKEN }}
+          repository: create-pull-request-machine-user/create-pull-request-tests
+          ref: master
+          path: create-pull-request-machine-user-fork
+      - name: Delete fork branches
+        working-directory: create-pull-request-machine-user-fork
+        run: |
+          git fetch
+          git push --force --delete origin refs/heads/tests/push-branch-to-fork || true
+
+
+  beforeTest:
+    needs: clean
+    runs-on: ubuntu-latest
+    steps:
+      # Get the target repository and branch
+      - name: Get the target repository and branch
         id: vars
         run: |
+          repository=${{ github.event.client_payload.slash_command.repository }}
+          if [[ -z "$repository" ]]; then repository="peter-evans/create-pull-request"; fi
+          echo ::set-output name=repository::$repository
           branch=${{ github.event.client_payload.slash_command.branch }}
           if [[ -z "$branch" ]]; then branch="master"; fi
           echo ::set-output name=branch::$branch
-      - name: Check the target branch name
-        run: echo ${{ steps.vars.outputs.branch }}
+          build=${{ github.event.client_payload.slash_command.build }}
+          if [[ -z "$build" ]]; then build="false"; fi
+          echo ::set-output name=build::$build
       # Checkout the branch to test
       - uses: actions/checkout@v2
         with:
           token: ${{ secrets.ACTIONS_BOT_TOKEN }}
-          repository: peter-evans/create-pull-request
+          repository: ${{ steps.vars.outputs.repository }}
           ref: ${{ steps.vars.outputs.branch }}
+      # Build
+      - if: steps.vars.outputs.build == 'true'
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+      - if: steps.vars.outputs.build == 'true'
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+      - if: steps.vars.outputs.build == 'true'
+        run: |
+          npm ci
+          npm run clean
+          npm run test
+          npm run package
+          rm -rf node_modules
       # Create an artifact from the action
       - uses: actions/upload-artifact@v1
         with:
