@@ -706,8 +706,31 @@ jobs:
         with:
           token: ${{ secrets.CPR_MACHINE_USER_TOKEN }}
           title: testPushBranchToFork
-          #branch: tests/push-branch-to-fork
-          branch: tests/push-branch-to-fork-temp
+          branch: tests/push-branch-to-fork
+          request-to-parent: true
+
+
+  testNoDiffPushBranchToFork:
+    needs: beforeTest
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set the remote URL to the machine user's fork
+        run: |
+          git config user.password ${{ secrets.CPR_MACHINE_USER_TOKEN }}
+          git remote set-url origin https://github.com/create-pull-request-machine-user/create-pull-request-tests
+          git fetch --unshallow -p origin
+      # Download the action artifact
+      - uses: actions/download-artifact@v1
+        with:
+          name: create-pull-request
+          path: create-pull-request-local
+      - name: Create Pull Request
+        uses: ./create-pull-request-local
+        with:
+          token: ${{ secrets.CPR_MACHINE_USER_TOKEN }}
+          title: testNoDiffPushBranchToFork
+          branch: tests/no-diff-push-branch-to-fork
           request-to-parent: true
 
 
@@ -784,6 +807,7 @@ jobs:
       - testCreateWithRelativePath
       - testCreateBranchViaSSH
       - testPushBranchToFork
+      - testNoDiffPushBranchToFork
       - testPushLFSTrackedFile
       - testAlpineContainer
       - testUbuntuContainer
