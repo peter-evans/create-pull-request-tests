@@ -720,6 +720,7 @@ jobs:
           git config user.password ${{ secrets.CPR_MACHINE_USER_TOKEN }}
           git remote set-url origin https://github.com/create-pull-request-machine-user/create-pull-request-tests
           git fetch --unshallow -p origin
+          git push --force
       # Download the action artifact
       - uses: actions/download-artifact@v1
         with:
