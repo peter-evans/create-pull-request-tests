@@ -739,7 +739,10 @@ jobs:
 
 
   testNoDiffPushBranchToFork:
-    needs: beforeTest
+    needs:
+      - beforeTest
+      # Added here because the jobs can compete updating the remote base and fail
+      - testPushBranchToFork
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -837,7 +840,6 @@ jobs:
       - testCreateWithRelativePath
       - testCreateBranchViaSSH
       - testCreateWithAppAuth
-      - testPushBranchToFork
       - testNoDiffPushBranchToFork
       - testPushLFSTrackedFile
       - testAlpineContainer
