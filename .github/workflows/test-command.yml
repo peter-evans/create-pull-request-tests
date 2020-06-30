@@ -683,6 +683,32 @@ jobs:
           branch: tests/create-branch-via-ssh
 
 
+  testCreateWithAppAuth:
+    needs: beforeTest
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      # Download the action artifact
+      - uses: actions/download-artifact@v1
+        with:
+          name: create-pull-request
+          path: create-pull-request-local
+      # Test
+      - uses: peter-evans/github-app-token@v1
+        id: generate-token
+        with:
+          app_id: ${{ secrets.CPR_AUTH_APP_ID }}
+          private_key: ${{ secrets.CPR_AUTH_APP_PRIVATE_KEY }}
+      - name: Create report file
+        run: date +%s > report.txt
+      - name: Create Pull Request
+        uses: ./create-pull-request-local
+        with:
+          token: ${{ steps.generate-token.outputs.token }}
+          title: testCreateWithAppAuth
+          branch: tests/create-with-app-auth
+
+
   testPushBranchToFork:
     needs: beforeTest
     runs-on: ubuntu-latest
@@ -810,6 +836,7 @@ jobs:
       - testCreateInRemotePrivateRepo
       - testCreateWithRelativePath
       - testCreateBranchViaSSH
+      - testCreateWithAppAuth
       - testPushBranchToFork
       - testNoDiffPushBranchToFork
       - testPushLFSTrackedFile
