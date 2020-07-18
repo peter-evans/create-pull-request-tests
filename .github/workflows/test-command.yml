@@ -735,6 +735,13 @@ jobs:
     needs: beforeTest
     runs-on: ubuntu-latest
     steps:
+      # Note: This combination is proof of concept but is probably not
+      # something anyone would want to do because you still need a PAT
+      # for the machine user to create the pull request.
+      #
+      # If the base repository is private then a deploy key may need to
+      # be created with read access for checkout. The same deploy key in
+      # the fork needs write access.
       # Checkout via SSH
       - uses: actions/checkout@v2
         with:
@@ -750,6 +757,7 @@ jobs:
       - name: Create Pull Request
         uses: ./create-pull-request-local
         with:
+          token: ${{ secrets.CPR_MACHINE_USER_TOKEN }}
           title: testPushBranchToForkViaSSH
           branch: tests/push-branch-to-fork-via-ssh
           push-to-fork: create-pull-request-machine-user/create-pull-request-tests
