@@ -731,22 +731,27 @@ jobs:
           push-to-fork: create-pull-request-machine-user/create-pull-request-tests
 
 
-  testNoDiffPushBranchToFork:
+  testPushBranchToForkViaSSH:
     needs: beforeTest
     runs-on: ubuntu-latest
     steps:
+      # Checkout via SSH
       - uses: actions/checkout@v2
+        with:
+          ssh-key: ${{ secrets.CPR_MACHINE_USER_SSH_PRIVATE_KEY }}
       # Download the action artifact
       - uses: actions/download-artifact@v1
         with:
           name: create-pull-request
           path: create-pull-request-local
+      # Test
+      - name: Create report file
+        run: date +%s > report.txt
       - name: Create Pull Request
         uses: ./create-pull-request-local
         with:
-          token: ${{ secrets.CPR_MACHINE_USER_TOKEN }}
-          title: testNoDiffPushBranchToFork
-          branch: tests/no-diff-push-branch-to-fork
+          title: testPushBranchToForkViaSSH
+          branch: tests/push-branch-to-fork-via-ssh
           push-to-fork: create-pull-request-machine-user/create-pull-request-tests
 
 
@@ -824,7 +829,7 @@ jobs:
       - testCreateBranchViaSSH
       - testCreateWithAppAuth
       - testPushBranchToFork
-      - testNoDiffPushBranchToFork
+      - testPushBranchToForkViaSSH
       - testPushLFSTrackedFile
       - testAlpineContainer
       - testUbuntuContainer
