@@ -35,6 +35,7 @@ jobs:
         run: |
           git fetch
           git push --force --delete origin refs/heads/tests/push-branch-to-fork || true
+          git push --force --delete origin refs/heads/tests/push-branch-to-fork-via-ssh || true
 
 
   beforeTest:
