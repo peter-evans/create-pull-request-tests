@@ -23,7 +23,7 @@ jobs:
           token: ${{ secrets.REPO_ACCESS_TOKEN }}
           repository: peter-evans/create-pull-request-tests-remote-private
 
-      # Delete the test branch created in the fork
+      # Delete the test branches created in the fork
       - uses: actions/checkout@v2
         with:
           token: ${{ secrets.CPR_MACHINE_USER_TOKEN }}
