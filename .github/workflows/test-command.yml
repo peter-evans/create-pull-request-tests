@@ -714,13 +714,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-        with:
-          persist-credentials: false
-      - name: Set the remote URL to the machine user's fork
-        run: |
-          git remote set-url origin https://${{ secrets.CPR_MACHINE_USER_TOKEN }}:x-oauth-basic@github.com/create-pull-request-machine-user/create-pull-request-tests
-          git fetch --unshallow -p origin
-          git push --force
       # Download the action artifact
       - uses: actions/download-artifact@v1
         with:
@@ -735,24 +728,14 @@ jobs:
           token: ${{ secrets.CPR_MACHINE_USER_TOKEN }}
           title: testPushBranchToFork
           branch: tests/push-branch-to-fork
-          request-to-parent: true
+          push-to-fork: create-pull-request-machine-user/create-pull-request-tests
 
 
   testNoDiffPushBranchToFork:
-    needs:
-      - beforeTest
-      # Added here because the jobs can compete updating the remote base and fail
-      - testPushBranchToFork
+    needs: beforeTest
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-        with:
-          persist-credentials: false
-      - name: Set the remote URL to the machine user's fork
-        run: |
-          git remote set-url origin https://${{ secrets.CPR_MACHINE_USER_TOKEN }}:x-oauth-basic@github.com/create-pull-request-machine-user/create-pull-request-tests
-          git fetch --unshallow -p origin
-          git push --force
       # Download the action artifact
       - uses: actions/download-artifact@v1
         with:
@@ -764,7 +747,7 @@ jobs:
           token: ${{ secrets.CPR_MACHINE_USER_TOKEN }}
           title: testNoDiffPushBranchToFork
           branch: tests/no-diff-push-branch-to-fork
-          request-to-parent: true
+          push-to-fork: create-pull-request-machine-user/create-pull-request-tests
 
 
   testAlpineContainer:
