@@ -823,6 +823,7 @@ jobs:
       - testCreateWithRelativePath
       - testCreateBranchViaSSH
       - testCreateWithAppAuth
+      - testPushBranchToFork
       - testNoDiffPushBranchToFork
       - testPushLFSTrackedFile
       - testAlpineContainer
