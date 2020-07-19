@@ -780,8 +780,7 @@ jobs:
       image: alpine
     steps:
       - name: Install dependencies
-        run: |
-          apk --no-cache add git
+        run: apk --no-cache add git
       - uses: actions/checkout@v2
       # Download the action artifact
       - uses: actions/download-artifact@v1
