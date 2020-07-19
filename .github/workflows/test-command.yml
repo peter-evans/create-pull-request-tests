@@ -42,34 +42,30 @@ jobs:
     needs: clean
     runs-on: ubuntu-latest
     steps:
-      # Get the target repository and branch
-      - name: Get the target repository and branch
+      # Get the target repository and ref
+      - name: Get the target repository and ref
         id: vars
         run: |
           repository=${{ github.event.client_payload.slash_command.repository }}
           if [[ -z "$repository" ]]; then repository="peter-evans/create-pull-request"; fi
           echo ::set-output name=repository::$repository
-          branch=${{ github.event.client_payload.slash_command.branch }}
-          if [[ -z "$branch" ]]; then branch="master"; fi
-          echo ::set-output name=branch::$branch
+          ref=${{ github.event.client_payload.slash_command.ref }}
+          if [[ -z "$ref" ]]; then ref="master"; fi
+          echo ::set-output name=ref::$ref
           build=${{ github.event.client_payload.slash_command.build }}
           if [[ -z "$build" ]]; then build="false"; fi
           echo ::set-output name=build::$build
-      # Checkout the branch to test
+      # Checkout the ref to test
       - uses: actions/checkout@v2
         with:
           token: ${{ secrets.ACTIONS_BOT_TOKEN }}
           repository: ${{ steps.vars.outputs.repository }}
-          ref: ${{ steps.vars.outputs.branch }}
+          ref: ${{ steps.vars.outputs.ref }}
       # Build
       - if: steps.vars.outputs.build == 'true'
         uses: actions/setup-node@v1
         with:
           node-version: 12.x
-      - if: steps.vars.outputs.build == 'true'
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.x'
       - if: steps.vars.outputs.build == 'true'
         run: |
           npm ci
