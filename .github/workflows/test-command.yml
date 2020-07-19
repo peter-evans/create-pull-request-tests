@@ -438,7 +438,7 @@ jobs:
           branch: tests/multi-platform-${{ steps.random-string.outputs.result }}
 
 
-  testGitConfigSetUser:
+  testSetAuthorCommitter:
     needs: beforeTest
     runs-on: ubuntu-latest
     steps:
@@ -449,43 +449,15 @@ jobs:
           name: create-pull-request
           path: create-pull-request-local
       # Test
-      - name: Set user in git config
-        run: |
-          git config user.name 'CPR Test User'
-          git config user.email 'cpr-test-user@users.noreply.github.com'
       - name: Create report file
         run: date +%s > report.txt
       - name: Create Pull Request
         uses: ./create-pull-request-local
         with:
-          title: testGitConfigSetUser
-          branch: tests/git-config-set-user
-
-
-  testGitConfigSetCommitterAuthor:
-    needs: beforeTest
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      # Download the action artifact
-      - uses: actions/download-artifact@v1
-        with:
-          name: create-pull-request
-          path: create-pull-request-local
-      # Test
-      - name: Set committer and author in git config
-        run: |
-          git config committer.name 'CPR Test Committer'
-          git config committer.email 'cpr-test-committer@users.noreply.github.com'
-          git config author.name 'CPR Test Author'
-          git config author.email 'cpr-test-author@users.noreply.github.com'
-      - name: Create report file
-        run: date +%s > report.txt
-      - name: Create Pull Request
-        uses: ./create-pull-request-local
-        with:
-          title: testGitConfigSetCommitterAuthor
-          branch: tests/git-config-set-committer-author
+          title: testSetAuthorCommitter
+          author: 'CPR Test Author <cpr-test-author@users.noreply.github.com>'
+          committer: 'CPR Test Committer <cpr-test-committer@users.noreply.github.com>'
+          branch: tests/set-author-committer
 
 
   testCreateDraft:
@@ -831,8 +803,7 @@ jobs:
       - testCommitsOnWorkingBase
       - testWorkingBaseNotBaseCreate
       - testMultiPlatform
-      - testGitConfigSetUser
-      - testGitConfigSetCommitterAuthor
+      - testSetAuthorCommitter
       - testUpdateDraft
       - testUpdateWithPAT
       - testCreateInRemoteRepo
