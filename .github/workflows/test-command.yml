@@ -424,13 +424,18 @@ jobs:
       - name: Create report file (windows)
         if:  matrix.platform == 'windows-latest'
         run: echo %DATE% %TIME% > report.txt
+      - name: Return a 7 character random string
+        uses: actions/github-script@v2
+        id: random-string
+        with:
+          result-encoding: string
+          script: return Math.random().toString(36).substr(2, 7)
       - name: Create Pull Request
         uses: ./create-pull-request-local
         with:
           committer: Peter Evans <peter-evans@users.noreply.github.com>
           title: testMultiPlatform on ${{ matrix.platform }}
-          branch: tests/multi-platform
-          branch-suffix: random
+          branch: tests/multi-platform-${{ steps.random-string.outputs.result }}
 
 
   testGitConfigSetUser:
