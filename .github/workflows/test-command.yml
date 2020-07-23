@@ -69,12 +69,10 @@ jobs:
       - if: steps.vars.outputs.build == 'true'
         run: |
           npm ci
-          npm run clean
           npm run build
           npm run format-check
           npm run lint
           npm run test
-          npm run package
           rm -rf node_modules
       # Create an artifact from the action
       - uses: actions/upload-artifact@v1
