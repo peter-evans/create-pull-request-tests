@@ -45,13 +45,13 @@ jobs:
       - name: Get the target repository and branch
         id: vars
         run: |
-          repository=${{ github.event.client_payload.slash_command.repository }}
+          repository=${{ github.event.client_payload.slash_command.args.named.repository }}
           if [[ -z "$repository" ]]; then repository="peter-evans/create-pull-request"; fi
           echo ::set-output name=repository::$repository
-          branch=${{ github.event.client_payload.slash_command.branch }}
+          branch=${{ github.event.client_payload.slash_command.args.named.branch }}
           if [[ -z "$branch" ]]; then branch="master"; fi
           echo ::set-output name=branch::$branch
-          build=${{ github.event.client_payload.slash_command.build }}
+          build=${{ github.event.client_payload.slash_command.args.named.build }}
           if [[ -z "$build" ]]; then build="false"; fi
           echo ::set-output name=build::$build
       # Checkout the branch to test
@@ -135,7 +135,7 @@ jobs:
           COUB_REPO_PATH: ${{ github.workspace }}
         working-directory: create-pull-request-local
         run: |
-          pytest ${{ github.event.client_payload.slash_command.unnamed_args }}
+          pytest ${{ github.event.client_payload.slash_command.args.unnamed.all }}
 
 
   afterTest:

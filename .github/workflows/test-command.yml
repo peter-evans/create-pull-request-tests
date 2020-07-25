@@ -46,13 +46,13 @@ jobs:
       - name: Get the target repository and ref
         id: vars
         run: |
-          repository=${{ github.event.client_payload.slash_command.repository }}
+          repository=${{ github.event.client_payload.slash_command.args.named.repository }}
           if [[ -z "$repository" ]]; then repository="peter-evans/create-pull-request"; fi
           echo ::set-output name=repository::$repository
-          ref=${{ github.event.client_payload.slash_command.ref }}
+          ref=${{ github.event.client_payload.slash_command.args.named.ref }}
           if [[ -z "$ref" ]]; then ref="master"; fi
           echo ::set-output name=ref::$ref
-          build=${{ github.event.client_payload.slash_command.build }}
+          build=${{ github.event.client_payload.slash_command.args.named.build }}
           if [[ -z "$build" ]]; then build="false"; fi
           echo ::set-output name=build::$build
       # Checkout the ref to test
