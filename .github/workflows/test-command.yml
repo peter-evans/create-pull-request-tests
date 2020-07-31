@@ -453,6 +453,29 @@ jobs:
           branch: tests/set-author-committer
 
 
+  testSetSignoff:
+    needs: beforeTest
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      # Download the action artifact
+      - uses: actions/download-artifact@v1
+        with:
+          name: create-pull-request
+          path: create-pull-request-local
+      # Test
+      - name: Create report file
+        run: date +%s > report.txt
+      - name: Create Pull Request
+        uses: ./create-pull-request-local
+        with:
+          title: testSetSignoff
+          author: 'CPR Test Author <cpr-test-author@users.noreply.github.com>'
+          committer: 'CPR Test Committer <cpr-test-committer@users.noreply.github.com>'
+          signoff: true
+          branch: tests/set-signoff
+
+
   testCreateDraft:
     needs: beforeTest
     runs-on: ubuntu-latest
@@ -797,6 +820,7 @@ jobs:
       - testWorkingBaseNotBaseCreate
       - testMultiPlatform
       - testSetAuthorCommitter
+      - testSetSignoff
       - testUpdateDraft
       - testUpdateWithPAT
       - testCreateInRemoteRepo
