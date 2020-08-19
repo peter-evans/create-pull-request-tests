@@ -401,6 +401,58 @@ jobs:
           base: master
 
 
+  testCreateOnUpToDateBranchFirst:
+    needs: beforeTest
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      # Download the action artifact
+      - uses: actions/download-artifact@v1
+        with:
+          name: create-pull-request
+          path: create-pull-request-local
+      # Test
+      - name: Create report file
+        run: echo "some data" > report.txt
+      - name: Create Pull Request
+        id: cpr
+        uses: ./create-pull-request-local
+        with:
+          title: testCreateOnUpToDateBranchFirst
+          branch: tests/create-on-up-to-date-branch
+      # Close the PR but don't delete the branch
+      - name: Close Pull
+        uses: peter-evans/close-pull@v1
+        with:
+          pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
+          comment: 'Closing PR but not deleting the branch'
+          delete-branch: false
+
+
+  testCreateOnUpToDateBranchSecond:
+    needs: testCreateOnUpToDateBranchFirst
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      # Download the action artifact
+      - uses: actions/download-artifact@v1
+        with:
+          name: create-pull-request
+          path: create-pull-request-local
+      # Test
+      - name: Create report file
+        run: echo "some data" > report.txt
+      - name: Create Pull Request
+        id: cpr
+        uses: ./create-pull-request-local
+        with:
+          title: testCreateOnUpToDateBranchSecond
+          branch: tests/create-on-up-to-date-branch
+      # Check a pull request was created
+      - if: steps.cpr.outputs.pull-request-number == ''
+        run: exit 1
+
+
   testMultiPlatform:
     needs: beforeTest
     name: testCreateMultiPlatform on ${{ matrix.platform }}
@@ -818,6 +870,7 @@ jobs:
       - testCommitsOnBaseUpdate
       - testCommitsOnWorkingBase
       - testWorkingBaseNotBaseCreate
+      - testCreateOnUpToDateBranchSecond
       - testMultiPlatform
       - testSetAuthorCommitter
       - testSetSignoff
