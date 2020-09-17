@@ -135,6 +135,10 @@ jobs:
           reviewers: peter-evans
           milestone: 1
           branch: tests/branch/create-update
+      - name: Check outputs
+        run: |
+          echo "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}"
+          echo "Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}"
       - name: Create or Update Project Card
         uses: peter-evans/create-or-update-project-card@v1
         with:
@@ -177,6 +181,10 @@ jobs:
           reviewers: peter-evans
           milestone: 1
           branch: tests/branch/create-update
+      - name: Check outputs
+        run: |
+          echo "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}"
+          echo "Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}"
       - name: Create or Update Project Card
         uses: peter-evans/create-or-update-project-card@v1
         with:
