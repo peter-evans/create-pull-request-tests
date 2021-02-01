@@ -135,10 +135,10 @@ jobs:
           reviewers: peter-evans
           milestone: 1
           branch: tests/branch/create-update
-      - name: Check outputs
-        run: |
-          echo "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}"
-          echo "Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}"
+      # Check the operation output
+      - if: steps.cpr.outputs.pull-request-operation != 'created'
+        run: exit 1
+      # Create a project card
       - name: Create or Update Project Card
         uses: peter-evans/create-or-update-project-card@v1
         with:
@@ -181,10 +181,10 @@ jobs:
           reviewers: peter-evans
           milestone: 1
           branch: tests/branch/create-update
-      - name: Check outputs
-        run: |
-          echo "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}"
-          echo "Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}"
+      # Check the operation output
+      - if: steps.cpr.outputs.pull-request-operation != 'updated'
+        run: exit 1
+      # Update the project card
       - name: Create or Update Project Card
         uses: peter-evans/create-or-update-project-card@v1
         with:
@@ -266,11 +266,15 @@ jobs:
       # Test
       # Running with no update effectively reverts the branch back to match the base
       - name: Create Pull Request
+        id: cpr
         uses: ./create-pull-request-local
         with:
           title: testNoDiff
           branch: tests/branch/no-diff
-
+          delete-branch: true
+      # Check the operation output
+      - if: steps.cpr.outputs.pull-request-operation != 'closed'
+        run: exit 1
 
   testCommitsOnBaseCreate:
     needs: beforeTest
