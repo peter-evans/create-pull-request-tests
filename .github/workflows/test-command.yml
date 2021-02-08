@@ -153,7 +153,7 @@ jobs:
             github.issues.addLabels({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              issue_number: ${{ steps.cpr.outputs.pull-request-number }}
+              issue_number: ${{ steps.cpr.outputs.pull-request-number }},
               labels: ['will-not-be-removed']
             })
 
