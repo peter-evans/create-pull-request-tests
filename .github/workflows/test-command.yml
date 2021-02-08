@@ -145,6 +145,17 @@ jobs:
           project-name: Example Project
           column-name: To do
           issue-number: ${{ steps.cpr.outputs.pull-request-number }}
+      # Add a label (to test that it won't be removed on update)
+      - name: Add label
+        uses: actions/github-script@v3
+        with:
+          script: |
+            github.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: ${{ steps.cpr.outputs.pull-request-number }}
+              labels: ['will-not-be-removed']
+            })
 
 
   testUpdate:
