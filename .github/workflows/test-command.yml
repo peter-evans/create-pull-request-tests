@@ -880,6 +880,35 @@ jobs:
           push-to-fork: create-pull-request-machine-user/create-pull-request-tests
 
 
+  testCreateWithGpgSignedCommit:
+    needs: beforeTest
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      # Download the action artifact
+      - uses: actions/download-artifact@v1
+        with:
+          name: create-pull-request
+          path: create-pull-request-local
+      # Test
+      - name: Import GPG key
+        uses: peter-evans/ghaction-import-gpg@v3
+        with:
+          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE }}
+          git-user-signingkey: true
+          git-commit-gpgsign: true
+      - name: Create report file
+        run: date +%s > report.txt
+      - name: Create Pull Request
+        uses: ./create-pull-request-local
+        with:
+          token: ${{ secrets.ACTIONS_BOT_TOKEN }}
+          title: testCreateWithGpgSignedCommits
+          branch: tests/create-with-gpg-signed-commit
+          gpg-sign: true
+
+
   testAlpineContainer:
     needs: beforeTest
     runs-on: ubuntu-latest
@@ -956,6 +985,7 @@ jobs:
       - testPushBranchToFork
       - testPushBranchToForkViaSSH
       - testPushLFSTrackedFile
+      - testCreateWithGpgSignedCommit
       - testAlpineContainer
       - testUbuntuContainer
     runs-on: ubuntu-latest
