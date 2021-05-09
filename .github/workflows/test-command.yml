@@ -904,9 +904,7 @@ jobs:
         uses: ./create-pull-request-local
         with:
           token: ${{ secrets.ACTIONS_BOT_TOKEN }}
-          committer: actions-bot <actions-bot@users.noreply.github.com>
-          # committer: GitHub <noreply@github.com>
-          # author: actions-bot <actions-bot@users.noreply.github.com>
+          committer: actions-bot-test <actions-bot@users.noreply.github.com>
           title: testCreateWithGpgSignedCommits
           branch: tests/create-with-gpg-signed-commit
           gpg-sign: true
