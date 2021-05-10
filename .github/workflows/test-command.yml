@@ -907,7 +907,6 @@ jobs:
           committer: actions-bot <actions-bot@users.noreply.github.com>
           title: testCreateWithGpgSignedCommits
           branch: tests/create-with-gpg-signed-commit
-          gpg-sign: true
 
 
   testAlpineContainer:
