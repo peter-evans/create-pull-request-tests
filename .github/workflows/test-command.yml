@@ -50,7 +50,7 @@ jobs:
           if [[ -z "$repository" ]]; then repository="peter-evans/create-pull-request"; fi
           echo ::set-output name=repository::$repository
           ref=${{ github.event.client_payload.slash_command.args.named.ref }}
-          if [[ -z "$ref" ]]; then ref="master"; fi
+          if [[ -z "$ref" ]]; then ref="main"; fi
           echo ::set-output name=ref::$ref
           build=${{ github.event.client_payload.slash_command.args.named.build }}
           if [[ -z "$build" ]]; then build="false"; fi
