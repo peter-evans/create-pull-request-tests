@@ -985,7 +985,7 @@ jobs:
           title: testProxySupport
           branch: tests/proxy-support
         env:
-          https_proxy: http://localhost:8444
+          https_proxy: http://localhost:8443
 
 
   afterTest:
