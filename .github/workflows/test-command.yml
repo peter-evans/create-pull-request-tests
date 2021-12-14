@@ -599,6 +599,37 @@ jobs:
           branch: tests/set-signoff
 
 
+  testAddPaths:
+    needs: beforeTest
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      # Download the action artifact
+      - uses: actions/download-artifact@v1
+        with:
+          name: create-pull-request
+          path: create-pull-request-local
+      # Test
+      - name: Create report files
+        run: |
+          date +%s > temp.txt
+          date +%s > data.dat
+          mkdir -p reports
+          date +%s > reports/report1.txt
+          date +%s > reports/report2.txt
+          date +%s > reports/report3.txt
+          date +%s > reports/temp.txt
+          date +%s > reports/data.dat
+      - name: Create Pull Request
+        uses: ./create-pull-request-local
+        with:
+          add-paths: |
+            reports/*.txt
+            *.dat
+          title: testAddPaths
+          branch: tests/add-paths
+
+
   testCreateDraft:
     needs: beforeTest
     runs-on: ubuntu-latest
@@ -1002,6 +1033,7 @@ jobs:
       - testMultiPlatform
       - testSetAuthorCommitter
       - testSetSignoff
+      - testAddPaths
       - testUpdateDraft
       - testUpdateWithPAT
       - testCreateInRemoteRepo
