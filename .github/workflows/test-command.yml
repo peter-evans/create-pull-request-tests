@@ -624,7 +624,7 @@ jobs:
         uses: ./create-pull-request-local
         with:
           add-paths: |
-            reports/*.txt
+            reports/report*.txt
             *.dat
           title: testAddPaths
           branch: tests/add-paths
