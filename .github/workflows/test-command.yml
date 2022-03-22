@@ -147,7 +147,7 @@ jobs:
           issue-number: ${{ steps.cpr.outputs.pull-request-number }}
       # Add a label (to test that it won't be removed on update)
       - name: Add label
-        uses: actions/github-script@v3
+        uses: actions/github-script@v6
         with:
           script: |
             github.issues.addLabels({
