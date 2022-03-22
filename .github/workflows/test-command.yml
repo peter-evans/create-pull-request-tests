@@ -90,7 +90,7 @@ jobs:
         run: echo ::set-output name=run-url::https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
 
       - name: Update comment
-        uses: peter-evans/create-or-update-comment@v1
+        uses: peter-evans/create-or-update-comment@v2
         with:
           token: ${{ secrets.ACTIONS_BOT_TOKEN }}
           repository: ${{ github.event.client_payload.github.payload.repository.full_name }}
@@ -1052,7 +1052,7 @@ jobs:
     steps:
       # Add reaction to the comment
       - name: Add reaction
-        uses: peter-evans/create-or-update-comment@v1
+        uses: peter-evans/create-or-update-comment@v2
         with:
           token: ${{ secrets.ACTIONS_BOT_TOKEN }}
           repository: ${{ github.event.client_payload.github.payload.repository.full_name }}
