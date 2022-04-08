@@ -857,8 +857,30 @@ jobs:
           branch: tests/create-with-app-auth
 
 
-  testPushBranchToFork:
+  testPushBranchToForkCreate:
     needs: beforeTest
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      # Download the action artifact
+      - uses: actions/download-artifact@v3
+        with:
+          name: create-pull-request
+          path: create-pull-request-local
+      # Test
+      - name: Create report file
+        run: date +%s > report.txt
+      - name: Create Pull Request
+        uses: ./create-pull-request-local
+        with:
+          token: ${{ secrets.CPR_MACHINE_USER_TOKEN }}
+          title: testPushBranchToFork
+          branch: tests/push-branch-to-fork
+          push-to-fork: create-pull-request-machine-user/create-pull-request-tests
+
+
+  testPushBranchToForkUpdate:
+    needs: testPushBranchToForkCreate
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -1041,7 +1063,7 @@ jobs:
       - testCreateWithRelativePath
       - testCreateBranchViaSSH
       - testCreateWithAppAuth
-      - testPushBranchToFork
+      - testPushBranchToForkUpdate
       - testPushBranchToForkViaSSH
       - testPushLFSTrackedFile
       - testCreateWithGpgSignedCommit
