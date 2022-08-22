@@ -971,6 +971,8 @@ jobs:
       - name: Install dependencies
         run: apk --no-cache add git
       - uses: actions/checkout@v3
+        with:
+          set-safe-directory: ${{ github.workspace }}
       # Download the action artifact
       - uses: actions/download-artifact@v3
         with:
@@ -999,6 +1001,8 @@ jobs:
           add-apt-repository -y ppa:git-core/ppa
           apt-get install -y git
       - uses: actions/checkout@v3
+        with:
+          set-safe-directory: ${{ github.workspace }}
       # Download the action artifact
       - uses: actions/download-artifact@v3
         with:
