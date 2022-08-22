@@ -972,7 +972,7 @@ jobs:
         run: apk --no-cache add git
       - uses: actions/checkout@v3
         with:
-          set-safe-directory: ${{ github.workspace }}
+          set-safe-directory: ${{ env.GITHUB_WORKSPACE }}
       # Download the action artifact
       - uses: actions/download-artifact@v3
         with:
@@ -1002,7 +1002,7 @@ jobs:
           apt-get install -y git
       - uses: actions/checkout@v3
         with:
-          set-safe-directory: ${{ github.workspace }}
+          set-safe-directory: ${{ env.GITHUB_WORKSPACE }}
       # Download the action artifact
       - uses: actions/download-artifact@v3
         with:
