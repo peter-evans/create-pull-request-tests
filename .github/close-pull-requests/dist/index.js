@@ -9700,7 +9700,7 @@ async function run() {
     const repo = repository.split("/");
     core.debug(`Repo: ${inspect(repo)}`);
 
-    const octokit = new github.GitHub(inputs.token);
+    const octokit = github.getOctokit(inputs.token);
 
     const { data: pulls } = await octokit.pulls.list({
       owner: repo[0],
@@ -9715,7 +9715,7 @@ async function run() {
       const ref = "heads/" + pull["head"]["ref"];
       core.debug(`Pull request head ref: ${ref}`);
 
-      await octokit.pulls.update({
+      await octokit.rest.pulls.update({
         owner: repo[0],
         repo: repo[1],
         pull_number,
@@ -9725,7 +9725,7 @@ async function run() {
       // Attempt to delete the ref. This will fail if
       // the pull request was raised from a fork.
       try {
-        await octokit.git.deleteRef({
+        await octokit.rest.git.deleteRef({
           owner: repo[0],
           repo: repo[1],
           ref
