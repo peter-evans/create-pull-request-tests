@@ -9702,7 +9702,7 @@ async function run() {
 
     const octokit = github.getOctokit(inputs.token);
 
-    const { data: pulls } = await octokit.pulls.list({
+    const { data: pulls } = await octokit.rest.pulls.list({
       owner: repo[0],
       repo: repo[1],
       state: "open"
