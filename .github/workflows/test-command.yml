@@ -945,7 +945,7 @@ jobs:
           path: create-pull-request-local
       # Test
       - name: Import GPG key
-        uses: peter-evans/ghaction-import-gpg@v3
+        uses: peter-evans/ghaction-import-gpg@v5
         with:
           gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
           passphrase: ${{ secrets.GPG_PASSPHRASE }}
