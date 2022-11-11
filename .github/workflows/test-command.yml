@@ -14,13 +14,13 @@ jobs:
       - name: Close Pull Requests
         uses: ./.github/close-pull-requests
         with:
-          token: ${{ secrets.REPO_ACCESS_TOKEN }}
+          token: ${{ secrets.TEST_CASE_PAT }}
           repository: peter-evans/create-pull-request-tests-remote
 
       - name: Close Pull Requests
         uses: ./.github/close-pull-requests
         with:
-          token: ${{ secrets.REPO_ACCESS_TOKEN }}
+          token: ${{ secrets.TEST_CASE_PAT }}
           repository: peter-evans/create-pull-request-tests-remote-private
 
       # Delete the test branches created in the fork
@@ -688,7 +688,7 @@ jobs:
       - name: Create Pull Request
         uses: ./create-pull-request-local
         with:
-          token: ${{ secrets.REPO_ACCESS_TOKEN }}
+          token: ${{ secrets.TEST_CASE_PAT }}
           title: testCreateUpdateWithPAT
           branch: tests/create-update-with-pat
 
@@ -709,7 +709,7 @@ jobs:
       - name: Create Pull Request
         uses: ./create-pull-request-local
         with:
-          token: ${{ secrets.REPO_ACCESS_TOKEN }}
+          token: ${{ secrets.TEST_CASE_PAT }}
           title: testCreateUpdateWithPAT
           branch: tests/create-update-with-pat
 
@@ -720,7 +720,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          token: ${{ secrets.REPO_ACCESS_TOKEN }}
+          token: ${{ secrets.TEST_CASE_PAT }}
           repository: peter-evans/create-pull-request-tests-remote
       # Download the action artifact
       - uses: actions/download-artifact@v3
@@ -733,7 +733,7 @@ jobs:
       - name: Create Pull Request
         uses: ./create-pull-request-local
         with:
-          token: ${{ secrets.REPO_ACCESS_TOKEN }}
+          token: ${{ secrets.TEST_CASE_PAT }}
           title: testCreateInRemoteRepo
           branch: tests/create-in-remote-repo
 
@@ -744,7 +744,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          token: ${{ secrets.REPO_ACCESS_TOKEN }}
+          token: ${{ secrets.TEST_CASE_PAT }}
           repository: peter-evans/create-pull-request-tests-remote-private
       # Download the action artifact
       - uses: actions/download-artifact@v3
@@ -757,7 +757,7 @@ jobs:
       - name: Create Pull Request
         uses: ./create-pull-request-local
         with:
-          token: ${{ secrets.REPO_ACCESS_TOKEN }}
+          token: ${{ secrets.TEST_CASE_PAT }}
           title: testCreateInRemotePrivateRepo
           branch: tests/create-in-remote-private-repo
 
