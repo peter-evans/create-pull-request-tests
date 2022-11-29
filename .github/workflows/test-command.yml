@@ -626,9 +626,15 @@ jobs:
           add-paths: |
             reports/report*.txt
             *.dat
-          title: testAddPaths
-          branch: tests/add-paths
-
+          title: testAddPaths1
+          branch: tests/add-paths-1
+      - name: Create Pull Request
+        uses: ./create-pull-request-local
+        with:
+          add-paths: |
+            *.txt
+          title: testAddPaths2
+          branch: tests/add-paths-2
 
   testCreateDraft:
     needs: beforeTest
