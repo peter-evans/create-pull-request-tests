@@ -1051,6 +1051,29 @@ jobs:
           https_proxy: http://localhost:8443
 
 
+  testNoProxySupport:
+    needs: beforeTest
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      # Download the action artifact
+      - uses: actions/download-artifact@v3
+        with:
+          name: create-pull-request
+          path: create-pull-request-local
+      # Test
+      - name: Create report file
+        run: date +%s > report.txt
+      - name: Create Pull Request
+        uses: ./create-pull-request-local
+        with:
+          title: testNoProxySupport
+          branch: tests/no-proxy-support
+        env:
+          https_proxy: http://localhost:8
+          # no_proxy: github.com
+
+
   afterTest:
     needs:
       - createRunLink
@@ -1080,6 +1103,7 @@ jobs:
       - testAlpineContainer
       - testUbuntuContainer
       - testProxySupport
+      - testNoProxySupport
     runs-on: ubuntu-latest
     steps:
       # Add reaction to the comment
