@@ -977,8 +977,6 @@ jobs:
       - name: Install dependencies
         run: apk --no-cache add git
       - uses: actions/checkout@v3
-      # Workaround https://github.com/actions/checkout/issues/760
-      # - run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
       # Download the action artifact
       - uses: actions/download-artifact@v3
         with:
@@ -1007,8 +1005,6 @@ jobs:
           add-apt-repository -y ppa:git-core/ppa
           apt-get install -y git
       - uses: actions/checkout@v3
-      # Workaround https://github.com/actions/checkout/issues/760
-      # - run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
       # Download the action artifact
       - uses: actions/download-artifact@v3
         with:
