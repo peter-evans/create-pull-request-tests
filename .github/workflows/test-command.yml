@@ -1067,7 +1067,7 @@ jobs:
           branch: tests/no-proxy-support
         env:
           https_proxy: http://localhost:8
-          no_proxy: github.com
+          no_proxy: .github.com
 
 
   afterTest:
