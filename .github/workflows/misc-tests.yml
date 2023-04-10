@@ -1,0 +1,43 @@
+name: Misc tests
+on: workflow_dispatch
+
+jobs:
+  test1:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Create report file
+        run: date +%s > report.txt
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.CPR_MACHINE_USER_TOKEN }}
+          title: misc-test1
+          branch: tests/misc-test1
+          push-to-fork: create-pull-request-machine-user/create-pull-request-tests
+
+
+#   test1:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v3
+#         with:
+# #           token: ${{ secrets.REPO_ACCESS_TOKEN }}
+#           repository: Homebrew/homebrew-cask.git
+#           path: brew
+#           ref: master
+
+#       - run: date +%s > test.txt
+
+#       - name: Create Pull Request
+#         uses: peter-evans/create-pull-request@v5
+#         with:
+#           token: ${{ secrets.REPO_ACCESS_TOKEN }}
+#           path: ${{ github.workspace }}/brew
+#           push-to-fork: peter-evans/homebrew-cask
+#           branch: test1
+#           title: test1
+#           draft: true
+# #           base: master
