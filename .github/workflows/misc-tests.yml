@@ -14,5 +14,6 @@ jobs:
       - run: |
           git config --global user.name 'Test Case'
           git config --global user.email 'test-case@users.noreply.github.com'
-          git commit -am "Test committer"
+          git add test.txt
+          git commit -m "Test committer"
           git push
