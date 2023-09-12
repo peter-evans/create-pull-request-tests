@@ -1065,6 +1065,26 @@ jobs:
           no_proxy: .github.com
 
 
+  testCreateWithSubmodules:
+    needs: beforeTest
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      # Download the action artifact
+      - uses: actions/download-artifact@v3
+        with:
+          name: create-pull-request
+          path: create-pull-request-local
+      # Test
+      - name: Create report file
+        run: date +%s > create-pull-request-tests-submodule/report.txt
+      - name: Create Pull Request
+        uses: ./create-pull-request-local
+        with:
+          title: testCreateWithSubmodules
+          branch: tests/create-with-submodules
+
+
   afterTest:
     needs:
       - createRunLink
@@ -1095,6 +1115,7 @@ jobs:
       - testUbuntuContainer
       - testProxySupport
       - testNoProxySupport
+      - testCreateWithSubmodules
     runs-on: ubuntu-latest
     steps:
       # Add reaction to the comment
