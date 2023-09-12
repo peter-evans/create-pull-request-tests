@@ -1070,6 +1070,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          submodules: true
       # Download the action artifact
       - uses: actions/download-artifact@v3
         with:
