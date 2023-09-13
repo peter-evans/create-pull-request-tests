@@ -1085,6 +1085,7 @@ jobs:
         with:
           title: testCreateWithSubmodules
           branch: tests/create-with-submodules
+          path: create-pull-request-tests-submodule
 
 
   afterTest:
