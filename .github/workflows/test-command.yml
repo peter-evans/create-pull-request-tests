@@ -715,6 +715,27 @@ jobs:
           branch: tests/create-update-with-pat
 
 
+  testCreateWithGitPAT:
+    needs: beforeTest
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      # Download the action artifact
+      - uses: actions/download-artifact@v3
+        with:
+          name: create-pull-request
+          path: create-pull-request-local
+      # Test
+      - name: Create report file
+        run: date +%s > report.txt
+      - name: Create Pull Request
+        uses: ./create-pull-request-local
+        with:
+          git-token: ${{ secrets.TEST_CASE_PAT }}
+          title: testCreateWithGitPAT
+          branch: tests/create-with-git-pat
+
+
   testCreateInRemoteRepo:
     needs: beforeTest
     runs-on: ubuntu-latest
@@ -1082,6 +1103,7 @@ jobs:
       - testAddPaths
       - testUpdateDraft
       - testUpdateWithPAT
+      - testCreateWithGitPAT
       - testCreateInRemoteRepo
       - testCreateInRemotePrivateRepo
       - testCreateWithRelativePath
