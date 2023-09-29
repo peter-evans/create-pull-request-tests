@@ -23,6 +23,12 @@ jobs:
           token: ${{ secrets.TEST_CASE_PAT }}
           repository: peter-evans/create-pull-request-tests-remote-private
 
+      - name: Close Pull Requests
+        uses: ./.github/close-pull-requests
+        with:
+          token: ${{ secrets.TEST_CASE_PAT_SIBLING }}
+          repository: create-pull-request/create-pull-request-tests
+
       # Delete the test branches created in the fork
       - uses: actions/checkout@v3
         with:
@@ -955,6 +961,30 @@ jobs:
           push-to-fork: create-pull-request-machine-user/create-pull-request-tests
 
 
+  testPushBranchToForkWithSiblingBase:
+    needs: beforeTest
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          repository: create-pull-request/create-pull-request-tests
+      # Download the action artifact
+      - uses: actions/download-artifact@v3
+        with:
+          name: create-pull-request
+          path: create-pull-request-local
+      # Test
+      - name: Create report file
+        run: date +%s > report.txt
+      - name: Create Pull Request
+        uses: ./create-pull-request-local
+        with:
+          token: ${{ secrets.CPR_MACHINE_USER_TOKEN }}
+          title: testPushBranchToForkWithSiblingBase
+          branch: tests/push-branch-to-fork-with-sibling-base
+          push-to-fork: create-pull-request-machine-user/create-pull-request-tests
+
+
   testCreateWithGpgSignedCommit:
     needs: beforeTest
     runs-on: ubuntu-latest
@@ -1111,6 +1141,7 @@ jobs:
       - testCreateWithAppAuth
       - testPushBranchToForkUpdate
       - testPushBranchToForkViaSSH
+      - testPushBranchToForkWithSiblingBase
       - testPushLFSTrackedFile
       - testCreateWithGpgSignedCommit
       - testAlpineContainer
