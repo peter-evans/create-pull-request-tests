@@ -6,7 +6,7 @@ jobs:
   clean:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       # Clean up pull requests and branches
       - name: Close Pull Requests
         uses: ./.github/close-pull-requests
@@ -30,7 +30,7 @@ jobs:
           repository: create-pull-request/create-pull-request-tests
 
       # Delete the test branches created in the fork
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           token: ${{ secrets.CPR_MACHINE_USER_TOKEN }}
           repository: create-pull-request-machine-user/create-pull-request-tests
@@ -62,7 +62,7 @@ jobs:
           if [[ -z "$build" ]]; then build="false"; fi
           echo "build=$build" >> $GITHUB_OUTPUT
       # Checkout the ref to test
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           token: ${{ secrets.ACTIONS_BOT_TOKEN }}
           repository: ${{ steps.vars.outputs.repository }}
@@ -111,7 +111,7 @@ jobs:
     needs: beforeTest
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       # Download the action artifact
       - uses: actions/download-artifact@v3
         with:
@@ -168,7 +168,7 @@ jobs:
     needs: testCreate
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       # Download the action artifact
       - uses: actions/download-artifact@v3
         with:
@@ -209,7 +209,7 @@ jobs:
     needs: beforeTest
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       # Download the action artifact
       - uses: actions/download-artifact@v3
         with:
@@ -229,7 +229,7 @@ jobs:
     needs: testIdenticalChangeCreate
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       # Download the action artifact
       - uses: actions/download-artifact@v3
         with:
@@ -249,7 +249,7 @@ jobs:
     needs: beforeTest
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       # Download the action artifact
       - uses: actions/download-artifact@v3
         with:
@@ -269,7 +269,7 @@ jobs:
     needs: testNoDiffCreate
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       # Download the action artifact
       - uses: actions/download-artifact@v3
         with:
@@ -292,7 +292,7 @@ jobs:
     needs: beforeTest
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       # Create test base branch
       - name: Create test base
         run: |
@@ -319,7 +319,7 @@ jobs:
     needs: testCommitsOnBaseCreate
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           ref: tests/base/commits-on-base
       # Create commits on the test base branch
@@ -339,7 +339,7 @@ jobs:
     needs: testCommitsOnBaseCommit
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           ref: tests/base/commits-on-base
       # Download the action artifact
@@ -362,7 +362,7 @@ jobs:
     needs: beforeTest
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       # Download the action artifact
       - uses: actions/download-artifact@v3
         with:
@@ -391,7 +391,7 @@ jobs:
     needs: beforeTest
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       # Create test base branch
       - name: Create test base
         run: |
@@ -406,7 +406,7 @@ jobs:
     needs: testWorkingBaseNotBaseSetup
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           ref: tests/base/working-base-not-base
       # Download the action artifact
@@ -430,7 +430,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # Checkout the HEAD commit to put in detached HEAD state
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           ref: ${{ github.sha }}
       # Download the action artifact
@@ -454,7 +454,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # Checkout the HEAD commit to put in detached HEAD state
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           ref: ${{ github.sha }}
       # Download the action artifact
@@ -477,7 +477,7 @@ jobs:
     needs: beforeTest
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       # Download the action artifact
       - uses: actions/download-artifact@v3
         with:
@@ -505,7 +505,7 @@ jobs:
     needs: testCreateOnUpToDateBranchFirst
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       # Download the action artifact
       - uses: actions/download-artifact@v3
         with:
@@ -533,7 +533,7 @@ jobs:
         platform: [ubuntu-latest, macos-latest, windows-latest]
     runs-on: ${{ matrix.platform }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       # Download the action artifact
       - uses: actions/download-artifact@v3
         with:
@@ -559,7 +559,7 @@ jobs:
     needs: beforeTest
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       # Download the action artifact
       - uses: actions/download-artifact@v3
         with:
@@ -581,7 +581,7 @@ jobs:
     needs: beforeTest
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       # Download the action artifact
       - uses: actions/download-artifact@v3
         with:
@@ -604,7 +604,7 @@ jobs:
     needs: beforeTest
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       # Download the action artifact
       - uses: actions/download-artifact@v3
         with:
@@ -641,7 +641,7 @@ jobs:
     needs: beforeTest
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       # Download the action artifact
       - uses: actions/download-artifact@v3
         with:
@@ -662,7 +662,7 @@ jobs:
     needs: testCreateDraft
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       # Download the action artifact
       - uses: actions/download-artifact@v3
         with:
@@ -683,7 +683,7 @@ jobs:
     needs: beforeTest
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       # Download the action artifact
       - uses: actions/download-artifact@v3
         with:
@@ -704,7 +704,7 @@ jobs:
     needs: testCreateWithPAT
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       # Download the action artifact
       - uses: actions/download-artifact@v3
         with:
@@ -725,7 +725,7 @@ jobs:
     needs: beforeTest
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       # Download the action artifact
       - uses: actions/download-artifact@v3
         with:
@@ -746,7 +746,7 @@ jobs:
     needs: beforeTest
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           token: ${{ secrets.TEST_CASE_PAT }}
           repository: peter-evans/create-pull-request-tests-remote
@@ -770,7 +770,7 @@ jobs:
     needs: beforeTest
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           token: ${{ secrets.TEST_CASE_PAT }}
           repository: peter-evans/create-pull-request-tests-remote-private
@@ -794,7 +794,7 @@ jobs:
     needs: beforeTest
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           path: relative-path
       # Download the action artifact
@@ -818,7 +818,7 @@ jobs:
     needs: beforeTest
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       # Download the action artifact
       - uses: actions/download-artifact@v3
         with:
@@ -841,7 +841,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # Checkout via SSH
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
       # Download the action artifact
@@ -863,7 +863,7 @@ jobs:
     needs: beforeTest
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       # Download the action artifact
       - uses: actions/download-artifact@v3
         with:
@@ -889,7 +889,7 @@ jobs:
     needs: beforeTest
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       # Download the action artifact
       - uses: actions/download-artifact@v3
         with:
@@ -911,7 +911,7 @@ jobs:
     needs: testPushBranchToForkCreate
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       # Download the action artifact
       - uses: actions/download-artifact@v3
         with:
@@ -941,7 +941,7 @@ jobs:
       # be created with read access for checkout. The same deploy key in
       # the fork needs write access.
       # Checkout via SSH
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           ssh-key: ${{ secrets.CPR_MACHINE_USER_SSH_PRIVATE_KEY }}
       # Download the action artifact
@@ -965,7 +965,7 @@ jobs:
     needs: beforeTest
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           repository: create-pull-request/create-pull-request-tests
       # Download the action artifact
@@ -989,7 +989,7 @@ jobs:
     needs: beforeTest
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       # Download the action artifact
       - uses: actions/download-artifact@v3
         with:
@@ -1022,7 +1022,7 @@ jobs:
     steps:
       - name: Install dependencies
         run: apk --no-cache add git
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       # Download the action artifact
       - uses: actions/download-artifact@v3
         with:
@@ -1050,7 +1050,7 @@ jobs:
           apt-get install -y software-properties-common
           add-apt-repository -y ppa:git-core/ppa
           apt-get install -y git
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       # Download the action artifact
       - uses: actions/download-artifact@v3
         with:
@@ -1075,7 +1075,7 @@ jobs:
         ports:
           - 8443:8443
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       # Download the action artifact
       - uses: actions/download-artifact@v3
         with:
@@ -1097,7 +1097,7 @@ jobs:
     needs: beforeTest
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       # Download the action artifact
       - uses: actions/download-artifact@v3
         with:
