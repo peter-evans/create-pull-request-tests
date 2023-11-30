@@ -6,7 +6,7 @@ jobs:
   clean:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       # Clean up pull requests and branches
       - name: Close Pull Requests
@@ -25,7 +25,7 @@ jobs:
           repository: peter-evans/create-pull-request-tests-remote-private
 
       # Delete the test branch created in the fork
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           token: ${{ secrets.CPR_MACHINE_USER_TOKEN }}
           repository: create-pull-request-machine-user/create-pull-request-tests
