@@ -488,7 +488,7 @@ jobs:
           branch: tests/create-on-up-to-date-branch
       # Close the PR but don't delete the branch
       - name: Close Pull
-        uses: peter-evans/close-pull@v2
+        uses: peter-evans/close-pull@v3
         with:
           pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
           comment: 'Closing PR but not deleting the branch'
