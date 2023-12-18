@@ -81,7 +81,7 @@ jobs:
           npm run test
           rm -rf node_modules
       # Create an artifact from the action
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: create-pull-request
           path: .
