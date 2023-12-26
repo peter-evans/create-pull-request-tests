@@ -124,7 +124,14 @@ jobs:
         id: cpr
         uses: ./create-pull-request-local
         with:
-          commit-message: Add report file
+          commit-message: |
+            Add report file
+
+            This is a test commit message body
+            {
+              "test": "test",
+              "test2": "test2"
+            }
           committer: GitHub <noreply@github.com>
           author: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
           title: '[Example] Add report file'
