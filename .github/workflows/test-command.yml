@@ -155,7 +155,7 @@ jobs:
         run: exit 1
       # Create a project card
       - name: Create or Update Project Card
-        uses: peter-evans/create-or-update-project-card@v2
+        uses: peter-evans/create-or-update-project-card@v3
         with:
           project-name: Example Project
           column-name: To do
@@ -216,7 +216,7 @@ jobs:
         run: exit 1
       # Update the project card
       - name: Create or Update Project Card
-        uses: peter-evans/create-or-update-project-card@v2
+        uses: peter-evans/create-or-update-project-card@v3
         with:
           project-name: Example Project
           column-name: To do
