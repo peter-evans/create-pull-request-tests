@@ -861,7 +861,7 @@ jobs:
           name: create-pull-request
           path: create-pull-request-local
       # Test
-      - uses: peter-evans/github-app-token@v1
+      - uses: tibdex/github-app-token@v2
         id: generate-token
         with:
           app_id: ${{ secrets.CPR_AUTH_APP_ID }}
@@ -964,7 +964,7 @@ jobs:
           path: create-pull-request-local
       # Test
       - name: Import GPG key
-        uses: peter-evans/ghaction-import-gpg@v5
+        uses: crazy-max/ghaction-import-gpg@v6
         with:
           gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
           passphrase: ${{ secrets.GPG_PASSPHRASE }}
