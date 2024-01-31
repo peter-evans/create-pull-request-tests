@@ -107,7 +107,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       # Download the action artifact
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: create-pull-request
           path: create-pull-request-local
@@ -173,7 +173,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       # Download the action artifact
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: create-pull-request
           path: create-pull-request-local
@@ -223,7 +223,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       # Download the action artifact
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: create-pull-request
           path: create-pull-request-local
@@ -243,7 +243,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       # Download the action artifact
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: create-pull-request
           path: create-pull-request-local
@@ -263,7 +263,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       # Download the action artifact
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: create-pull-request
           path: create-pull-request-local
@@ -283,7 +283,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       # Download the action artifact
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: create-pull-request
           path: create-pull-request-local
@@ -312,7 +312,7 @@ jobs:
           git config user.email 'cpr-test-user@users.noreply.github.com'
           git push --force origin HEAD:refs/heads/tests/base/commits-on-base
       # Download the action artifact
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: create-pull-request
           path: create-pull-request-local
@@ -355,7 +355,7 @@ jobs:
         with:
           ref: tests/base/commits-on-base
       # Download the action artifact
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: create-pull-request
           path: create-pull-request-local
@@ -376,7 +376,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       # Download the action artifact
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: create-pull-request
           path: create-pull-request-local
@@ -422,7 +422,7 @@ jobs:
         with:
           ref: tests/base/working-base-not-base
       # Download the action artifact
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: create-pull-request
           path: create-pull-request-local
@@ -446,7 +446,7 @@ jobs:
         with:
           ref: ${{ github.sha }}
       # Download the action artifact
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: create-pull-request
           path: create-pull-request-local
@@ -470,7 +470,7 @@ jobs:
         with:
           ref: ${{ github.sha }}
       # Download the action artifact
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: create-pull-request
           path: create-pull-request-local
@@ -491,7 +491,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       # Download the action artifact
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: create-pull-request
           path: create-pull-request-local
@@ -519,7 +519,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       # Download the action artifact
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: create-pull-request
           path: create-pull-request-local
@@ -547,7 +547,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       # Download the action artifact
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: create-pull-request
           path: create-pull-request-local
@@ -573,7 +573,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       # Download the action artifact
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: create-pull-request
           path: create-pull-request-local
@@ -595,7 +595,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       # Download the action artifact
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: create-pull-request
           path: create-pull-request-local
@@ -618,7 +618,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       # Download the action artifact
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: create-pull-request
           path: create-pull-request-local
@@ -655,7 +655,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       # Download the action artifact
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: create-pull-request
           path: create-pull-request-local
@@ -676,7 +676,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       # Download the action artifact
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: create-pull-request
           path: create-pull-request-local
@@ -697,7 +697,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       # Download the action artifact
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: create-pull-request
           path: create-pull-request-local
@@ -718,7 +718,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       # Download the action artifact
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: create-pull-request
           path: create-pull-request-local
@@ -742,7 +742,7 @@ jobs:
           token: ${{ secrets.TEST_CASE_PAT }}
           repository: peter-evans/create-pull-request-tests-remote
       # Download the action artifact
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: create-pull-request
           path: create-pull-request-local
@@ -766,7 +766,7 @@ jobs:
           token: ${{ secrets.TEST_CASE_PAT }}
           repository: peter-evans/create-pull-request-tests-remote-private
       # Download the action artifact
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: create-pull-request
           path: create-pull-request-local
@@ -789,7 +789,7 @@ jobs:
         with:
           path: relative-path
       # Download the action artifact
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: create-pull-request
           path: create-pull-request-local
@@ -811,7 +811,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       # Download the action artifact
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: create-pull-request
           path: create-pull-request-local
@@ -836,7 +836,7 @@ jobs:
         with:
           ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
       # Download the action artifact
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: create-pull-request
           path: create-pull-request-local
@@ -856,7 +856,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       # Download the action artifact
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: create-pull-request
           path: create-pull-request-local
@@ -882,7 +882,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       # Download the action artifact
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: create-pull-request
           path: create-pull-request-local
@@ -904,7 +904,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       # Download the action artifact
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: create-pull-request
           path: create-pull-request-local
@@ -936,7 +936,7 @@ jobs:
         with:
           ssh-key: ${{ secrets.CPR_MACHINE_USER_SSH_PRIVATE_KEY }}
       # Download the action artifact
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: create-pull-request
           path: create-pull-request-local
@@ -958,7 +958,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       # Download the action artifact
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: create-pull-request
           path: create-pull-request-local
@@ -991,7 +991,7 @@ jobs:
         run: apk --no-cache add git
       - uses: actions/checkout@v4
       # Download the action artifact
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: create-pull-request
           path: create-pull-request-local
@@ -1019,7 +1019,7 @@ jobs:
           apt-get install -y git
       - uses: actions/checkout@v4
       # Download the action artifact
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: create-pull-request
           path: create-pull-request-local
@@ -1044,7 +1044,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       # Download the action artifact
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: create-pull-request
           path: create-pull-request-local
@@ -1066,7 +1066,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       # Download the action artifact
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: create-pull-request
           path: create-pull-request-local
