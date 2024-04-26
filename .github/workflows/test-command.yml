@@ -1094,11 +1094,9 @@ jobs:
         with:
           name: create-pull-request
           path: create-pull-request-local
-      # Start the proxy
       - name: Start proxy
         run: |
-          docker run -d --network=host --name proxy peterevans/forward-proxy
-      # Setup firewall rules
+          docker run -d --name proxy peterevans/forward-proxy
       - name: Setup firewall rules
         run: |
           sudo apt-get update
