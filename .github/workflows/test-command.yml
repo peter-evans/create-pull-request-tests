@@ -1097,14 +1097,15 @@ jobs:
       # Start the proxy
       - name: Start proxy
         run: |
-          docker run -d --network=host peterevans/forward-proxy
+          docker run -d --network=host --name proxy peterevans/forward-proxy
       # Setup firewall rules
       - name: Setup firewall rules
         run: |
           sudo apt-get update
           sudo apt-get install -y ufw
+          PROXY_IP=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' proxy)
           sudo ufw default deny outgoing
-          sudo ufw allow out to any port 8443
+          sudo ufw allow out from any to $PROXY_IP
           sudo ufw enable
       # Test
       - name: Create report file
