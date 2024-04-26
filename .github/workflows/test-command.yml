@@ -1102,10 +1102,13 @@ jobs:
       # Test
       - name: Create report file
         run: date +%s > report.txt
-      - name: Block direct connections to github.com and api.github.com
+      - name: Setup firewall rules
         run: |
-          echo "0.0.0.0 github.com" | sudo tee -a /etc/hosts
-          echo "0.0.0.0 api.github.com" | sudo tee -a /etc/hosts
+          sudo apt-get update
+          sudo apt-get install -y ufw
+          sudo ufw default deny outgoing
+          sudo ufw allow out to any port 8443
+          sudo ufw enable
       - name: Create Pull Request
         uses: ./create-pull-request-local
         with:
