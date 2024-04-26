@@ -1087,11 +1087,6 @@ jobs:
   testProxySupport:
     needs: beforeTest
     runs-on: ubuntu-latest
-    services:
-      proxy:
-        image: peterevans/forward-proxy
-        ports:
-          - 8443:8443
     steps:
       - uses: actions/checkout@v4
       # Download the action artifact
@@ -1099,9 +1094,11 @@ jobs:
         with:
           name: create-pull-request
           path: create-pull-request-local
-      # Test
-      - name: Create report file
-        run: date +%s > report.txt
+      # Start the proxy
+      - name: Start proxy
+        run: |
+          docker run -d --network=host peterevans/forward-proxy
+      # Setup firewall rules
       - name: Setup firewall rules
         run: |
           sudo apt-get update
@@ -1109,6 +1106,9 @@ jobs:
           sudo ufw default deny outgoing
           sudo ufw allow out to any port 8443
           sudo ufw enable
+      # Test
+      - name: Create report file
+        run: date +%s > report.txt
       - name: Create Pull Request
         uses: ./create-pull-request-local
         with:
