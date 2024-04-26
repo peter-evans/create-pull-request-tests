@@ -1087,12 +1087,6 @@ jobs:
   testProxySupport:
     needs: beforeTest
     runs-on: ubuntu-latest
-    services:
-      proxy:
-        image: peterevans/forward-proxy
-        ports:
-          - 8443:8443
-        options: --name proxy
     steps:
       - uses: actions/checkout@v4
       # Download the action artifact
@@ -1100,9 +1094,9 @@ jobs:
         with:
           name: create-pull-request
           path: create-pull-request-local
-      # - name: Start proxy
-      #   run: |
-      #     docker run -d -p 8443:8443 --name proxy peterevans/forward-proxy
+      - name: Start proxy
+        run: |
+          docker run -d -p 8443:8443 --name proxy peterevans/forward-proxy
       - name: Setup firewall rules
         run: |
           sudo apt-get update
