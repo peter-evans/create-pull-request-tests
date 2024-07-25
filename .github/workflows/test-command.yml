@@ -223,658 +223,658 @@ jobs:
           issue-number: ${{ steps.cpr.outputs.pull-request-number }}
 
 
-  testIdenticalChangeCreate:
-    needs: beforeTest
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      # Download the action artifact
-      - uses: actions/download-artifact@v4
-        with:
-          name: create-pull-request
-          path: create-pull-request-local
-      # Test
-      - name: Create report file
-        run: echo "some data" > report.txt
-      - name: Create Pull Request
-        uses: ./create-pull-request-local
-        with:
-          title: testIdenticalChange
-          branch: tests/branch/identical-change
+  # testIdenticalChangeCreate:
+  #   needs: beforeTest
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     # Download the action artifact
+  #     - uses: actions/download-artifact@v4
+  #       with:
+  #         name: create-pull-request
+  #         path: create-pull-request-local
+  #     # Test
+  #     - name: Create report file
+  #       run: echo "some data" > report.txt
+  #     - name: Create Pull Request
+  #       uses: ./create-pull-request-local
+  #       with:
+  #         title: testIdenticalChange
+  #         branch: tests/branch/identical-change
 
 
-  testIdenticalChangeUpdate:
-    needs: testIdenticalChangeCreate
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      # Download the action artifact
-      - uses: actions/download-artifact@v4
-        with:
-          name: create-pull-request
-          path: create-pull-request-local
-      # Test
-      - name: Create report file
-        run: echo "some data" > report.txt
-      - name: Create Pull Request
-        uses: ./create-pull-request-local
-        with:
-          title: testIdenticalChange
-          branch: tests/branch/identical-change
+  # testIdenticalChangeUpdate:
+  #   needs: testIdenticalChangeCreate
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     # Download the action artifact
+  #     - uses: actions/download-artifact@v4
+  #       with:
+  #         name: create-pull-request
+  #         path: create-pull-request-local
+  #     # Test
+  #     - name: Create report file
+  #       run: echo "some data" > report.txt
+  #     - name: Create Pull Request
+  #       uses: ./create-pull-request-local
+  #       with:
+  #         title: testIdenticalChange
+  #         branch: tests/branch/identical-change
 
 
-  testNoDiffCreate:
-    needs: beforeTest
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      # Download the action artifact
-      - uses: actions/download-artifact@v4
-        with:
-          name: create-pull-request
-          path: create-pull-request-local
-      # Test
-      - name: Create report file
-        run: date +%s > report.txt
-      - name: Create Pull Request
-        uses: ./create-pull-request-local
-        with:
-          title: testNoDiff
-          branch: tests/branch/no-diff
+  # testNoDiffCreate:
+  #   needs: beforeTest
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     # Download the action artifact
+  #     - uses: actions/download-artifact@v4
+  #       with:
+  #         name: create-pull-request
+  #         path: create-pull-request-local
+  #     # Test
+  #     - name: Create report file
+  #       run: date +%s > report.txt
+  #     - name: Create Pull Request
+  #       uses: ./create-pull-request-local
+  #       with:
+  #         title: testNoDiff
+  #         branch: tests/branch/no-diff
 
 
-  testNoDiffUpdate:
-    needs: testNoDiffCreate
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      # Download the action artifact
-      - uses: actions/download-artifact@v4
-        with:
-          name: create-pull-request
-          path: create-pull-request-local
-      # Test
-      # Running with no update effectively reverts the branch back to match the base
-      - name: Create Pull Request
-        id: cpr
-        uses: ./create-pull-request-local
-        with:
-          title: testNoDiff
-          branch: tests/branch/no-diff
-          delete-branch: true
-      # Check the operation output
-      - if: steps.cpr.outputs.pull-request-operation != 'closed'
-        run: exit 1
+  # testNoDiffUpdate:
+  #   needs: testNoDiffCreate
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     # Download the action artifact
+  #     - uses: actions/download-artifact@v4
+  #       with:
+  #         name: create-pull-request
+  #         path: create-pull-request-local
+  #     # Test
+  #     # Running with no update effectively reverts the branch back to match the base
+  #     - name: Create Pull Request
+  #       id: cpr
+  #       uses: ./create-pull-request-local
+  #       with:
+  #         title: testNoDiff
+  #         branch: tests/branch/no-diff
+  #         delete-branch: true
+  #     # Check the operation output
+  #     - if: steps.cpr.outputs.pull-request-operation != 'closed'
+  #       run: exit 1
 
-  testCommitsOnBaseCreate:
-    needs: beforeTest
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      # Create test base branch
-      - name: Create test base
-        run: |
-          git config user.name 'CPR Test User'
-          git config user.email 'cpr-test-user@users.noreply.github.com'
-          git push --force origin HEAD:refs/heads/tests/base/commits-on-base
-      # Download the action artifact
-      - uses: actions/download-artifact@v4
-        with:
-          name: create-pull-request
-          path: create-pull-request-local
-      # Test
-      - name: Create report file
-        run: date +%s > report.txt
-      - name: Create Pull Request
-        uses: ./create-pull-request-local
-        with:
-          title: testCommitsOnBase
-          branch: tests/branch/commits-on-base
-          base: tests/base/commits-on-base
-
-
-  testCommitsOnBaseCommit:
-    needs: testCommitsOnBaseCreate
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: tests/base/commits-on-base
-      # Create commits on the test base branch
-      - name: Create commits
-        run: |
-          git config user.name 'CPR Test User'
-          git config user.email 'cpr-test-user@users.noreply.github.com'
-          date +%s > report.txt
-          git commit -am "Commit on base 1"
-          date +%s > new-report.txt
-          git add -A
-          git commit -m "Commit on base 2"
-          git push
+  # testCommitsOnBaseCreate:
+  #   needs: beforeTest
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     # Create test base branch
+  #     - name: Create test base
+  #       run: |
+  #         git config user.name 'CPR Test User'
+  #         git config user.email 'cpr-test-user@users.noreply.github.com'
+  #         git push --force origin HEAD:refs/heads/tests/base/commits-on-base
+  #     # Download the action artifact
+  #     - uses: actions/download-artifact@v4
+  #       with:
+  #         name: create-pull-request
+  #         path: create-pull-request-local
+  #     # Test
+  #     - name: Create report file
+  #       run: date +%s > report.txt
+  #     - name: Create Pull Request
+  #       uses: ./create-pull-request-local
+  #       with:
+  #         title: testCommitsOnBase
+  #         branch: tests/branch/commits-on-base
+  #         base: tests/base/commits-on-base
 
 
-  testCommitsOnBaseUpdate:
-    needs: testCommitsOnBaseCommit
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: tests/base/commits-on-base
-      # Download the action artifact
-      - uses: actions/download-artifact@v4
-        with:
-          name: create-pull-request
-          path: create-pull-request-local
-      # Test
-      - name: Create report file
-        run: date +%s > report.txt
-      - name: Create Pull Request
-        uses: ./create-pull-request-local
-        with:
-          title: testCommitsOnBase
-          branch: tests/branch/commits-on-base
-          base: tests/base/commits-on-base
+  # testCommitsOnBaseCommit:
+  #   needs: testCommitsOnBaseCreate
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #       with:
+  #         ref: tests/base/commits-on-base
+  #     # Create commits on the test base branch
+  #     - name: Create commits
+  #       run: |
+  #         git config user.name 'CPR Test User'
+  #         git config user.email 'cpr-test-user@users.noreply.github.com'
+  #         date +%s > report.txt
+  #         git commit -am "Commit on base 1"
+  #         date +%s > new-report.txt
+  #         git add -A
+  #         git commit -m "Commit on base 2"
+  #         git push
 
 
-  testCommitsOnWorkingBase:
-    needs: beforeTest
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      # Download the action artifact
-      - uses: actions/download-artifact@v4
-        with:
-          name: create-pull-request
-          path: create-pull-request-local
-      # Test
-      - name: Create commits
-        run: |
-          git config user.name 'CPR Test User'
-          git config user.email 'cpr-test-user@users.noreply.github.com'
-          date +%s > report.txt
-          git commit -am "Commit during workflow 1"
-          date +%s > new-report.txt
-          git add -A
-          git commit -m "Commit during workflow 2"
-      - name: Create report file
-        run: date +%s > report.txt
-      - name: Create Pull Request
-        uses: ./create-pull-request-local
-        with:
-          title: testCommitsOnWorkingBase
-          branch: tests/branch/commits-on-working-base
+  # testCommitsOnBaseUpdate:
+  #   needs: testCommitsOnBaseCommit
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #       with:
+  #         ref: tests/base/commits-on-base
+  #     # Download the action artifact
+  #     - uses: actions/download-artifact@v4
+  #       with:
+  #         name: create-pull-request
+  #         path: create-pull-request-local
+  #     # Test
+  #     - name: Create report file
+  #       run: date +%s > report.txt
+  #     - name: Create Pull Request
+  #       uses: ./create-pull-request-local
+  #       with:
+  #         title: testCommitsOnBase
+  #         branch: tests/branch/commits-on-base
+  #         base: tests/base/commits-on-base
 
 
-  testWorkingBaseNotBaseSetup:
-    needs: beforeTest
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      # Create test base branch
-      - name: Create test base
-        run: |
-          git config user.name 'CPR Test User'
-          git config user.email 'cpr-test-user@users.noreply.github.com'
-          date +%s > report.txt
-          git commit -am "This commit should not appear in pr branches"
-          git push --force origin HEAD:refs/heads/tests/base/working-base-not-base
+  # testCommitsOnWorkingBase:
+  #   needs: beforeTest
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     # Download the action artifact
+  #     - uses: actions/download-artifact@v4
+  #       with:
+  #         name: create-pull-request
+  #         path: create-pull-request-local
+  #     # Test
+  #     - name: Create commits
+  #       run: |
+  #         git config user.name 'CPR Test User'
+  #         git config user.email 'cpr-test-user@users.noreply.github.com'
+  #         date +%s > report.txt
+  #         git commit -am "Commit during workflow 1"
+  #         date +%s > new-report.txt
+  #         git add -A
+  #         git commit -m "Commit during workflow 2"
+  #     - name: Create report file
+  #       run: date +%s > report.txt
+  #     - name: Create Pull Request
+  #       uses: ./create-pull-request-local
+  #       with:
+  #         title: testCommitsOnWorkingBase
+  #         branch: tests/branch/commits-on-working-base
 
 
-  testWorkingBaseNotBaseCreate:
-    needs: testWorkingBaseNotBaseSetup
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: tests/base/working-base-not-base
-      # Download the action artifact
-      - uses: actions/download-artifact@v4
-        with:
-          name: create-pull-request
-          path: create-pull-request-local
-      # Test
-      - name: Create report file
-        run: date +%s > report.txt
-      - name: Create Pull Request
-        uses: ./create-pull-request-local
-        with:
-          title: testWorkingBaseNotBase
-          branch: tests/branch/working-base-not-base
-          base: master
+  # testWorkingBaseNotBaseSetup:
+  #   needs: beforeTest
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     # Create test base branch
+  #     - name: Create test base
+  #       run: |
+  #         git config user.name 'CPR Test User'
+  #         git config user.email 'cpr-test-user@users.noreply.github.com'
+  #         date +%s > report.txt
+  #         git commit -am "This commit should not appear in pr branches"
+  #         git push --force origin HEAD:refs/heads/tests/base/working-base-not-base
 
 
-  testDetachedHeadCreate:
-    needs: beforeTest
-    runs-on: ubuntu-latest
-    steps:
-      # Checkout the HEAD commit to put in detached HEAD state
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.sha }}
-      # Download the action artifact
-      - uses: actions/download-artifact@v4
-        with:
-          name: create-pull-request
-          path: create-pull-request-local
-      # Test
-      - name: Create report file
-        run: date +%s > report.txt
-      - name: Create Pull Request
-        uses: ./create-pull-request-local
-        with:
-          title: testDetachedHeadCreateUpdate
-          branch: tests/detached-head
-          base: master
+  # testWorkingBaseNotBaseCreate:
+  #   needs: testWorkingBaseNotBaseSetup
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #       with:
+  #         ref: tests/base/working-base-not-base
+  #     # Download the action artifact
+  #     - uses: actions/download-artifact@v4
+  #       with:
+  #         name: create-pull-request
+  #         path: create-pull-request-local
+  #     # Test
+  #     - name: Create report file
+  #       run: date +%s > report.txt
+  #     - name: Create Pull Request
+  #       uses: ./create-pull-request-local
+  #       with:
+  #         title: testWorkingBaseNotBase
+  #         branch: tests/branch/working-base-not-base
+  #         base: master
 
 
-  testDetachedHeadUpdate:
-    needs: testDetachedHeadCreate
-    runs-on: ubuntu-latest
-    steps:
-      # Checkout the HEAD commit to put in detached HEAD state
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.sha }}
-      # Download the action artifact
-      - uses: actions/download-artifact@v4
-        with:
-          name: create-pull-request
-          path: create-pull-request-local
-      # Test
-      - name: Create report file
-        run: date +%s > report.txt
-      - name: Create Pull Request
-        uses: ./create-pull-request-local
-        with:
-          title: testDetachedHeadCreateUpdate
-          branch: tests/detached-head
-          base: master
+  # testDetachedHeadCreate:
+  #   needs: beforeTest
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     # Checkout the HEAD commit to put in detached HEAD state
+  #     - uses: actions/checkout@v4
+  #       with:
+  #         ref: ${{ github.sha }}
+  #     # Download the action artifact
+  #     - uses: actions/download-artifact@v4
+  #       with:
+  #         name: create-pull-request
+  #         path: create-pull-request-local
+  #     # Test
+  #     - name: Create report file
+  #       run: date +%s > report.txt
+  #     - name: Create Pull Request
+  #       uses: ./create-pull-request-local
+  #       with:
+  #         title: testDetachedHeadCreateUpdate
+  #         branch: tests/detached-head
+  #         base: master
 
 
-  testCreateOnUpToDateBranchFirst:
-    needs: beforeTest
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      # Download the action artifact
-      - uses: actions/download-artifact@v4
-        with:
-          name: create-pull-request
-          path: create-pull-request-local
-      # Test
-      - name: Create report file
-        run: echo "some data" > report.txt
-      - name: Create Pull Request
-        id: cpr
-        uses: ./create-pull-request-local
-        with:
-          title: testCreateOnUpToDateBranchFirst
-          branch: tests/create-on-up-to-date-branch
-      # Close the PR but don't delete the branch
-      - name: Close Pull
-        uses: peter-evans/close-pull@v3
-        with:
-          pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
-          comment: 'Closing PR but not deleting the branch'
-          delete-branch: false
+  # testDetachedHeadUpdate:
+  #   needs: testDetachedHeadCreate
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     # Checkout the HEAD commit to put in detached HEAD state
+  #     - uses: actions/checkout@v4
+  #       with:
+  #         ref: ${{ github.sha }}
+  #     # Download the action artifact
+  #     - uses: actions/download-artifact@v4
+  #       with:
+  #         name: create-pull-request
+  #         path: create-pull-request-local
+  #     # Test
+  #     - name: Create report file
+  #       run: date +%s > report.txt
+  #     - name: Create Pull Request
+  #       uses: ./create-pull-request-local
+  #       with:
+  #         title: testDetachedHeadCreateUpdate
+  #         branch: tests/detached-head
+  #         base: master
 
 
-  testCreateOnUpToDateBranchSecond:
-    needs: testCreateOnUpToDateBranchFirst
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      # Download the action artifact
-      - uses: actions/download-artifact@v4
-        with:
-          name: create-pull-request
-          path: create-pull-request-local
-      # Test
-      - name: Create report file
-        run: echo "some data" > report.txt
-      - name: Create Pull Request
-        id: cpr
-        uses: ./create-pull-request-local
-        with:
-          title: testCreateOnUpToDateBranchSecond
-          branch: tests/create-on-up-to-date-branch
-      # Check a pull request was created
-      - if: steps.cpr.outputs.pull-request-number == ''
-        run: exit 1
+  # testCreateOnUpToDateBranchFirst:
+  #   needs: beforeTest
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     # Download the action artifact
+  #     - uses: actions/download-artifact@v4
+  #       with:
+  #         name: create-pull-request
+  #         path: create-pull-request-local
+  #     # Test
+  #     - name: Create report file
+  #       run: echo "some data" > report.txt
+  #     - name: Create Pull Request
+  #       id: cpr
+  #       uses: ./create-pull-request-local
+  #       with:
+  #         title: testCreateOnUpToDateBranchFirst
+  #         branch: tests/create-on-up-to-date-branch
+  #     # Close the PR but don't delete the branch
+  #     - name: Close Pull
+  #       uses: peter-evans/close-pull@v3
+  #       with:
+  #         pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
+  #         comment: 'Closing PR but not deleting the branch'
+  #         delete-branch: false
 
 
-  testMultiPlatform:
-    needs: beforeTest
-    name: testCreateMultiPlatform on ${{ matrix.platform }}
-    strategy:
-      matrix:
-        platform: [ubuntu-latest, macos-latest, windows-latest]
-    runs-on: ${{ matrix.platform }}
-    steps:
-      - uses: actions/checkout@v4
-      # Download the action artifact
-      - uses: actions/download-artifact@v4
-        with:
-          name: create-pull-request
-          path: create-pull-request-local
-      # Test
-      - name: Create report file
-        if:  matrix.platform == 'ubuntu-latest' || matrix.platform == 'macos-latest'
-        run: date +%s > report.txt
-      - name: Create report file (windows)
-        if:  matrix.platform == 'windows-latest'
-        run: echo %DATE% %TIME% > report.txt
-      - name: Create Pull Request
-        uses: ./create-pull-request-local
-        with:
-          committer: Peter Evans <peter-evans@users.noreply.github.com>
-          title: testMultiPlatform on ${{ matrix.platform }}
-          branch: tests/multi-platform
-          branch-suffix: random
+  # testCreateOnUpToDateBranchSecond:
+  #   needs: testCreateOnUpToDateBranchFirst
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     # Download the action artifact
+  #     - uses: actions/download-artifact@v4
+  #       with:
+  #         name: create-pull-request
+  #         path: create-pull-request-local
+  #     # Test
+  #     - name: Create report file
+  #       run: echo "some data" > report.txt
+  #     - name: Create Pull Request
+  #       id: cpr
+  #       uses: ./create-pull-request-local
+  #       with:
+  #         title: testCreateOnUpToDateBranchSecond
+  #         branch: tests/create-on-up-to-date-branch
+  #     # Check a pull request was created
+  #     - if: steps.cpr.outputs.pull-request-number == ''
+  #       run: exit 1
 
 
-  testSetAuthorCommitter:
-    needs: beforeTest
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      # Download the action artifact
-      - uses: actions/download-artifact@v4
-        with:
-          name: create-pull-request
-          path: create-pull-request-local
-      # Test
-      - name: Create report file
-        run: date +%s > report.txt
-      - name: Create Pull Request
-        uses: ./create-pull-request-local
-        with:
-          title: testSetAuthorCommitter
-          author: 'CPR Test Author <cpr-test-author@users.noreply.github.com>'
-          committer: 'CPR Test Committer <cpr-test-committer@users.noreply.github.com>'
-          branch: tests/set-author-committer
+  # testMultiPlatform:
+  #   needs: beforeTest
+  #   name: testCreateMultiPlatform on ${{ matrix.platform }}
+  #   strategy:
+  #     matrix:
+  #       platform: [ubuntu-latest, macos-latest, windows-latest]
+  #   runs-on: ${{ matrix.platform }}
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     # Download the action artifact
+  #     - uses: actions/download-artifact@v4
+  #       with:
+  #         name: create-pull-request
+  #         path: create-pull-request-local
+  #     # Test
+  #     - name: Create report file
+  #       if:  matrix.platform == 'ubuntu-latest' || matrix.platform == 'macos-latest'
+  #       run: date +%s > report.txt
+  #     - name: Create report file (windows)
+  #       if:  matrix.platform == 'windows-latest'
+  #       run: echo %DATE% %TIME% > report.txt
+  #     - name: Create Pull Request
+  #       uses: ./create-pull-request-local
+  #       with:
+  #         committer: Peter Evans <peter-evans@users.noreply.github.com>
+  #         title: testMultiPlatform on ${{ matrix.platform }}
+  #         branch: tests/multi-platform
+  #         branch-suffix: random
 
 
-  testSetSignoff:
-    needs: beforeTest
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      # Download the action artifact
-      - uses: actions/download-artifact@v4
-        with:
-          name: create-pull-request
-          path: create-pull-request-local
-      # Test
-      - name: Create report file
-        run: date +%s > report.txt
-      - name: Create Pull Request
-        uses: ./create-pull-request-local
-        with:
-          title: testSetSignoff
-          author: 'CPR Test Author <cpr-test-author@users.noreply.github.com>'
-          committer: 'CPR Test Committer <cpr-test-committer@users.noreply.github.com>'
-          signoff: true
-          branch: tests/set-signoff
+  # testSetAuthorCommitter:
+  #   needs: beforeTest
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     # Download the action artifact
+  #     - uses: actions/download-artifact@v4
+  #       with:
+  #         name: create-pull-request
+  #         path: create-pull-request-local
+  #     # Test
+  #     - name: Create report file
+  #       run: date +%s > report.txt
+  #     - name: Create Pull Request
+  #       uses: ./create-pull-request-local
+  #       with:
+  #         title: testSetAuthorCommitter
+  #         author: 'CPR Test Author <cpr-test-author@users.noreply.github.com>'
+  #         committer: 'CPR Test Committer <cpr-test-committer@users.noreply.github.com>'
+  #         branch: tests/set-author-committer
 
 
-  testAddPaths:
-    needs: beforeTest
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      # Download the action artifact
-      - uses: actions/download-artifact@v4
-        with:
-          name: create-pull-request
-          path: create-pull-request-local
-      # Test
-      - name: Create report files
-        run: |
-          date +%s > temp.txt
-          date +%s > data.dat
-          mkdir -p reports
-          date +%s > reports/report1.txt
-          date +%s > reports/report2.txt
-          date +%s > reports/report3.txt
-          date +%s > reports/temp.txt
-          date +%s > reports/data.dat
-      - name: Create Pull Request
-        uses: ./create-pull-request-local
-        with:
-          add-paths: |
-            reports/report*.txt
-            *.dat
-          title: testAddPaths1
-          branch: tests/add-paths-1
-      - name: Create Pull Request
-        uses: ./create-pull-request-local
-        with:
-          add-paths: |
-            *.txt
-          title: testAddPaths2
-          branch: tests/add-paths-2
-
-  testCreateDraft:
-    needs: beforeTest
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      # Download the action artifact
-      - uses: actions/download-artifact@v4
-        with:
-          name: create-pull-request
-          path: create-pull-request-local
-      # Test
-      - name: Create report file
-        run: date +%s > report.txt
-      - name: Create Pull Request
-        uses: ./create-pull-request-local
-        with:
-          title: testCreateUpdateDraft
-          branch: tests/create-update-draft
-          draft: true
+  # testSetSignoff:
+  #   needs: beforeTest
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     # Download the action artifact
+  #     - uses: actions/download-artifact@v4
+  #       with:
+  #         name: create-pull-request
+  #         path: create-pull-request-local
+  #     # Test
+  #     - name: Create report file
+  #       run: date +%s > report.txt
+  #     - name: Create Pull Request
+  #       uses: ./create-pull-request-local
+  #       with:
+  #         title: testSetSignoff
+  #         author: 'CPR Test Author <cpr-test-author@users.noreply.github.com>'
+  #         committer: 'CPR Test Committer <cpr-test-committer@users.noreply.github.com>'
+  #         signoff: true
+  #         branch: tests/set-signoff
 
 
-  testUpdateDraft:
-    needs: testCreateDraft
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      # Download the action artifact
-      - uses: actions/download-artifact@v4
-        with:
-          name: create-pull-request
-          path: create-pull-request-local
-      # Test
-      - name: Create report file
-        run: date +%s > report.txt
-      - name: Create Pull Request
-        uses: ./create-pull-request-local
-        with:
-          title: testCreateUpdateDraft
-          branch: tests/create-update-draft
-          draft: true
+  # testAddPaths:
+  #   needs: beforeTest
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     # Download the action artifact
+  #     - uses: actions/download-artifact@v4
+  #       with:
+  #         name: create-pull-request
+  #         path: create-pull-request-local
+  #     # Test
+  #     - name: Create report files
+  #       run: |
+  #         date +%s > temp.txt
+  #         date +%s > data.dat
+  #         mkdir -p reports
+  #         date +%s > reports/report1.txt
+  #         date +%s > reports/report2.txt
+  #         date +%s > reports/report3.txt
+  #         date +%s > reports/temp.txt
+  #         date +%s > reports/data.dat
+  #     - name: Create Pull Request
+  #       uses: ./create-pull-request-local
+  #       with:
+  #         add-paths: |
+  #           reports/report*.txt
+  #           *.dat
+  #         title: testAddPaths1
+  #         branch: tests/add-paths-1
+  #     - name: Create Pull Request
+  #       uses: ./create-pull-request-local
+  #       with:
+  #         add-paths: |
+  #           *.txt
+  #         title: testAddPaths2
+  #         branch: tests/add-paths-2
+
+  # testCreateDraft:
+  #   needs: beforeTest
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     # Download the action artifact
+  #     - uses: actions/download-artifact@v4
+  #       with:
+  #         name: create-pull-request
+  #         path: create-pull-request-local
+  #     # Test
+  #     - name: Create report file
+  #       run: date +%s > report.txt
+  #     - name: Create Pull Request
+  #       uses: ./create-pull-request-local
+  #       with:
+  #         title: testCreateUpdateDraft
+  #         branch: tests/create-update-draft
+  #         draft: true
 
 
-  testCreateWithPAT:
-    needs: beforeTest
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      # Download the action artifact
-      - uses: actions/download-artifact@v4
-        with:
-          name: create-pull-request
-          path: create-pull-request-local
-      # Test
-      - name: Create report file
-        run: date +%s > report.txt
-      - name: Create Pull Request
-        uses: ./create-pull-request-local
-        with:
-          token: ${{ secrets.TEST_CASE_PAT }}
-          title: testCreateUpdateWithPAT
-          branch: tests/create-update-with-pat
+  # testUpdateDraft:
+  #   needs: testCreateDraft
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     # Download the action artifact
+  #     - uses: actions/download-artifact@v4
+  #       with:
+  #         name: create-pull-request
+  #         path: create-pull-request-local
+  #     # Test
+  #     - name: Create report file
+  #       run: date +%s > report.txt
+  #     - name: Create Pull Request
+  #       uses: ./create-pull-request-local
+  #       with:
+  #         title: testCreateUpdateDraft
+  #         branch: tests/create-update-draft
+  #         draft: true
 
 
-  testUpdateWithPAT:
-    needs: testCreateWithPAT
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      # Download the action artifact
-      - uses: actions/download-artifact@v4
-        with:
-          name: create-pull-request
-          path: create-pull-request-local
-      # Test
-      - name: Create report file
-        run: date +%s > report.txt
-      - name: Create Pull Request
-        uses: ./create-pull-request-local
-        with:
-          token: ${{ secrets.TEST_CASE_PAT }}
-          title: testCreateUpdateWithPAT
-          branch: tests/create-update-with-pat
+  # testCreateWithPAT:
+  #   needs: beforeTest
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     # Download the action artifact
+  #     - uses: actions/download-artifact@v4
+  #       with:
+  #         name: create-pull-request
+  #         path: create-pull-request-local
+  #     # Test
+  #     - name: Create report file
+  #       run: date +%s > report.txt
+  #     - name: Create Pull Request
+  #       uses: ./create-pull-request-local
+  #       with:
+  #         token: ${{ secrets.TEST_CASE_PAT }}
+  #         title: testCreateUpdateWithPAT
+  #         branch: tests/create-update-with-pat
 
 
-  testCreateWithGitPAT:
-    needs: beforeTest
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      # Download the action artifact
-      - uses: actions/download-artifact@v4
-        with:
-          name: create-pull-request
-          path: create-pull-request-local
-      # Test
-      - name: Create report file
-        run: date +%s > report.txt
-      - name: Create Pull Request
-        uses: ./create-pull-request-local
-        with:
-          git-token: ${{ secrets.TEST_CASE_PAT }}
-          title: testCreateWithGitPAT
-          branch: tests/create-with-git-pat
+  # testUpdateWithPAT:
+  #   needs: testCreateWithPAT
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     # Download the action artifact
+  #     - uses: actions/download-artifact@v4
+  #       with:
+  #         name: create-pull-request
+  #         path: create-pull-request-local
+  #     # Test
+  #     - name: Create report file
+  #       run: date +%s > report.txt
+  #     - name: Create Pull Request
+  #       uses: ./create-pull-request-local
+  #       with:
+  #         token: ${{ secrets.TEST_CASE_PAT }}
+  #         title: testCreateUpdateWithPAT
+  #         branch: tests/create-update-with-pat
 
 
-  testCreateInRemoteRepo:
-    needs: beforeTest
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.TEST_CASE_PAT }}
-          repository: peter-evans/create-pull-request-tests-remote
-      # Download the action artifact
-      - uses: actions/download-artifact@v4
-        with:
-          name: create-pull-request
-          path: create-pull-request-local
-      # Test
-      - name: Create report file
-        run: date +%s > report.txt
-      - name: Create Pull Request
-        uses: ./create-pull-request-local
-        with:
-          token: ${{ secrets.TEST_CASE_PAT }}
-          title: testCreateInRemoteRepo
-          branch: tests/create-in-remote-repo
+  # testCreateWithGitPAT:
+  #   needs: beforeTest
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     # Download the action artifact
+  #     - uses: actions/download-artifact@v4
+  #       with:
+  #         name: create-pull-request
+  #         path: create-pull-request-local
+  #     # Test
+  #     - name: Create report file
+  #       run: date +%s > report.txt
+  #     - name: Create Pull Request
+  #       uses: ./create-pull-request-local
+  #       with:
+  #         git-token: ${{ secrets.TEST_CASE_PAT }}
+  #         title: testCreateWithGitPAT
+  #         branch: tests/create-with-git-pat
 
 
-  testCreateInRemotePrivateRepo:
-    needs: beforeTest
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.TEST_CASE_PAT }}
-          repository: peter-evans/create-pull-request-tests-remote-private
-      # Download the action artifact
-      - uses: actions/download-artifact@v4
-        with:
-          name: create-pull-request
-          path: create-pull-request-local
-      # Test
-      - name: Create report file
-        run: date +%s > report.txt
-      - name: Create Pull Request
-        uses: ./create-pull-request-local
-        with:
-          token: ${{ secrets.TEST_CASE_PAT }}
-          title: testCreateInRemotePrivateRepo
-          branch: tests/create-in-remote-private-repo
+  # testCreateInRemoteRepo:
+  #   needs: beforeTest
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #       with:
+  #         token: ${{ secrets.TEST_CASE_PAT }}
+  #         repository: peter-evans/create-pull-request-tests-remote
+  #     # Download the action artifact
+  #     - uses: actions/download-artifact@v4
+  #       with:
+  #         name: create-pull-request
+  #         path: create-pull-request-local
+  #     # Test
+  #     - name: Create report file
+  #       run: date +%s > report.txt
+  #     - name: Create Pull Request
+  #       uses: ./create-pull-request-local
+  #       with:
+  #         token: ${{ secrets.TEST_CASE_PAT }}
+  #         title: testCreateInRemoteRepo
+  #         branch: tests/create-in-remote-repo
 
 
-  testCreateWithRelativePath:
-    needs: beforeTest
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          path: relative-path
-      # Download the action artifact
-      - uses: actions/download-artifact@v4
-        with:
-          name: create-pull-request
-          path: create-pull-request-local
-      # Test
-      - name: Create report file
-        working-directory: relative-path
-        run: date +%s > report.txt
-      - name: Create Pull Request
-        uses: ./create-pull-request-local
-        with:
-          path: relative-path
-          title: testCreateWithRelativePath
-          branch: tests/create-with-relative-path
+  # testCreateInRemotePrivateRepo:
+  #   needs: beforeTest
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #       with:
+  #         token: ${{ secrets.TEST_CASE_PAT }}
+  #         repository: peter-evans/create-pull-request-tests-remote-private
+  #     # Download the action artifact
+  #     - uses: actions/download-artifact@v4
+  #       with:
+  #         name: create-pull-request
+  #         path: create-pull-request-local
+  #     # Test
+  #     - name: Create report file
+  #       run: date +%s > report.txt
+  #     - name: Create Pull Request
+  #       uses: ./create-pull-request-local
+  #       with:
+  #         token: ${{ secrets.TEST_CASE_PAT }}
+  #         title: testCreateInRemotePrivateRepo
+  #         branch: tests/create-in-remote-private-repo
 
 
-  testPushLFSTrackedFile:
-    needs: beforeTest
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      # Download the action artifact
-      - uses: actions/download-artifact@v4
-        with:
-          name: create-pull-request
-          path: create-pull-request-local
-      # Test
-      - name: Create LFS tracked file
-        run: |
-          git lfs track "*.dat"
-          date +%s > large_file.dat
-      - name: Create Pull Request
-        uses: ./create-pull-request-local
-        with:
-          title: testPushLFSTrackedFile
-          branch: tests/push-lfs-tracked-file
+  # testCreateWithRelativePath:
+  #   needs: beforeTest
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #       with:
+  #         path: relative-path
+  #     # Download the action artifact
+  #     - uses: actions/download-artifact@v4
+  #       with:
+  #         name: create-pull-request
+  #         path: create-pull-request-local
+  #     # Test
+  #     - name: Create report file
+  #       working-directory: relative-path
+  #       run: date +%s > report.txt
+  #     - name: Create Pull Request
+  #       uses: ./create-pull-request-local
+  #       with:
+  #         path: relative-path
+  #         title: testCreateWithRelativePath
+  #         branch: tests/create-with-relative-path
 
 
-  testCreateBranchViaSSH:
-    needs: beforeTest
-    runs-on: ubuntu-latest
-    steps:
-      # Checkout via SSH
-      - uses: actions/checkout@v4
-        with:
-          ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
-      # Download the action artifact
-      - uses: actions/download-artifact@v4
-        with:
-          name: create-pull-request
-          path: create-pull-request-local
-      # Test
-      - name: Create report file
-        run: date +%s > report.txt
-      - name: Create Pull Request
-        uses: ./create-pull-request-local
-        with:
-          title: testCreateBranchViaSSH
-          branch: tests/create-branch-via-ssh
+  # testPushLFSTrackedFile:
+  #   needs: beforeTest
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     # Download the action artifact
+  #     - uses: actions/download-artifact@v4
+  #       with:
+  #         name: create-pull-request
+  #         path: create-pull-request-local
+  #     # Test
+  #     - name: Create LFS tracked file
+  #       run: |
+  #         git lfs track "*.dat"
+  #         date +%s > large_file.dat
+  #     - name: Create Pull Request
+  #       uses: ./create-pull-request-local
+  #       with:
+  #         title: testPushLFSTrackedFile
+  #         branch: tests/push-lfs-tracked-file
+
+
+  # testCreateBranchViaSSH:
+  #   needs: beforeTest
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     # Checkout via SSH
+  #     - uses: actions/checkout@v4
+  #       with:
+  #         ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
+  #     # Download the action artifact
+  #     - uses: actions/download-artifact@v4
+  #       with:
+  #         name: create-pull-request
+  #         path: create-pull-request-local
+  #     # Test
+  #     - name: Create report file
+  #       run: date +%s > report.txt
+  #     - name: Create Pull Request
+  #       uses: ./create-pull-request-local
+  #       with:
+  #         title: testCreateBranchViaSSH
+  #         branch: tests/create-branch-via-ssh
 
 
   testCreateWithAppAuthAndSignCommit:
@@ -904,276 +904,276 @@ jobs:
           sign-commit: true
 
 
-  testPushBranchToForkCreate:
-    needs: beforeTest
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      # Download the action artifact
-      - uses: actions/download-artifact@v4
-        with:
-          name: create-pull-request
-          path: create-pull-request-local
-      # Test
-      - name: Create report file
-        run: date +%s > report.txt
-      - name: Create Pull Request
-        uses: ./create-pull-request-local
-        with:
-          token: ${{ secrets.CPR_MACHINE_USER_TOKEN }}
-          title: testPushBranchToFork
-          branch: tests/push-branch-to-fork
-          push-to-fork: create-pull-request-machine-user/create-pull-request-tests
+  # testPushBranchToForkCreate:
+  #   needs: beforeTest
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     # Download the action artifact
+  #     - uses: actions/download-artifact@v4
+  #       with:
+  #         name: create-pull-request
+  #         path: create-pull-request-local
+  #     # Test
+  #     - name: Create report file
+  #       run: date +%s > report.txt
+  #     - name: Create Pull Request
+  #       uses: ./create-pull-request-local
+  #       with:
+  #         token: ${{ secrets.CPR_MACHINE_USER_TOKEN }}
+  #         title: testPushBranchToFork
+  #         branch: tests/push-branch-to-fork
+  #         push-to-fork: create-pull-request-machine-user/create-pull-request-tests
 
 
-  testPushBranchToForkUpdate:
-    needs: testPushBranchToForkCreate
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      # Download the action artifact
-      - uses: actions/download-artifact@v4
-        with:
-          name: create-pull-request
-          path: create-pull-request-local
-      # Test
-      - name: Create report file
-        run: date +%s > report.txt
-      - name: Create Pull Request
-        uses: ./create-pull-request-local
-        with:
-          token: ${{ secrets.CPR_MACHINE_USER_TOKEN }}
-          title: testPushBranchToFork
-          branch: tests/push-branch-to-fork
-          push-to-fork: create-pull-request-machine-user/create-pull-request-tests
+  # testPushBranchToForkUpdate:
+  #   needs: testPushBranchToForkCreate
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     # Download the action artifact
+  #     - uses: actions/download-artifact@v4
+  #       with:
+  #         name: create-pull-request
+  #         path: create-pull-request-local
+  #     # Test
+  #     - name: Create report file
+  #       run: date +%s > report.txt
+  #     - name: Create Pull Request
+  #       uses: ./create-pull-request-local
+  #       with:
+  #         token: ${{ secrets.CPR_MACHINE_USER_TOKEN }}
+  #         title: testPushBranchToFork
+  #         branch: tests/push-branch-to-fork
+  #         push-to-fork: create-pull-request-machine-user/create-pull-request-tests
 
 
-  testPushBranchToForkViaSSH:
-    needs: beforeTest
-    runs-on: ubuntu-latest
-    steps:
-      # Note: This combination is proof of concept but is probably not
-      # something anyone would want to do because you still need a PAT
-      # for the machine user to create the pull request.
-      #
-      # If the base repository is private then a deploy key may need to
-      # be created with read access for checkout. The same deploy key in
-      # the fork needs write access.
-      # Checkout via SSH
-      - uses: actions/checkout@v4
-        with:
-          ssh-key: ${{ secrets.CPR_MACHINE_USER_SSH_PRIVATE_KEY }}
-      # Download the action artifact
-      - uses: actions/download-artifact@v4
-        with:
-          name: create-pull-request
-          path: create-pull-request-local
-      # Test
-      - name: Create report file
-        run: date +%s > report.txt
-      - name: Create Pull Request
-        uses: ./create-pull-request-local
-        with:
-          token: ${{ secrets.CPR_MACHINE_USER_TOKEN }}
-          title: testPushBranchToForkViaSSH
-          branch: tests/push-branch-to-fork-via-ssh
-          push-to-fork: create-pull-request-machine-user/create-pull-request-tests
+  # testPushBranchToForkViaSSH:
+  #   needs: beforeTest
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     # Note: This combination is proof of concept but is probably not
+  #     # something anyone would want to do because you still need a PAT
+  #     # for the machine user to create the pull request.
+  #     #
+  #     # If the base repository is private then a deploy key may need to
+  #     # be created with read access for checkout. The same deploy key in
+  #     # the fork needs write access.
+  #     # Checkout via SSH
+  #     - uses: actions/checkout@v4
+  #       with:
+  #         ssh-key: ${{ secrets.CPR_MACHINE_USER_SSH_PRIVATE_KEY }}
+  #     # Download the action artifact
+  #     - uses: actions/download-artifact@v4
+  #       with:
+  #         name: create-pull-request
+  #         path: create-pull-request-local
+  #     # Test
+  #     - name: Create report file
+  #       run: date +%s > report.txt
+  #     - name: Create Pull Request
+  #       uses: ./create-pull-request-local
+  #       with:
+  #         token: ${{ secrets.CPR_MACHINE_USER_TOKEN }}
+  #         title: testPushBranchToForkViaSSH
+  #         branch: tests/push-branch-to-fork-via-ssh
+  #         push-to-fork: create-pull-request-machine-user/create-pull-request-tests
 
 
-  testPushBranchToForkWithSiblingBase:
-    needs: beforeTest
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          repository: create-pull-request/create-pull-request-tests
-      # Download the action artifact
-      - uses: actions/download-artifact@v4
-        with:
-          name: create-pull-request
-          path: create-pull-request-local
-      # Test
-      - name: Create report file
-        run: date +%s > report.txt
-      - name: Create Pull Request
-        uses: ./create-pull-request-local
-        with:
-          token: ${{ secrets.CPR_MACHINE_USER_TOKEN }}
-          title: testPushBranchToForkWithSiblingBase
-          branch: tests/push-branch-to-fork-with-sibling-base
-          push-to-fork: create-pull-request-machine-user/create-pull-request-tests
+  # testPushBranchToForkWithSiblingBase:
+  #   needs: beforeTest
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #       with:
+  #         repository: create-pull-request/create-pull-request-tests
+  #     # Download the action artifact
+  #     - uses: actions/download-artifact@v4
+  #       with:
+  #         name: create-pull-request
+  #         path: create-pull-request-local
+  #     # Test
+  #     - name: Create report file
+  #       run: date +%s > report.txt
+  #     - name: Create Pull Request
+  #       uses: ./create-pull-request-local
+  #       with:
+  #         token: ${{ secrets.CPR_MACHINE_USER_TOKEN }}
+  #         title: testPushBranchToForkWithSiblingBase
+  #         branch: tests/push-branch-to-fork-with-sibling-base
+  #         push-to-fork: create-pull-request-machine-user/create-pull-request-tests
 
 
-  testCreateWithGpgSignedCommit:
-    needs: beforeTest
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      # Download the action artifact
-      - uses: actions/download-artifact@v4
-        with:
-          name: create-pull-request
-          path: create-pull-request-local
-      # Test
-      - name: Import GPG key
-        uses: crazy-max/ghaction-import-gpg@v6
-        with:
-          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
-          passphrase: ${{ secrets.GPG_PASSPHRASE }}
-          git_user_signingkey: true
-          git_commit_gpgsign: true
-      - name: Create report file
-        run: date +%s > report.txt
-      - name: Create Pull Request
-        uses: ./create-pull-request-local
-        with:
-          token: ${{ secrets.ACTIONS_BOT_TOKEN }}
-          committer: actions-bot <actions-bot@users.noreply.github.com>
-          title: testCreateWithGpgSignedCommits
-          branch: tests/create-with-gpg-signed-commit
+  # testCreateWithGpgSignedCommit:
+  #   needs: beforeTest
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     # Download the action artifact
+  #     - uses: actions/download-artifact@v4
+  #       with:
+  #         name: create-pull-request
+  #         path: create-pull-request-local
+  #     # Test
+  #     - name: Import GPG key
+  #       uses: crazy-max/ghaction-import-gpg@v6
+  #       with:
+  #         gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+  #         passphrase: ${{ secrets.GPG_PASSPHRASE }}
+  #         git_user_signingkey: true
+  #         git_commit_gpgsign: true
+  #     - name: Create report file
+  #       run: date +%s > report.txt
+  #     - name: Create Pull Request
+  #       uses: ./create-pull-request-local
+  #       with:
+  #         token: ${{ secrets.ACTIONS_BOT_TOKEN }}
+  #         committer: actions-bot <actions-bot@users.noreply.github.com>
+  #         title: testCreateWithGpgSignedCommits
+  #         branch: tests/create-with-gpg-signed-commit
 
 
-  testAlpineContainer:
-    needs: beforeTest
-    runs-on: ubuntu-latest
-    container:
-      image: alpine
-    steps:
-      - name: Install dependencies
-        run: apk --no-cache add git
-      - uses: actions/checkout@v4
-      # Download the action artifact
-      - uses: actions/download-artifact@v4
-        with:
-          name: create-pull-request
-          path: create-pull-request-local
-      # Test
-      - name: Create report file
-        run: date +%s > report.txt
-      - name: Create Pull Request
-        uses: ./create-pull-request-local
-        with:
-          title: testAlpineContainer
-          branch: tests/alpine-container
+  # testAlpineContainer:
+  #   needs: beforeTest
+  #   runs-on: ubuntu-latest
+  #   container:
+  #     image: alpine
+  #   steps:
+  #     - name: Install dependencies
+  #       run: apk --no-cache add git
+  #     - uses: actions/checkout@v4
+  #     # Download the action artifact
+  #     - uses: actions/download-artifact@v4
+  #       with:
+  #         name: create-pull-request
+  #         path: create-pull-request-local
+  #     # Test
+  #     - name: Create report file
+  #       run: date +%s > report.txt
+  #     - name: Create Pull Request
+  #       uses: ./create-pull-request-local
+  #       with:
+  #         title: testAlpineContainer
+  #         branch: tests/alpine-container
 
 
-  testUbuntuContainer:
-    needs: beforeTest
-    runs-on: ubuntu-latest
-    container:
-      image: ubuntu
-    steps:
-      - name: Install dependencies
-        run: |
-          apt-get update
-          apt-get install -y software-properties-common
-          add-apt-repository -y ppa:git-core/ppa
-          apt-get install -y git
-      - uses: actions/checkout@v4
-      # Download the action artifact
-      - uses: actions/download-artifact@v4
-        with:
-          name: create-pull-request
-          path: create-pull-request-local
-      # Test
-      - name: Create report file
-        run: date +%s > report.txt
-      - name: Create Pull Request
-        uses: ./create-pull-request-local
-        with:
-          title: testUbuntuContainer
-          branch: tests/ubuntu-container
+  # testUbuntuContainer:
+  #   needs: beforeTest
+  #   runs-on: ubuntu-latest
+  #   container:
+  #     image: ubuntu
+  #   steps:
+  #     - name: Install dependencies
+  #       run: |
+  #         apt-get update
+  #         apt-get install -y software-properties-common
+  #         add-apt-repository -y ppa:git-core/ppa
+  #         apt-get install -y git
+  #     - uses: actions/checkout@v4
+  #     # Download the action artifact
+  #     - uses: actions/download-artifact@v4
+  #       with:
+  #         name: create-pull-request
+  #         path: create-pull-request-local
+  #     # Test
+  #     - name: Create report file
+  #       run: date +%s > report.txt
+  #     - name: Create Pull Request
+  #       uses: ./create-pull-request-local
+  #       with:
+  #         title: testUbuntuContainer
+  #         branch: tests/ubuntu-container
 
 
-  testProxySupport:
-    needs: beforeTest
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      # Download the action artifact
-      - uses: actions/download-artifact@v4
-        with:
-          name: create-pull-request
-          path: create-pull-request-local
-      - name: Start proxy
-        run: |
-          docker run -d -p 8443:8443 --name proxy peterevans/forward-proxy
-      - name: Setup firewall rules
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y ufw
-          PROXY_IP=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' proxy)
-          sudo ufw default deny outgoing
-          sudo ufw allow out to any port 8443
-          sudo ufw allow out from $PROXY_IP
-          sudo ufw enable
-      # Test
-      - name: Create report file
-        run: date +%s > report.txt
-      - name: Create Pull Request
-        uses: ./create-pull-request-local
-        with:
-          title: testProxySupport
-          branch: tests/proxy-support
-        env:
-          https_proxy: http://localhost:8443
+  # testProxySupport:
+  #   needs: beforeTest
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     # Download the action artifact
+  #     - uses: actions/download-artifact@v4
+  #       with:
+  #         name: create-pull-request
+  #         path: create-pull-request-local
+  #     - name: Start proxy
+  #       run: |
+  #         docker run -d -p 8443:8443 --name proxy peterevans/forward-proxy
+  #     - name: Setup firewall rules
+  #       run: |
+  #         sudo apt-get update
+  #         sudo apt-get install -y ufw
+  #         PROXY_IP=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' proxy)
+  #         sudo ufw default deny outgoing
+  #         sudo ufw allow out to any port 8443
+  #         sudo ufw allow out from $PROXY_IP
+  #         sudo ufw enable
+  #     # Test
+  #     - name: Create report file
+  #       run: date +%s > report.txt
+  #     - name: Create Pull Request
+  #       uses: ./create-pull-request-local
+  #       with:
+  #         title: testProxySupport
+  #         branch: tests/proxy-support
+  #       env:
+  #         https_proxy: http://localhost:8443
 
 
-  testNoProxySupport:
-    needs: beforeTest
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      # Download the action artifact
-      - uses: actions/download-artifact@v4
-        with:
-          name: create-pull-request
-          path: create-pull-request-local
-      # Test
-      - name: Create report file
-        run: date +%s > report.txt
-      - name: Create Pull Request
-        uses: ./create-pull-request-local
-        with:
-          title: testNoProxySupport
-          branch: tests/no-proxy-support
-        env:
-          https_proxy: http://localhost:8
-          no_proxy: .github.com
+  # testNoProxySupport:
+  #   needs: beforeTest
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     # Download the action artifact
+  #     - uses: actions/download-artifact@v4
+  #       with:
+  #         name: create-pull-request
+  #         path: create-pull-request-local
+  #     # Test
+  #     - name: Create report file
+  #       run: date +%s > report.txt
+  #     - name: Create Pull Request
+  #       uses: ./create-pull-request-local
+  #       with:
+  #         title: testNoProxySupport
+  #         branch: tests/no-proxy-support
+  #       env:
+  #         https_proxy: http://localhost:8
+  #         no_proxy: .github.com
 
 
   afterTest:
     needs:
       - createRunLink
       - testUpdate
-      - testIdenticalChangeUpdate
-      - testNoDiffUpdate
-      - testCommitsOnBaseUpdate
-      - testCommitsOnWorkingBase
-      - testWorkingBaseNotBaseCreate
-      - testDetachedHeadUpdate
-      - testCreateOnUpToDateBranchSecond
-      - testMultiPlatform
-      - testSetAuthorCommitter
-      - testSetSignoff
-      - testAddPaths
-      - testUpdateDraft
-      - testUpdateWithPAT
-      - testCreateWithGitPAT
-      - testCreateInRemoteRepo
-      - testCreateInRemotePrivateRepo
-      - testCreateWithRelativePath
-      - testCreateBranchViaSSH
+      # - testIdenticalChangeUpdate
+      # - testNoDiffUpdate
+      # - testCommitsOnBaseUpdate
+      # - testCommitsOnWorkingBase
+      # - testWorkingBaseNotBaseCreate
+      # - testDetachedHeadUpdate
+      # - testCreateOnUpToDateBranchSecond
+      # - testMultiPlatform
+      # - testSetAuthorCommitter
+      # - testSetSignoff
+      # - testAddPaths
+      # - testUpdateDraft
+      # - testUpdateWithPAT
+      # - testCreateWithGitPAT
+      # - testCreateInRemoteRepo
+      # - testCreateInRemotePrivateRepo
+      # - testCreateWithRelativePath
+      # - testCreateBranchViaSSH
       - testCreateWithAppAuthAndSignCommit
-      - testPushBranchToForkUpdate
-      - testPushBranchToForkViaSSH
-      - testPushBranchToForkWithSiblingBase
-      - testPushLFSTrackedFile
-      - testCreateWithGpgSignedCommit
-      - testAlpineContainer
-      - testUbuntuContainer
-      - testProxySupport
-      - testNoProxySupport
+      # - testPushBranchToForkUpdate
+      # - testPushBranchToForkViaSSH
+      # - testPushBranchToForkWithSiblingBase
+      # - testPushLFSTrackedFile
+      # - testCreateWithGpgSignedCommit
+      # - testAlpineContainer
+      # - testUbuntuContainer
+      # - testProxySupport
+      # - testNoProxySupport
     runs-on: ubuntu-latest
     steps:
       # Add reaction to the comment
