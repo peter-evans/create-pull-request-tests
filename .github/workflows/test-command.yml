@@ -898,7 +898,7 @@ jobs:
       - name: Create Pull Request
         uses: ./create-pull-request-local
         with:
-          token: ${{ steps.generate-token.outputs.token }}
+          token: ${{ steps.generate_token.outputs.token }}
           title: testCreateWithAppAuth
           branch: tests/create-with-app-auth
 
