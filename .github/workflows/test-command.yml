@@ -899,7 +899,7 @@ jobs:
         uses: ./create-pull-request-local
         with:
           token: ${{ steps.generate_token.outputs.token }}
-          title: testCreateWithAppAuth
+          title: testCreateWithAppAuthAndSignCommit
           branch: tests/create-with-app-auth
           sign-commit: true
 
@@ -1164,7 +1164,7 @@ jobs:
       - testCreateInRemotePrivateRepo
       - testCreateWithRelativePath
       - testCreateBranchViaSSH
-      - testCreateWithAppAuth
+      - testCreateWithAppAuthAndSignCommit
       - testPushBranchToForkUpdate
       - testPushBranchToForkViaSSH
       - testPushBranchToForkWithSiblingBase
