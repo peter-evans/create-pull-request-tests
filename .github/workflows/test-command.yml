@@ -888,11 +888,11 @@ jobs:
           name: create-pull-request
           path: create-pull-request-local
       # Test
-      - uses: tibdex/github-app-token@v2
-        id: generate-token
+      - uses: actions/create-github-app-token@v1
+        id: generate_token
         with:
-          app_id: ${{ secrets.CPR_AUTH_APP_ID }}
-          private_key: ${{ secrets.CPR_AUTH_APP_PRIVATE_KEY }}
+          app-id: ${{ secrets.CPR_AUTH_APP_ID }}
+          private-key: ${{ secrets.CPR_AUTH_APP_PRIVATE_KEY }}
       - name: Create report file
         run: date +%s > report.txt
       - name: Create Pull Request
