@@ -900,7 +900,50 @@ jobs:
         with:
           token: ${{ steps.generate_token.outputs.token }}
           title: testCreateWithAppAuthAndSignCommit
-          branch: tests/create-with-app-auth
+          branch: tests/create-with-app-auth-and-sign-commit
+          sign-commit: true
+
+
+  testCreateWithDefaultTokenAndSignCommit:
+    needs: beforeTest
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # Download the action artifact
+      - uses: actions/download-artifact@v4
+        with:
+          name: create-pull-request
+          path: create-pull-request-local
+      # Test
+      - name: Create report file
+        run: date +%s > report.txt
+      - name: Create Pull Request
+        uses: ./create-pull-request-local
+        with:
+          title: testCreateWithDefaultTokenAndSignCommit
+          branch: tests/create-with-default-token-and-sign-commit
+          sign-commit: true
+
+
+  testCreateWithPATAndSignCommit:
+    needs: beforeTest
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # Download the action artifact
+      - uses: actions/download-artifact@v4
+        with:
+          name: create-pull-request
+          path: create-pull-request-local
+      # Test
+      - name: Create report file
+        run: date +%s > report.txt
+      - name: Create Pull Request
+        uses: ./create-pull-request-local
+        with:
+          token: ${{ secrets.TEST_CASE_PAT }}
+          title: testCreateWithPATAndSignCommit
+          branch: tests/create-with-pat-and-sign-commit
           sign-commit: true
 
 
@@ -1165,6 +1208,8 @@ jobs:
       # - testCreateWithRelativePath
       # - testCreateBranchViaSSH
       - testCreateWithAppAuthAndSignCommit
+      - testCreateWithDefaultTokenAndSignCommit
+      - testCreateWithPATAndSignCommit
       # - testPushBranchToForkUpdate
       # - testPushBranchToForkViaSSH
       # - testPushBranchToForkWithSiblingBase
