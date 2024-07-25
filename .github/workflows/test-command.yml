@@ -877,7 +877,7 @@ jobs:
           branch: tests/create-branch-via-ssh
 
 
-  testCreateWithAppAuth:
+  testCreateWithAppAuthAndSignCommit:
     needs: beforeTest
     runs-on: ubuntu-latest
     steps:
@@ -901,6 +901,7 @@ jobs:
           token: ${{ steps.generate_token.outputs.token }}
           title: testCreateWithAppAuth
           branch: tests/create-with-app-auth
+          sign-commit: true
 
 
   testPushBranchToForkCreate:
