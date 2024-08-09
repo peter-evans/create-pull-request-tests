@@ -503,7 +503,7 @@ jobs:
           path: create-pull-request-local
       # Test
       - name: Create report file
-        run: echo "some data" > report.txt
+        run: echo "test data" > report.txt
       - name: Create Pull Request
         id: cpr
         uses: ./create-pull-request-local
@@ -531,7 +531,7 @@ jobs:
           path: create-pull-request-local
       # Test
       - name: Create report file
-        run: echo "some data" > report.txt
+        run: echo "test data" > report.txt
       - name: Create Pull Request
         id: cpr
         uses: ./create-pull-request-local
