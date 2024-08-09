@@ -713,7 +713,7 @@ jobs:
       - name: Create Pull Request
         uses: ./create-pull-request-local
         with:
-          token: ${{ secrets.TEST_CASE_PAT }}
+          token: ${{ secrets.TEST_CASE_PAT_V2 }}
           title: testCreateUpdateWithPAT
           branch: tests/create-update-with-pat
 
@@ -734,7 +734,7 @@ jobs:
       - name: Create Pull Request
         uses: ./create-pull-request-local
         with:
-          token: ${{ secrets.TEST_CASE_PAT }}
+          token: ${{ secrets.TEST_CASE_PAT_V2 }}
           title: testCreateUpdateWithPAT
           branch: tests/create-update-with-pat
 
