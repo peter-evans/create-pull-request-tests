@@ -47,6 +47,8 @@ jobs:
   beforeTest:
     needs: clean
     runs-on: ubuntu-latest
+    outputs:
+      sign-commits: ${{ steps.vars.outputs.sign-commits }}
     steps:
       # Get the target repository and ref
       - name: Get the target repository and ref
@@ -61,6 +63,9 @@ jobs:
           build=${{ github.event.client_payload.slash_command.args.named.build }}
           if [[ -z "$build" ]]; then build="false"; fi
           echo "build=$build" >> $GITHUB_OUTPUT
+          sign-commits=${{ github.event.client_payload.slash_command.args.named.sign-commits }}
+          if [[ -z "$sign-commits" ]]; then sign-commits="false"; fi
+          echo "sign-commits=$sign-commits" >> $GITHUB_OUTPUT
       # Checkout the ref to test
       - uses: actions/checkout@v4
         with:
@@ -150,6 +155,7 @@ jobs:
           reviewers: peter-evans
           milestone: 1
           branch: tests/branch/create-update
+          sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
       # Check the operation output
       - if: steps.cpr.outputs.pull-request-operation != 'created'
         run: exit 1
@@ -211,6 +217,7 @@ jobs:
           reviewers: peter-evans
           milestone: 1
           branch: tests/branch/create-update
+          sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
       # Check the operation output
       - if: steps.cpr.outputs.pull-request-operation != 'updated'
         run: exit 1
@@ -241,6 +248,7 @@ jobs:
         with:
           title: testIdenticalChange
           branch: tests/branch/identical-change
+          sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
 
 
   testIdenticalChangeUpdate:
@@ -261,6 +269,7 @@ jobs:
         with:
           title: testIdenticalChange
           branch: tests/branch/identical-change
+          sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
 
 
   testNoDiffCreate:
@@ -281,6 +290,7 @@ jobs:
         with:
           title: testNoDiff
           branch: tests/branch/no-diff
+          sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
 
 
   testNoDiffUpdate:
@@ -302,6 +312,7 @@ jobs:
           title: testNoDiff
           branch: tests/branch/no-diff
           delete-branch: true
+          sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
       # Check the operation output
       - if: steps.cpr.outputs.pull-request-operation != 'closed'
         run: exit 1
@@ -331,6 +342,7 @@ jobs:
           title: testCommitsOnBase
           branch: tests/branch/commits-on-base
           base: tests/base/commits-on-base
+          sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
 
 
   testCommitsOnBaseCommit:
@@ -374,6 +386,7 @@ jobs:
           title: testCommitsOnBase
           branch: tests/branch/commits-on-base
           base: tests/base/commits-on-base
+          sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
 
 
   testCommitsOnWorkingBase:
@@ -403,6 +416,7 @@ jobs:
         with:
           title: testCommitsOnWorkingBase
           branch: tests/branch/commits-on-working-base
+          sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
 
 
   testWorkingBaseNotBaseSetup:
@@ -441,6 +455,7 @@ jobs:
           title: testWorkingBaseNotBase
           branch: tests/branch/working-base-not-base
           base: master
+          sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
 
 
   testDetachedHeadCreate:
@@ -465,6 +480,7 @@ jobs:
           title: testDetachedHeadCreateUpdate
           branch: tests/detached-head
           base: master
+          sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
 
 
   testDetachedHeadUpdate:
@@ -489,6 +505,7 @@ jobs:
           title: testDetachedHeadCreateUpdate
           branch: tests/detached-head
           base: master
+          sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
 
 
   testCreateOnUpToDateBranchFirst:
@@ -510,6 +527,7 @@ jobs:
         with:
           title: testCreateOnUpToDateBranchFirst
           branch: tests/create-on-up-to-date-branch
+          sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
       # Close the PR but don't delete the branch
       - name: Close Pull
         uses: peter-evans/close-pull@v3
@@ -538,6 +556,7 @@ jobs:
         with:
           title: testCreateOnUpToDateBranchSecond
           branch: tests/create-on-up-to-date-branch
+          sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
       # Check a pull request was created
       - if: steps.cpr.outputs.pull-request-number == ''
         run: exit 1
@@ -571,6 +590,7 @@ jobs:
           title: testMultiPlatform on ${{ matrix.platform }}
           branch: tests/multi-platform
           branch-suffix: random
+          sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
 
 
   testSetAuthorCommitter:
@@ -593,6 +613,7 @@ jobs:
           author: 'CPR Test Author <cpr-test-author@users.noreply.github.com>'
           committer: 'CPR Test Committer <cpr-test-committer@users.noreply.github.com>'
           branch: tests/set-author-committer
+          sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
 
 
   testSetSignoff:
@@ -616,6 +637,7 @@ jobs:
           committer: 'CPR Test Committer <cpr-test-committer@users.noreply.github.com>'
           signoff: true
           branch: tests/set-signoff
+          sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
 
 
   testAddPaths:
@@ -647,6 +669,7 @@ jobs:
             *.dat
           title: testAddPaths1
           branch: tests/add-paths-1
+          sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
       - name: Create Pull Request
         uses: ./create-pull-request-local
         with:
@@ -654,6 +677,7 @@ jobs:
             *.txt
           title: testAddPaths2
           branch: tests/add-paths-2
+          sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
 
   testCreateDraft:
     needs: beforeTest
@@ -674,6 +698,7 @@ jobs:
           title: testCreateUpdateDraft
           branch: tests/create-update-draft
           draft: true
+          sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
 
 
   testUpdateDraft:
@@ -695,6 +720,7 @@ jobs:
           title: testCreateUpdateDraft
           branch: tests/create-update-draft
           draft: true
+          sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
 
 
   testCreateWithPAT:
@@ -716,6 +742,7 @@ jobs:
           token: ${{ secrets.TEST_CASE_PAT }}
           title: testCreateUpdateWithPAT
           branch: tests/create-update-with-pat
+          sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
 
 
   testUpdateWithPAT:
@@ -737,6 +764,7 @@ jobs:
           token: ${{ secrets.TEST_CASE_PAT }}
           title: testCreateUpdateWithPAT
           branch: tests/create-update-with-pat
+          sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
 
 
   testCreateWithGitPAT:
@@ -758,6 +786,7 @@ jobs:
           git-token: ${{ secrets.TEST_CASE_PAT }}
           title: testCreateWithGitPAT
           branch: tests/create-with-git-pat
+          sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
 
 
   testCreateInRemoteRepo:
@@ -782,6 +811,7 @@ jobs:
           token: ${{ secrets.TEST_CASE_PAT }}
           title: testCreateInRemoteRepo
           branch: tests/create-in-remote-repo
+          sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
 
 
   testCreateInRemotePrivateRepo:
@@ -806,6 +836,7 @@ jobs:
           token: ${{ secrets.TEST_CASE_PAT }}
           title: testCreateInRemotePrivateRepo
           branch: tests/create-in-remote-private-repo
+          sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
 
 
   testCreateWithRelativePath:
@@ -830,6 +861,7 @@ jobs:
           path: relative-path
           title: testCreateWithRelativePath
           branch: tests/create-with-relative-path
+          sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
 
 
   testPushLFSTrackedFile:
@@ -852,6 +884,7 @@ jobs:
         with:
           title: testPushLFSTrackedFile
           branch: tests/push-lfs-tracked-file
+          sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
 
 
   testCreateBranchViaSSH:
@@ -875,6 +908,7 @@ jobs:
         with:
           title: testCreateBranchViaSSH
           branch: tests/create-branch-via-ssh
+          sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
 
 
   testCreateWithAppAuth:
@@ -901,6 +935,7 @@ jobs:
           token: ${{ steps.generate_token.outputs.token }}
           title: testCreateWithAppAuth
           branch: tests/create-with-app-auth
+          sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
 
 
   testPushBranchToForkCreate:
@@ -923,6 +958,7 @@ jobs:
           title: testPushBranchToFork
           branch: tests/push-branch-to-fork
           push-to-fork: create-pull-request-machine-user/create-pull-request-tests
+          sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
 
 
   testPushBranchToForkUpdate:
@@ -945,6 +981,7 @@ jobs:
           title: testPushBranchToFork
           branch: tests/push-branch-to-fork
           push-to-fork: create-pull-request-machine-user/create-pull-request-tests
+          sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
 
 
   testPushBranchToForkViaSSH:
@@ -977,6 +1014,7 @@ jobs:
           title: testPushBranchToForkViaSSH
           branch: tests/push-branch-to-fork-via-ssh
           push-to-fork: create-pull-request-machine-user/create-pull-request-tests
+          sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
 
 
   testPushBranchToForkWithSiblingBase:
@@ -1001,6 +1039,7 @@ jobs:
           title: testPushBranchToForkWithSiblingBase
           branch: tests/push-branch-to-fork-with-sibling-base
           push-to-fork: create-pull-request-machine-user/create-pull-request-tests
+          sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
 
 
   testCreateWithGpgSignedCommit:
@@ -1030,6 +1069,7 @@ jobs:
           committer: actions-bot <actions-bot@users.noreply.github.com>
           title: testCreateWithGpgSignedCommits
           branch: tests/create-with-gpg-signed-commit
+          sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
 
 
   testAlpineContainer:
@@ -1054,6 +1094,7 @@ jobs:
         with:
           title: testAlpineContainer
           branch: tests/alpine-container
+          sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
 
 
   testUbuntuContainer:
@@ -1082,6 +1123,7 @@ jobs:
         with:
           title: testUbuntuContainer
           branch: tests/ubuntu-container
+          sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
 
 
   testProxySupport:
@@ -1114,6 +1156,7 @@ jobs:
         with:
           title: testProxySupport
           branch: tests/proxy-support
+          sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
         env:
           https_proxy: http://localhost:8443
 
@@ -1136,6 +1179,7 @@ jobs:
         with:
           title: testNoProxySupport
           branch: tests/no-proxy-support
+          sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
         env:
           https_proxy: http://localhost:8
           no_proxy: .github.com
