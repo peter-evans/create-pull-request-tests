@@ -180,7 +180,7 @@ jobs:
 
 
   testUpdate:
-    needs: testCreate
+    needs: [beforeTest, testCreate]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -252,7 +252,7 @@ jobs:
 
 
   testIdenticalChangeUpdate:
-    needs: testIdenticalChangeCreate
+    needs: [beforeTest, testIdenticalChangeCreate]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -294,7 +294,7 @@ jobs:
 
 
   testNoDiffUpdate:
-    needs: testNoDiffCreate
+    needs: [beforeTest, testNoDiffCreate]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -346,7 +346,7 @@ jobs:
 
 
   testCommitsOnBaseCommit:
-    needs: testCommitsOnBaseCreate
+    needs: [beforeTest, testCommitsOnBaseCreate]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -366,7 +366,7 @@ jobs:
 
 
   testCommitsOnBaseUpdate:
-    needs: testCommitsOnBaseCommit
+    needs: [beforeTest, testCommitsOnBaseCommit]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -435,7 +435,7 @@ jobs:
 
 
   testWorkingBaseNotBaseCreate:
-    needs: testWorkingBaseNotBaseSetup
+    needs: [beforeTest, testWorkingBaseNotBaseSetup]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -484,7 +484,7 @@ jobs:
 
 
   testDetachedHeadUpdate:
-    needs: testDetachedHeadCreate
+    needs: [beforeTest, testDetachedHeadCreate]
     runs-on: ubuntu-latest
     steps:
       # Checkout the HEAD commit to put in detached HEAD state
@@ -538,7 +538,7 @@ jobs:
 
 
   testCreateOnUpToDateBranchSecond:
-    needs: testCreateOnUpToDateBranchFirst
+    needs: [beforeTest, testCreateOnUpToDateBranchFirst]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -702,7 +702,7 @@ jobs:
 
 
   testUpdateDraft:
-    needs: testCreateDraft
+    needs: [beforeTest, testCreateDraft]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -746,7 +746,7 @@ jobs:
 
 
   testUpdateWithPAT:
-    needs: testCreateWithPAT
+    needs: [beforeTest, testCreateWithPAT]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -962,7 +962,7 @@ jobs:
 
 
   testPushBranchToForkUpdate:
-    needs: testPushBranchToForkCreate
+    needs: [beforeTest, testPushBranchToForkCreate]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
