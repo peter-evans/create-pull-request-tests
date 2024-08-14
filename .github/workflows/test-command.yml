@@ -63,9 +63,9 @@ jobs:
           build=${{ github.event.client_payload.slash_command.args.named.build }}
           if [[ -z "$build" ]]; then build="false"; fi
           echo "build=$build" >> $GITHUB_OUTPUT
-          sign-commits=${{ github.event.client_payload.slash_command.args.named.sign-commits }}
-          if [[ -z "$sign-commits" ]]; then sign-commits="false"; fi
-          echo "sign-commits=$sign-commits" >> $GITHUB_OUTPUT
+          sign_commits=${{ github.event.client_payload.slash_command.args.named.sign-commits }}
+          if [[ -z "$sign_commits" ]]; then sign_commits="false"; fi
+          echo "sign-commits=$sign_commits" >> $GITHUB_OUTPUT
       # Checkout the ref to test
       - uses: actions/checkout@v4
         with:
