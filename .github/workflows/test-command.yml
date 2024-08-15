@@ -1044,11 +1044,9 @@ jobs:
           app-id: ${{ secrets.CPR_AUTH_APP_ID }}
           private-key: ${{ secrets.CPR_AUTH_APP_PRIVATE_KEY }}
       - name: Set token when sign-commits is false
-        id: set-token
         if: needs.beforeTest.outputs.sign-commits == 'false'
         run: echo "token=${{ secrets.TEST_CASE_PAT }}" >> $GITHUB_ENV
       - name: Set token when sign-commits is true
-        id: set-token
         if: needs.beforeTest.outputs.sign-commits == 'true'
         run: echo "token=${{ steps.generate_token.outputs.token }}" >> $GITHUB_ENV
       - uses: actions/checkout@v4
