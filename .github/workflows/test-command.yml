@@ -1043,6 +1043,8 @@ jobs:
         with:
           app-id: ${{ secrets.CPR_AUTH_APP_ID }}
           private-key: ${{ secrets.CPR_AUTH_APP_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: "create-pull-request-tests-remote"
       - name: Set token when sign-commits is false
         if: needs.beforeTest.outputs.sign-commits == 'false'
         run: echo "token=${{ secrets.TEST_CASE_PAT }}" >> $GITHUB_ENV
