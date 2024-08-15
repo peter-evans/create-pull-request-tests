@@ -226,8 +226,8 @@ jobs:
           branch: tests/branch/create-update
           sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
       # Check outputs
-      - name: Check the operation is 'created'
-        if: steps.cpr.outputs.pull-request-operation != 'created'
+      - name: Check the operation is 'updated'
+        if: steps.cpr.outputs.pull-request-operation != 'updated'
         run: exit 1
       - name: Check a pull request number exists
         if: steps.cpr.outputs.pull-request-number == ''
@@ -297,8 +297,8 @@ jobs:
           branch: tests/branch/identical-change
           sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
       # Check outputs
-      - name: Check the operation is 'created'
-        if: steps.cpr.outputs.pull-request-operation != 'created'
+      - name: Check the operation is 'updated'
+        if: steps.cpr.outputs.pull-request-operation != 'updated'
         run: exit 1
       - name: Check a pull request number exists
         if: steps.cpr.outputs.pull-request-number == ''
@@ -449,8 +449,8 @@ jobs:
           base: tests/base/commits-on-base
           sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
       # Check outputs
-      - name: Check the operation is 'created'
-        if: steps.cpr.outputs.pull-request-operation != 'created'
+      - name: Check the operation is 'updated'
+        if: steps.cpr.outputs.pull-request-operation != 'updated'
         run: exit 1
       - name: Check a pull request number exists
         if: steps.cpr.outputs.pull-request-number == ''
@@ -612,8 +612,8 @@ jobs:
           base: master
           sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
       # Check outputs
-      - name: Check the operation is 'created'
-        if: steps.cpr.outputs.pull-request-operation != 'created'
+      - name: Check the operation is 'updated'
+        if: steps.cpr.outputs.pull-request-operation != 'updated'
         run: exit 1
       - name: Check a pull request number exists
         if: steps.cpr.outputs.pull-request-number == ''
@@ -683,8 +683,8 @@ jobs:
           branch: tests/create-on-up-to-date-branch
           sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
       # Check outputs
-      - name: Check the operation is 'created'
-        if: steps.cpr.outputs.pull-request-operation != 'created'
+      - name: Check the operation is 'updated'
+        if: steps.cpr.outputs.pull-request-operation != 'updated'
         run: exit 1
       - name: Check a pull request number exists
         if: steps.cpr.outputs.pull-request-number == ''
@@ -922,8 +922,8 @@ jobs:
           draft: true
           sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
       # Check outputs
-      - name: Check the operation is 'created'
-        if: steps.cpr.outputs.pull-request-operation != 'created'
+      - name: Check the operation is 'updated'
+        if: steps.cpr.outputs.pull-request-operation != 'updated'
         run: exit 1
       - name: Check a pull request number exists
         if: steps.cpr.outputs.pull-request-number == ''
@@ -988,8 +988,8 @@ jobs:
           branch: tests/create-update-with-pat
           sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
       # Check outputs
-      - name: Check the operation is 'created'
-        if: steps.cpr.outputs.pull-request-operation != 'created'
+      - name: Check the operation is 'updated'
+        if: steps.cpr.outputs.pull-request-operation != 'updated'
         run: exit 1
       - name: Check a pull request number exists
         if: steps.cpr.outputs.pull-request-number == ''
@@ -1304,8 +1304,8 @@ jobs:
           push-to-fork: create-pull-request-machine-user/create-pull-request-tests
           sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
       # Check outputs
-      - name: Check the operation is 'created'
-        if: steps.cpr.outputs.pull-request-operation != 'created'
+      - name: Check the operation is 'updated'
+        if: steps.cpr.outputs.pull-request-operation != 'updated'
         run: exit 1
       - name: Check a pull request number exists
         if: steps.cpr.outputs.pull-request-number == ''
