@@ -303,9 +303,10 @@ jobs:
       - name: Check a pull request number exists
         if: steps.cpr.outputs.pull-request-number == ''
         run: exit 1
-      - name: Check the verification status of commits
-        if: steps.cpr.outputs.pull-request-commits-verified != needs.beforeTest.outputs.sign-commits
-        run: exit 1
+      # NOTE: Returns false because the commit was not made during this action run. Need to check the verification status of existing commits on the branch.
+      # - name: Check the verification status of commits
+      #   if: steps.cpr.outputs.pull-request-commits-verified != needs.beforeTest.outputs.sign-commits
+      #   run: exit 1
 
 
   testNoDiffCreate:
