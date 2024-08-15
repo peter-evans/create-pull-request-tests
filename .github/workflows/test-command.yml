@@ -156,8 +156,15 @@ jobs:
           milestone: 1
           branch: tests/branch/create-update
           sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
-      # Check the operation output
-      - if: steps.cpr.outputs.pull-request-operation != 'created'
+      # Check outputs
+      - name: Check the operation is 'created'
+        if: steps.cpr.outputs.pull-request-operation != 'created'
+        run: exit 1
+      - name: Check a pull request number exists
+        if: steps.cpr.outputs.pull-request-number == ''
+        run: exit 1
+      - name: Check the verification status of commits
+        if: steps.cpr.outputs.pull-request-commits-verified != needs.beforeTest.outputs.sign-commits
         run: exit 1
       # Create a project card
       - name: Create or Update Project Card
