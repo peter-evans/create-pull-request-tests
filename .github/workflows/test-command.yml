@@ -225,8 +225,15 @@ jobs:
           milestone: 1
           branch: tests/branch/create-update
           sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
-      # Check the operation output
-      - if: steps.cpr.outputs.pull-request-operation != 'updated'
+      # Check outputs
+      - name: Check the operation is 'created'
+        if: steps.cpr.outputs.pull-request-operation != 'created'
+        run: exit 1
+      - name: Check a pull request number exists
+        if: steps.cpr.outputs.pull-request-number == ''
+        run: exit 1
+      - name: Check the verification status of commits
+        if: steps.cpr.outputs.pull-request-commits-verified != needs.beforeTest.outputs.sign-commits
         run: exit 1
       # Update the project card
       - name: Create or Update Project Card
@@ -251,11 +258,22 @@ jobs:
       - name: Create report file
         run: echo "some data" > report.txt
       - name: Create Pull Request
+        id: cpr
         uses: ./create-pull-request-local
         with:
           title: testIdenticalChange
           branch: tests/branch/identical-change
           sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
+      # Check outputs
+      - name: Check the operation is 'created'
+        if: steps.cpr.outputs.pull-request-operation != 'created'
+        run: exit 1
+      - name: Check a pull request number exists
+        if: steps.cpr.outputs.pull-request-number == ''
+        run: exit 1
+      - name: Check the verification status of commits
+        if: steps.cpr.outputs.pull-request-commits-verified != needs.beforeTest.outputs.sign-commits
+        run: exit 1
 
 
   testIdenticalChangeUpdate:
@@ -272,11 +290,22 @@ jobs:
       - name: Create report file
         run: echo "some data" > report.txt
       - name: Create Pull Request
+        id: cpr
         uses: ./create-pull-request-local
         with:
           title: testIdenticalChange
           branch: tests/branch/identical-change
           sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
+      # Check outputs
+      - name: Check the operation is 'created'
+        if: steps.cpr.outputs.pull-request-operation != 'created'
+        run: exit 1
+      - name: Check a pull request number exists
+        if: steps.cpr.outputs.pull-request-number == ''
+        run: exit 1
+      - name: Check the verification status of commits
+        if: steps.cpr.outputs.pull-request-commits-verified != needs.beforeTest.outputs.sign-commits
+        run: exit 1
 
 
   testNoDiffCreate:
@@ -293,11 +322,22 @@ jobs:
       - name: Create report file
         run: date +%s > report.txt
       - name: Create Pull Request
+        id: cpr
         uses: ./create-pull-request-local
         with:
           title: testNoDiff
           branch: tests/branch/no-diff
           sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
+      # Check outputs
+      - name: Check the operation is 'created'
+        if: steps.cpr.outputs.pull-request-operation != 'created'
+        run: exit 1
+      - name: Check a pull request number exists
+        if: steps.cpr.outputs.pull-request-number == ''
+        run: exit 1
+      - name: Check the verification status of commits
+        if: steps.cpr.outputs.pull-request-commits-verified != needs.beforeTest.outputs.sign-commits
+        run: exit 1
 
 
   testNoDiffUpdate:
@@ -320,9 +360,11 @@ jobs:
           branch: tests/branch/no-diff
           delete-branch: true
           sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
-      # Check the operation output
-      - if: steps.cpr.outputs.pull-request-operation != 'closed'
+      # Check outputs
+      - name: Check the operation is 'closed'
+        if: steps.cpr.outputs.pull-request-operation != 'closed'
         run: exit 1
+
 
   testCommitsOnBaseCreate:
     needs: beforeTest
@@ -344,12 +386,23 @@ jobs:
       - name: Create report file
         run: date +%s > report.txt
       - name: Create Pull Request
+        id: cpr
         uses: ./create-pull-request-local
         with:
           title: testCommitsOnBase
           branch: tests/branch/commits-on-base
           base: tests/base/commits-on-base
           sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
+      # Check outputs
+      - name: Check the operation is 'created'
+        if: steps.cpr.outputs.pull-request-operation != 'created'
+        run: exit 1
+      - name: Check a pull request number exists
+        if: steps.cpr.outputs.pull-request-number == ''
+        run: exit 1
+      - name: Check the verification status of commits
+        if: steps.cpr.outputs.pull-request-commits-verified != needs.beforeTest.outputs.sign-commits
+        run: exit 1
 
 
   testCommitsOnBaseCommit:
@@ -388,12 +441,23 @@ jobs:
       - name: Create report file
         run: date +%s > report.txt
       - name: Create Pull Request
+        id: cpr
         uses: ./create-pull-request-local
         with:
           title: testCommitsOnBase
           branch: tests/branch/commits-on-base
           base: tests/base/commits-on-base
           sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
+      # Check outputs
+      - name: Check the operation is 'created'
+        if: steps.cpr.outputs.pull-request-operation != 'created'
+        run: exit 1
+      - name: Check a pull request number exists
+        if: steps.cpr.outputs.pull-request-number == ''
+        run: exit 1
+      - name: Check the verification status of commits
+        if: steps.cpr.outputs.pull-request-commits-verified != needs.beforeTest.outputs.sign-commits
+        run: exit 1
 
 
   testCommitsOnWorkingBase:
@@ -419,11 +483,22 @@ jobs:
       - name: Create report file
         run: date +%s > report.txt
       - name: Create Pull Request
+        id: cpr
         uses: ./create-pull-request-local
         with:
           title: testCommitsOnWorkingBase
           branch: tests/branch/commits-on-working-base
           sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
+      # Check outputs
+      - name: Check the operation is 'created'
+        if: steps.cpr.outputs.pull-request-operation != 'created'
+        run: exit 1
+      - name: Check a pull request number exists
+        if: steps.cpr.outputs.pull-request-number == ''
+        run: exit 1
+      - name: Check the verification status of commits
+        if: steps.cpr.outputs.pull-request-commits-verified != needs.beforeTest.outputs.sign-commits
+        run: exit 1
 
 
   testWorkingBaseNotBaseSetup:
@@ -457,12 +532,23 @@ jobs:
       - name: Create report file
         run: date +%s > report.txt
       - name: Create Pull Request
+        id: cpr
         uses: ./create-pull-request-local
         with:
           title: testWorkingBaseNotBase
           branch: tests/branch/working-base-not-base
           base: master
           sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
+      # Check outputs
+      - name: Check the operation is 'created'
+        if: steps.cpr.outputs.pull-request-operation != 'created'
+        run: exit 1
+      - name: Check a pull request number exists
+        if: steps.cpr.outputs.pull-request-number == ''
+        run: exit 1
+      - name: Check the verification status of commits
+        if: steps.cpr.outputs.pull-request-commits-verified != needs.beforeTest.outputs.sign-commits
+        run: exit 1
 
 
   testDetachedHeadCreate:
@@ -482,12 +568,23 @@ jobs:
       - name: Create report file
         run: date +%s > report.txt
       - name: Create Pull Request
+        id: cpr
         uses: ./create-pull-request-local
         with:
           title: testDetachedHeadCreateUpdate
           branch: tests/detached-head
           base: master
           sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
+      # Check outputs
+      - name: Check the operation is 'created'
+        if: steps.cpr.outputs.pull-request-operation != 'created'
+        run: exit 1
+      - name: Check a pull request number exists
+        if: steps.cpr.outputs.pull-request-number == ''
+        run: exit 1
+      - name: Check the verification status of commits
+        if: steps.cpr.outputs.pull-request-commits-verified != needs.beforeTest.outputs.sign-commits
+        run: exit 1
 
 
   testDetachedHeadUpdate:
@@ -507,12 +604,23 @@ jobs:
       - name: Create report file
         run: date +%s > report.txt
       - name: Create Pull Request
+        id: cpr
         uses: ./create-pull-request-local
         with:
           title: testDetachedHeadCreateUpdate
           branch: tests/detached-head
           base: master
           sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
+      # Check outputs
+      - name: Check the operation is 'created'
+        if: steps.cpr.outputs.pull-request-operation != 'created'
+        run: exit 1
+      - name: Check a pull request number exists
+        if: steps.cpr.outputs.pull-request-number == ''
+        run: exit 1
+      - name: Check the verification status of commits
+        if: steps.cpr.outputs.pull-request-commits-verified != needs.beforeTest.outputs.sign-commits
+        run: exit 1
 
 
   testCreateOnUpToDateBranchFirst:
@@ -535,6 +643,16 @@ jobs:
           title: testCreateOnUpToDateBranchFirst
           branch: tests/create-on-up-to-date-branch
           sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
+      # Check outputs
+      - name: Check the operation is 'created'
+        if: steps.cpr.outputs.pull-request-operation != 'created'
+        run: exit 1
+      - name: Check a pull request number exists
+        if: steps.cpr.outputs.pull-request-number == ''
+        run: exit 1
+      - name: Check the verification status of commits
+        if: steps.cpr.outputs.pull-request-commits-verified != needs.beforeTest.outputs.sign-commits
+        run: exit 1
       # Close the PR but don't delete the branch
       - name: Close Pull
         uses: peter-evans/close-pull@v3
@@ -564,8 +682,15 @@ jobs:
           title: testCreateOnUpToDateBranchSecond
           branch: tests/create-on-up-to-date-branch
           sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
-      # Check a pull request was created
-      - if: steps.cpr.outputs.pull-request-number == ''
+      # Check outputs
+      - name: Check the operation is 'created'
+        if: steps.cpr.outputs.pull-request-operation != 'created'
+        run: exit 1
+      - name: Check a pull request number exists
+        if: steps.cpr.outputs.pull-request-number == ''
+        run: exit 1
+      - name: Check the verification status of commits
+        if: steps.cpr.outputs.pull-request-commits-verified != needs.beforeTest.outputs.sign-commits
         run: exit 1
 
 
@@ -591,6 +716,7 @@ jobs:
         if:  matrix.platform == 'windows-latest'
         run: echo %DATE% %TIME% > report.txt
       - name: Create Pull Request
+        id: cpr
         uses: ./create-pull-request-local
         with:
           committer: Peter Evans <peter-evans@users.noreply.github.com>
@@ -598,6 +724,16 @@ jobs:
           branch: tests/multi-platform
           branch-suffix: random
           sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
+      # Check outputs
+      - name: Check the operation is 'created'
+        if: steps.cpr.outputs.pull-request-operation != 'created'
+        run: exit 1
+      - name: Check a pull request number exists
+        if: steps.cpr.outputs.pull-request-number == ''
+        run: exit 1
+      - name: Check the verification status of commits
+        if: steps.cpr.outputs.pull-request-commits-verified != needs.beforeTest.outputs.sign-commits
+        run: exit 1
 
 
   testSetAuthorCommitter:
@@ -614,6 +750,7 @@ jobs:
       - name: Create report file
         run: date +%s > report.txt
       - name: Create Pull Request
+        id: cpr
         uses: ./create-pull-request-local
         with:
           title: testSetAuthorCommitter
@@ -621,6 +758,16 @@ jobs:
           committer: 'CPR Test Committer <cpr-test-committer@users.noreply.github.com>'
           branch: tests/set-author-committer
           sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
+      # Check outputs
+      - name: Check the operation is 'created'
+        if: steps.cpr.outputs.pull-request-operation != 'created'
+        run: exit 1
+      - name: Check a pull request number exists
+        if: steps.cpr.outputs.pull-request-number == ''
+        run: exit 1
+      - name: Check the verification status of commits
+        if: steps.cpr.outputs.pull-request-commits-verified != needs.beforeTest.outputs.sign-commits
+        run: exit 1
 
 
   testSetSignoff:
@@ -637,6 +784,7 @@ jobs:
       - name: Create report file
         run: date +%s > report.txt
       - name: Create Pull Request
+        id: cpr
         uses: ./create-pull-request-local
         with:
           title: testSetSignoff
@@ -645,6 +793,16 @@ jobs:
           signoff: true
           branch: tests/set-signoff
           sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
+      # Check outputs
+      - name: Check the operation is 'created'
+        if: steps.cpr.outputs.pull-request-operation != 'created'
+        run: exit 1
+      - name: Check a pull request number exists
+        if: steps.cpr.outputs.pull-request-number == ''
+        run: exit 1
+      - name: Check the verification status of commits
+        if: steps.cpr.outputs.pull-request-commits-verified != needs.beforeTest.outputs.sign-commits
+        run: exit 1
 
 
   testAddPaths:
@@ -669,6 +827,7 @@ jobs:
           date +%s > reports/temp.txt
           date +%s > reports/data.dat
       - name: Create Pull Request
+        id: cpr1
         uses: ./create-pull-request-local
         with:
           add-paths: |
@@ -677,7 +836,18 @@ jobs:
           title: testAddPaths1
           branch: tests/add-paths-1
           sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
+      # Check outputs
+      - name: Check the operation is 'created'
+        if: steps.cpr1.outputs.pull-request-operation != 'created'
+        run: exit 1
+      - name: Check a pull request number exists
+        if: steps.cpr1.outputs.pull-request-number == ''
+        run: exit 1
+      - name: Check the verification status of commits
+        if: steps.cpr1.outputs.pull-request-commits-verified != needs.beforeTest.outputs.sign-commits
+        run: exit 1
       - name: Create Pull Request
+        id: cpr2
         uses: ./create-pull-request-local
         with:
           add-paths: |
@@ -685,6 +855,17 @@ jobs:
           title: testAddPaths2
           branch: tests/add-paths-2
           sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
+      # Check outputs
+      - name: Check the operation is 'created'
+        if: steps.cpr2.outputs.pull-request-operation != 'created'
+        run: exit 1
+      - name: Check a pull request number exists
+        if: steps.cpr2.outputs.pull-request-number == ''
+        run: exit 1
+      - name: Check the verification status of commits
+        if: steps.cpr2.outputs.pull-request-commits-verified != needs.beforeTest.outputs.sign-commits
+        run: exit 1
+
 
   testCreateDraft:
     needs: beforeTest
@@ -700,12 +881,23 @@ jobs:
       - name: Create report file
         run: date +%s > report.txt
       - name: Create Pull Request
+        id: cpr
         uses: ./create-pull-request-local
         with:
           title: testCreateUpdateDraft
           branch: tests/create-update-draft
           draft: true
           sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
+      # Check outputs
+      - name: Check the operation is 'created'
+        if: steps.cpr.outputs.pull-request-operation != 'created'
+        run: exit 1
+      - name: Check a pull request number exists
+        if: steps.cpr.outputs.pull-request-number == ''
+        run: exit 1
+      - name: Check the verification status of commits
+        if: steps.cpr.outputs.pull-request-commits-verified != needs.beforeTest.outputs.sign-commits
+        run: exit 1
 
 
   testUpdateDraft:
@@ -722,12 +914,23 @@ jobs:
       - name: Create report file
         run: date +%s > report.txt
       - name: Create Pull Request
+        id: cpr
         uses: ./create-pull-request-local
         with:
           title: testCreateUpdateDraft
           branch: tests/create-update-draft
           draft: true
           sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
+      # Check outputs
+      - name: Check the operation is 'created'
+        if: steps.cpr.outputs.pull-request-operation != 'created'
+        run: exit 1
+      - name: Check a pull request number exists
+        if: steps.cpr.outputs.pull-request-number == ''
+        run: exit 1
+      - name: Check the verification status of commits
+        if: steps.cpr.outputs.pull-request-commits-verified != needs.beforeTest.outputs.sign-commits
+        run: exit 1
 
 
   testCreateWithPAT:
@@ -744,12 +947,23 @@ jobs:
       - name: Create report file
         run: date +%s > report.txt
       - name: Create Pull Request
+        id: cpr
         uses: ./create-pull-request-local
         with:
           token: ${{ secrets.TEST_CASE_PAT }}
           title: testCreateUpdateWithPAT
           branch: tests/create-update-with-pat
           sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
+      # Check outputs
+      - name: Check the operation is 'created'
+        if: steps.cpr.outputs.pull-request-operation != 'created'
+        run: exit 1
+      - name: Check a pull request number exists
+        if: steps.cpr.outputs.pull-request-number == ''
+        run: exit 1
+      - name: Check the verification status of commits
+        if: steps.cpr.outputs.pull-request-commits-verified != 'false'
+        run: exit 1
 
 
   testUpdateWithPAT:
@@ -766,12 +980,23 @@ jobs:
       - name: Create report file
         run: date +%s > report.txt
       - name: Create Pull Request
+        id: cpr
         uses: ./create-pull-request-local
         with:
           token: ${{ secrets.TEST_CASE_PAT }}
           title: testCreateUpdateWithPAT
           branch: tests/create-update-with-pat
           sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
+      # Check outputs
+      - name: Check the operation is 'created'
+        if: steps.cpr.outputs.pull-request-operation != 'created'
+        run: exit 1
+      - name: Check a pull request number exists
+        if: steps.cpr.outputs.pull-request-number == ''
+        run: exit 1
+      - name: Check the verification status of commits
+        if: steps.cpr.outputs.pull-request-commits-verified != 'false'
+        run: exit 1
 
 
   testCreateWithGitPAT:
@@ -788,12 +1013,23 @@ jobs:
       - name: Create report file
         run: date +%s > report.txt
       - name: Create Pull Request
+        id: cpr
         uses: ./create-pull-request-local
         with:
           git-token: ${{ secrets.TEST_CASE_PAT }}
           title: testCreateWithGitPAT
           branch: tests/create-with-git-pat
           sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
+      # Check outputs
+      - name: Check the operation is 'created'
+        if: steps.cpr.outputs.pull-request-operation != 'created'
+        run: exit 1
+      - name: Check a pull request number exists
+        if: steps.cpr.outputs.pull-request-number == ''
+        run: exit 1
+      - name: Check the verification status of commits
+        if: steps.cpr.outputs.pull-request-commits-verified != needs.beforeTest.outputs.sign-commits
+        run: exit 1
 
 
   testCreateInRemoteRepo:
@@ -813,12 +1049,23 @@ jobs:
       - name: Create report file
         run: date +%s > report.txt
       - name: Create Pull Request
+        id: cpr
         uses: ./create-pull-request-local
         with:
           token: ${{ secrets.TEST_CASE_PAT }}
           title: testCreateInRemoteRepo
           branch: tests/create-in-remote-repo
           sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
+      # Check outputs
+      - name: Check the operation is 'created'
+        if: steps.cpr.outputs.pull-request-operation != 'created'
+        run: exit 1
+      - name: Check a pull request number exists
+        if: steps.cpr.outputs.pull-request-number == ''
+        run: exit 1
+      - name: Check the verification status of commits
+        if: steps.cpr.outputs.pull-request-commits-verified != 'false'
+        run: exit 1
 
 
   testCreateInRemotePrivateRepo:
@@ -838,12 +1085,23 @@ jobs:
       - name: Create report file
         run: date +%s > report.txt
       - name: Create Pull Request
+        id: cpr
         uses: ./create-pull-request-local
         with:
           token: ${{ secrets.TEST_CASE_PAT }}
           title: testCreateInRemotePrivateRepo
           branch: tests/create-in-remote-private-repo
           sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
+      # Check outputs
+      - name: Check the operation is 'created'
+        if: steps.cpr.outputs.pull-request-operation != 'created'
+        run: exit 1
+      - name: Check a pull request number exists
+        if: steps.cpr.outputs.pull-request-number == ''
+        run: exit 1
+      - name: Check the verification status of commits
+        if: steps.cpr.outputs.pull-request-commits-verified != 'false'
+        run: exit 1
 
 
   testCreateWithRelativePath:
@@ -863,12 +1121,23 @@ jobs:
         working-directory: relative-path
         run: date +%s > report.txt
       - name: Create Pull Request
+        id: cpr
         uses: ./create-pull-request-local
         with:
           path: relative-path
           title: testCreateWithRelativePath
           branch: tests/create-with-relative-path
           sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
+      # Check outputs
+      - name: Check the operation is 'created'
+        if: steps.cpr.outputs.pull-request-operation != 'created'
+        run: exit 1
+      - name: Check a pull request number exists
+        if: steps.cpr.outputs.pull-request-number == ''
+        run: exit 1
+      - name: Check the verification status of commits
+        if: steps.cpr.outputs.pull-request-commits-verified != needs.beforeTest.outputs.sign-commits
+        run: exit 1
 
 
   testPushLFSTrackedFile:
@@ -887,11 +1156,22 @@ jobs:
           git lfs track "*.dat"
           date +%s > large_file.dat
       - name: Create Pull Request
+        id: cpr
         uses: ./create-pull-request-local
         with:
           title: testPushLFSTrackedFile
           branch: tests/push-lfs-tracked-file
           sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
+      # Check outputs
+      - name: Check the operation is 'created'
+        if: steps.cpr.outputs.pull-request-operation != 'created'
+        run: exit 1
+      - name: Check a pull request number exists
+        if: steps.cpr.outputs.pull-request-number == ''
+        run: exit 1
+      - name: Check the verification status of commits
+        if: steps.cpr.outputs.pull-request-commits-verified != needs.beforeTest.outputs.sign-commits
+        run: exit 1
 
 
   testCreateBranchViaSSH:
@@ -911,11 +1191,22 @@ jobs:
       - name: Create report file
         run: date +%s > report.txt
       - name: Create Pull Request
+        id: cpr
         uses: ./create-pull-request-local
         with:
           title: testCreateBranchViaSSH
           branch: tests/create-branch-via-ssh
           sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
+      # Check outputs
+      - name: Check the operation is 'created'
+        if: steps.cpr.outputs.pull-request-operation != 'created'
+        run: exit 1
+      - name: Check a pull request number exists
+        if: steps.cpr.outputs.pull-request-number == ''
+        run: exit 1
+      - name: Check the verification status of commits
+        if: steps.cpr.outputs.pull-request-commits-verified != needs.beforeTest.outputs.sign-commits
+        run: exit 1
 
 
   testCreateWithAppAuth:
@@ -937,12 +1228,23 @@ jobs:
       - name: Create report file
         run: date +%s > report.txt
       - name: Create Pull Request
+        id: cpr
         uses: ./create-pull-request-local
         with:
           token: ${{ steps.generate_token.outputs.token }}
           title: testCreateWithAppAuth
           branch: tests/create-with-app-auth
           sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
+      # Check outputs
+      - name: Check the operation is 'created'
+        if: steps.cpr.outputs.pull-request-operation != 'created'
+        run: exit 1
+      - name: Check a pull request number exists
+        if: steps.cpr.outputs.pull-request-number == ''
+        run: exit 1
+      - name: Check the verification status of commits
+        if: steps.cpr.outputs.pull-request-commits-verified != needs.beforeTest.outputs.sign-commits
+        run: exit 1
 
 
   testPushBranchToForkCreate:
@@ -959,6 +1261,7 @@ jobs:
       - name: Create report file
         run: date +%s > report.txt
       - name: Create Pull Request
+        id: cpr
         uses: ./create-pull-request-local
         with:
           token: ${{ secrets.CPR_MACHINE_USER_TOKEN }}
@@ -966,6 +1269,16 @@ jobs:
           branch: tests/push-branch-to-fork
           push-to-fork: create-pull-request-machine-user/create-pull-request-tests
           sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
+      # Check outputs
+      - name: Check the operation is 'created'
+        if: steps.cpr.outputs.pull-request-operation != 'created'
+        run: exit 1
+      - name: Check a pull request number exists
+        if: steps.cpr.outputs.pull-request-number == ''
+        run: exit 1
+      - name: Check the verification status of commits
+        if: steps.cpr.outputs.pull-request-commits-verified != 'false'
+        run: exit 1
 
 
   testPushBranchToForkUpdate:
@@ -982,6 +1295,7 @@ jobs:
       - name: Create report file
         run: date +%s > report.txt
       - name: Create Pull Request
+        id: cpr
         uses: ./create-pull-request-local
         with:
           token: ${{ secrets.CPR_MACHINE_USER_TOKEN }}
@@ -989,6 +1303,16 @@ jobs:
           branch: tests/push-branch-to-fork
           push-to-fork: create-pull-request-machine-user/create-pull-request-tests
           sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
+      # Check outputs
+      - name: Check the operation is 'created'
+        if: steps.cpr.outputs.pull-request-operation != 'created'
+        run: exit 1
+      - name: Check a pull request number exists
+        if: steps.cpr.outputs.pull-request-number == ''
+        run: exit 1
+      - name: Check the verification status of commits
+        if: steps.cpr.outputs.pull-request-commits-verified != 'false'
+        run: exit 1
 
 
   testPushBranchToForkViaSSH:
@@ -1015,6 +1339,7 @@ jobs:
       - name: Create report file
         run: date +%s > report.txt
       - name: Create Pull Request
+        id: cpr
         uses: ./create-pull-request-local
         with:
           token: ${{ secrets.CPR_MACHINE_USER_TOKEN }}
@@ -1022,6 +1347,16 @@ jobs:
           branch: tests/push-branch-to-fork-via-ssh
           push-to-fork: create-pull-request-machine-user/create-pull-request-tests
           sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
+      # Check outputs
+      - name: Check the operation is 'created'
+        if: steps.cpr.outputs.pull-request-operation != 'created'
+        run: exit 1
+      - name: Check a pull request number exists
+        if: steps.cpr.outputs.pull-request-number == ''
+        run: exit 1
+      - name: Check the verification status of commits
+        if: steps.cpr.outputs.pull-request-commits-verified != 'false'
+        run: exit 1
 
 
   testPushBranchToForkWithSiblingBase:
@@ -1040,6 +1375,7 @@ jobs:
       - name: Create report file
         run: date +%s > report.txt
       - name: Create Pull Request
+        id: cpr
         uses: ./create-pull-request-local
         with:
           token: ${{ secrets.CPR_MACHINE_USER_TOKEN }}
@@ -1047,6 +1383,16 @@ jobs:
           branch: tests/push-branch-to-fork-with-sibling-base
           push-to-fork: create-pull-request-machine-user/create-pull-request-tests
           sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
+      # Check outputs
+      - name: Check the operation is 'created'
+        if: steps.cpr.outputs.pull-request-operation != 'created'
+        run: exit 1
+      - name: Check a pull request number exists
+        if: steps.cpr.outputs.pull-request-number == ''
+        run: exit 1
+      - name: Check the verification status of commits
+        if: steps.cpr.outputs.pull-request-commits-verified != 'false'
+        run: exit 1
 
 
   testCreateWithGpgSignedCommit:
@@ -1070,6 +1416,7 @@ jobs:
       - name: Create report file
         run: date +%s > report.txt
       - name: Create Pull Request
+        id: cpr
         uses: ./create-pull-request-local
         with:
           token: ${{ secrets.ACTIONS_BOT_TOKEN }}
@@ -1077,6 +1424,16 @@ jobs:
           title: testCreateWithGpgSignedCommits
           branch: tests/create-with-gpg-signed-commit
           sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
+      # Check outputs
+      - name: Check the operation is 'created'
+        if: steps.cpr.outputs.pull-request-operation != 'created'
+        run: exit 1
+      - name: Check a pull request number exists
+        if: steps.cpr.outputs.pull-request-number == ''
+        run: exit 1
+      - name: Check the verification status of commits
+        if: steps.cpr.outputs.pull-request-commits-verified != 'false'
+        run: exit 1
 
 
   testAlpineContainer:
@@ -1097,11 +1454,22 @@ jobs:
       - name: Create report file
         run: date +%s > report.txt
       - name: Create Pull Request
+        id: cpr
         uses: ./create-pull-request-local
         with:
           title: testAlpineContainer
           branch: tests/alpine-container
           sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
+      # Check outputs
+      - name: Check the operation is 'created'
+        if: steps.cpr.outputs.pull-request-operation != 'created'
+        run: exit 1
+      - name: Check a pull request number exists
+        if: steps.cpr.outputs.pull-request-number == ''
+        run: exit 1
+      - name: Check the verification status of commits
+        if: steps.cpr.outputs.pull-request-commits-verified != needs.beforeTest.outputs.sign-commits
+        run: exit 1
 
 
   testUbuntuContainer:
@@ -1126,11 +1494,22 @@ jobs:
       - name: Create report file
         run: date +%s > report.txt
       - name: Create Pull Request
+        id: cpr
         uses: ./create-pull-request-local
         with:
           title: testUbuntuContainer
           branch: tests/ubuntu-container
           sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
+      # Check outputs
+      - name: Check the operation is 'created'
+        if: steps.cpr.outputs.pull-request-operation != 'created'
+        run: exit 1
+      - name: Check a pull request number exists
+        if: steps.cpr.outputs.pull-request-number == ''
+        run: exit 1
+      - name: Check the verification status of commits
+        if: steps.cpr.outputs.pull-request-commits-verified != needs.beforeTest.outputs.sign-commits
+        run: exit 1
 
 
   testProxySupport:
@@ -1159,6 +1538,7 @@ jobs:
       - name: Create report file
         run: date +%s > report.txt
       - name: Create Pull Request
+        id: cpr
         uses: ./create-pull-request-local
         with:
           title: testProxySupport
@@ -1166,6 +1546,16 @@ jobs:
           sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
         env:
           https_proxy: http://localhost:8443
+      # Check outputs
+      - name: Check the operation is 'created'
+        if: steps.cpr.outputs.pull-request-operation != 'created'
+        run: exit 1
+      - name: Check a pull request number exists
+        if: steps.cpr.outputs.pull-request-number == ''
+        run: exit 1
+      - name: Check the verification status of commits
+        if: steps.cpr.outputs.pull-request-commits-verified != needs.beforeTest.outputs.sign-commits
+        run: exit 1
 
 
   testNoProxySupport:
@@ -1182,6 +1572,7 @@ jobs:
       - name: Create report file
         run: date +%s > report.txt
       - name: Create Pull Request
+        id: cpr
         uses: ./create-pull-request-local
         with:
           title: testNoProxySupport
@@ -1190,6 +1581,16 @@ jobs:
         env:
           https_proxy: http://localhost:8
           no_proxy: .github.com
+      # Check outputs
+      - name: Check the operation is 'created'
+        if: steps.cpr.outputs.pull-request-operation != 'created'
+        run: exit 1
+      - name: Check a pull request number exists
+        if: steps.cpr.outputs.pull-request-number == ''
+        run: exit 1
+      - name: Check the verification status of commits
+        if: steps.cpr.outputs.pull-request-commits-verified != needs.beforeTest.outputs.sign-commits
+        run: exit 1
 
 
   afterTest:
