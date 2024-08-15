@@ -1079,7 +1079,7 @@ jobs:
         if: steps.cpr.outputs.pull-request-number == ''
         run: exit 1
       - name: Check the verification status of commits
-        if: steps.cpr.outputs.pull-request-commits-verified != 'false'
+        if: steps.cpr.outputs.pull-request-commits-verified != needs.beforeTest.outputs.sign-commits
         run: exit 1
 
 
