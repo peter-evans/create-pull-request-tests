@@ -1047,7 +1047,7 @@ jobs:
           repositories: create-pull-request-tests
       - name: Set token when sign-commits is false
         if: needs.beforeTest.outputs.sign-commits == 'false'
-        run: echo "token=${{ secrets.TEST_CASE_PAT }}" >> $GITHUB_ENV
+        run: echo "token=${{ secrets.TEST_CASE_PAT_ORG }}" >> $GITHUB_ENV
       - name: Set token when sign-commits is true
         if: needs.beforeTest.outputs.sign-commits == 'true'
         run: echo "token=${{ steps.generate_token.outputs.token }}" >> $GITHUB_ENV
