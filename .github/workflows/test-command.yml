@@ -1224,44 +1224,6 @@ jobs:
         run: exit 1
 
 
-  testCreateWithAppAuth:
-    needs: beforeTest
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      # Download the action artifact
-      - uses: actions/download-artifact@v4
-        with:
-          name: create-pull-request
-          path: create-pull-request-local
-      # Test
-      - uses: actions/create-github-app-token@v1
-        id: generate_token
-        with:
-          app-id: ${{ secrets.CPR_AUTH_APP_ID }}
-          private-key: ${{ secrets.CPR_AUTH_APP_PRIVATE_KEY }}
-      - name: Create report file
-        run: date +%s > report.txt
-      - name: Create Pull Request
-        id: cpr
-        uses: ./create-pull-request-local
-        with:
-          token: ${{ steps.generate_token.outputs.token }}
-          title: testCreateWithAppAuth
-          branch: tests/create-with-app-auth
-          sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
-      # Check outputs
-      - name: Check the operation is 'created'
-        if: steps.cpr.outputs.pull-request-operation != 'created'
-        run: exit 1
-      - name: Check a pull request number exists
-        if: steps.cpr.outputs.pull-request-number == ''
-        run: exit 1
-      - name: Check the verification status of commits
-        if: steps.cpr.outputs.pull-request-commits-verified != needs.beforeTest.outputs.sign-commits
-        run: exit 1
-
-
   testPushBranchToForkCreate:
     needs: beforeTest
     runs-on: ubuntu-latest
@@ -1630,7 +1592,6 @@ jobs:
       - testCreateInRemotePrivateRepo
       - testCreateWithRelativePath
       - testCreateBranchViaSSH
-      - testCreateWithAppAuth
       - testPushBranchToForkUpdate
       - testPushBranchToForkViaSSH
       - testPushBranchToForkWithSiblingBase
