@@ -1231,13 +1231,15 @@ jobs:
       - name: Set token when sign-commits is false
         if: needs.beforeTest.outputs.sign-commits == 'false'
         run: |
-          echo "push_to_fork=create-pull-request-machine-user/create-pull-request-tests" >> $GITHUB_ENV
           echo "token=${{ secrets.CPR_MACHINE_USER_TOKEN }}" >> $GITHUB_ENV
+          echo "git_token=${{ secrets.CPR_MACHINE_USER_TOKEN }}" >> $GITHUB_ENV
+          echo "push_to_fork=create-pull-request-machine-user/create-pull-request-tests" >> $GITHUB_ENV
       - name: Set token when sign-commits is true
         if: needs.beforeTest.outputs.sign-commits == 'true'
         run: |
+          echo "token=${{ github.token }}" >> $GITHUB_ENV
+          echo "git_token=${{ steps.generate_token.outputs.token }}" >> $GITHUB_ENV
           echo "push_to_fork=create-pull-request/create-pull-request-tests" >> $GITHUB_ENV
-          echo "token=${{ steps.generate_token.outputs.token }}" >> $GITHUB_ENV
       - uses: actions/checkout@v4
       # Download the action artifact
       - uses: actions/download-artifact@v4
@@ -1252,10 +1254,11 @@ jobs:
         uses: ./create-pull-request-local
         with:
           token: ${{ env.token }}
+          git-token: ${{ env.git_token }}
           title: testPushBranchToFork
           branch: tests/push-branch-to-fork
           push-to-fork: ${{ env.push_to_fork }}
-          # sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
+          sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
       # Check outputs
       - name: Check the operation is 'created'
         if: steps.cpr.outputs.pull-request-operation != 'created'
@@ -1264,7 +1267,7 @@ jobs:
         if: steps.cpr.outputs.pull-request-number == ''
         run: exit 1
       - name: Check the verification status of commits
-        if: steps.cpr.outputs.pull-request-commits-verified != 'false' #needs.beforeTest.outputs.sign-commits
+        if: steps.cpr.outputs.pull-request-commits-verified != needs.beforeTest.outputs.sign-commits
         run: exit 1
 
 
