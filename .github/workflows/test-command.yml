@@ -1344,6 +1344,42 @@ jobs:
         run: exit 1
 
 
+  testPushBranchToForkWithFineGrainedPAT:
+    needs: beforeTest
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # Download the action artifact
+      - uses: actions/download-artifact@v4
+        with:
+          name: create-pull-request
+          path: create-pull-request-local
+      # Test
+      - name: Create report file
+        run: date +%s > report.txt
+      - name: Create Pull Request
+        id: cpr
+        uses: ./create-pull-request-local
+        with:
+          token: ${{ secrets.CPR_MACHINE_USER_FG_TOKEN }}
+          # branch-token: ${{ secrets.CPR_MACHINE_USER_FG_TOKEN }}
+          title: testPushBranchToForkWithFineGrainedPAT
+          branch: tests/push-branch-to-fork-with-fine-grained-pat
+          push-to-fork: create-pull-request-machine-user/create-pull-request-tests
+          sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
+          # maintainer-can-modify: false
+      # Check outputs
+      - name: Check the operation is 'created'
+        if: steps.cpr.outputs.pull-request-operation != 'created'
+        run: exit 1
+      - name: Check a pull request number exists
+        if: steps.cpr.outputs.pull-request-number == ''
+        run: exit 1
+      - name: Check the verification status of commits
+        if: steps.cpr.outputs.pull-request-commits-verified != false
+        run: exit 1
+
+
   testPushBranchToForkViaSSH:
     needs: beforeTest
     runs-on: ubuntu-latest
@@ -1646,6 +1682,7 @@ jobs:
       - testCreateWithRelativePath
       - testCreateBranchViaSSH
       - testPushBranchToForkUpdate
+      - testPushBranchToForkWithFineGrainedPAT
       - testPushBranchToForkViaSSH
       - testPushBranchToForkWithSiblingBase
       - testPushLFSTrackedFile
