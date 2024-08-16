@@ -14,14 +14,14 @@ jobs:
       - name: Close Pull Requests
         uses: ./.github/close-pull-requests
         with:
-          token: ${{ secrets.TEST_CASE_PAT }}
-          repository: peter-evans/create-pull-request-tests-remote-private
+          token: ${{ secrets.TEST_CASE_PAT_ORG }}
+          repository: create-pull-request/create-pull-request-tests
 
       - name: Close Pull Requests
         uses: ./.github/close-pull-requests
         with:
           token: ${{ secrets.TEST_CASE_PAT_ORG }}
-          repository: create-pull-request/create-pull-request-tests
+          repository: create-pull-request/create-pull-request-tests-remote-private
 
       # Delete the test branches created in the fork
       - uses: actions/checkout@v4
