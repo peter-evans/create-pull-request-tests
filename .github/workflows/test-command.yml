@@ -1278,6 +1278,27 @@ jobs:
     needs: [beforeTest, testPushBranchToForkCreate]
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/create-github-app-token@v1
+        id: generate_token
+        with:
+          app-id: ${{ secrets.CPR_AUTH_APP_ID }}
+          private-key: ${{ secrets.CPR_AUTH_APP_PRIVATE_KEY }}
+          owner: create-pull-request
+          repositories: create-pull-request-tests
+      - name: Set token when sign-commits is false
+        if: needs.beforeTest.outputs.sign-commits == 'false'
+        run: |
+          echo "token=${{ secrets.CPR_MACHINE_USER_TOKEN }}" >> $GITHUB_ENV
+          echo "branch_token=${{ secrets.CPR_MACHINE_USER_TOKEN }}" >> $GITHUB_ENV
+          echo "push_to_fork=create-pull-request-machine-user/create-pull-request-tests" >> $GITHUB_ENV
+          echo "maintainer_can_modify=true" >> $GITHUB_ENV
+      - name: Set token when sign-commits is true
+        if: needs.beforeTest.outputs.sign-commits == 'true'
+        run: |
+          echo "token=${{ github.token }}" >> $GITHUB_ENV
+          echo "branch_token=${{ steps.generate_token.outputs.token }}" >> $GITHUB_ENV
+          echo "push_to_fork=create-pull-request/create-pull-request-tests" >> $GITHUB_ENV
+          echo "maintainer_can_modify=false" >> $GITHUB_ENV
       - uses: actions/checkout@v4
       # Download the action artifact
       - uses: actions/download-artifact@v4
@@ -1291,11 +1312,13 @@ jobs:
         id: cpr
         uses: ./create-pull-request-local
         with:
-          token: ${{ secrets.CPR_MACHINE_USER_TOKEN }}
+          token: ${{ env.token }}
+          branch-token: ${{ env.branch_token }}
           title: testPushBranchToFork
           branch: tests/push-branch-to-fork
-          push-to-fork: create-pull-request-machine-user/create-pull-request-tests
+          push-to-fork: ${{ env.push_to_fork }}
           sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
+          maintainer-can-modify: ${{ env.maintainer_can_modify }}
       # Check outputs
       - name: Check the operation is 'updated'
         if: steps.cpr.outputs.pull-request-operation != 'updated'
