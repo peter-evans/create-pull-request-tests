@@ -1361,8 +1361,7 @@ jobs:
         id: cpr
         uses: ./create-pull-request-local
         with:
-          token: ${{ secrets.CPR_MACHINE_USER_FG_TOKEN }}
-          # branch-token: ${{ secrets.CPR_MACHINE_USER_FG_TOKEN }}
+          branch-token: ${{ secrets.CPR_MACHINE_USER_FG_TOKEN }}
           title: testPushBranchToForkWithFineGrainedPAT
           branch: tests/push-branch-to-fork-with-fine-grained-pat
           push-to-fork: create-pull-request-machine-user/create-pull-request-tests
