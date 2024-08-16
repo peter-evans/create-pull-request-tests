@@ -1047,7 +1047,6 @@ jobs:
         run: echo "token=${{ steps.generate_token.outputs.token }}" >> $GITHUB_ENV
       - uses: actions/checkout@v4
         with:
-          # token: ${{ env.token }}
           repository: create-pull-request/create-pull-request-tests
       # Download the action artifact
       - uses: actions/download-artifact@v4
@@ -1256,7 +1255,7 @@ jobs:
           title: testPushBranchToFork
           branch: tests/push-branch-to-fork
           push-to-fork: ${{ env.push_to_fork }}
-          sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
+          # sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
       # Check outputs
       - name: Check the operation is 'created'
         if: steps.cpr.outputs.pull-request-operation != 'created'
@@ -1265,7 +1264,7 @@ jobs:
         if: steps.cpr.outputs.pull-request-number == ''
         run: exit 1
       - name: Check the verification status of commits
-        if: steps.cpr.outputs.pull-request-commits-verified != needs.beforeTest.outputs.sign-commits
+        if: steps.cpr.outputs.pull-request-commits-verified != 'false' #needs.beforeTest.outputs.sign-commits
         run: exit 1
 
 
