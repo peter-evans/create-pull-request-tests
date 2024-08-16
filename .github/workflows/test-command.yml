@@ -1012,7 +1012,7 @@ jobs:
         id: cpr
         uses: ./create-pull-request-local
         with:
-          git-token: ${{ secrets.TEST_CASE_PAT }}
+          branch-token: ${{ secrets.TEST_CASE_PAT }}
           title: testCreateWithGitPAT
           branch: tests/create-with-git-pat
           sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
@@ -1232,14 +1232,14 @@ jobs:
         if: needs.beforeTest.outputs.sign-commits == 'false'
         run: |
           echo "token=${{ secrets.CPR_MACHINE_USER_TOKEN }}" >> $GITHUB_ENV
-          echo "git_token=${{ secrets.CPR_MACHINE_USER_TOKEN }}" >> $GITHUB_ENV
+          echo "branch_token=${{ secrets.CPR_MACHINE_USER_TOKEN }}" >> $GITHUB_ENV
           echo "push_to_fork=create-pull-request-machine-user/create-pull-request-tests" >> $GITHUB_ENV
           echo "maintainer_can_modify=true" >> $GITHUB_ENV
       - name: Set token when sign-commits is true
         if: needs.beforeTest.outputs.sign-commits == 'true'
         run: |
           echo "token=${{ github.token }}" >> $GITHUB_ENV
-          echo "git_token=${{ steps.generate_token.outputs.token }}" >> $GITHUB_ENV
+          echo "branch_token=${{ steps.generate_token.outputs.token }}" >> $GITHUB_ENV
           echo "push_to_fork=create-pull-request/create-pull-request-tests" >> $GITHUB_ENV
           echo "maintainer_can_modify=false" >> $GITHUB_ENV
       - uses: actions/checkout@v4
@@ -1256,7 +1256,7 @@ jobs:
         uses: ./create-pull-request-local
         with:
           token: ${{ env.token }}
-          git-token: ${{ env.git_token }}
+          branch-token: ${{ env.branch_token }}
           title: testPushBranchToFork
           branch: tests/push-branch-to-fork
           push-to-fork: ${{ env.push_to_fork }}
