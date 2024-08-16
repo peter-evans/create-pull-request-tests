@@ -995,7 +995,7 @@ jobs:
         run: exit 1
 
 
-  testCreateWithGitPAT:
+  testCreateWithBranchToken:
     needs: beforeTest
     runs-on: ubuntu-latest
     steps:
@@ -1013,8 +1013,8 @@ jobs:
         uses: ./create-pull-request-local
         with:
           branch-token: ${{ secrets.TEST_CASE_PAT }}
-          title: testCreateWithGitPAT
-          branch: tests/create-with-git-pat
+          title: testCreateWithBranchToken
+          branch: tests/create-with-branch-token
           sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
       # Check outputs
       - name: Check the operation is 'created'
@@ -1626,7 +1626,7 @@ jobs:
       - testAddPaths
       - testUpdateDraft
       - testUpdateWithPAT
-      - testCreateWithGitPAT
+      - testCreateWithBranchToken
       - testCreateInRemoteRepo
       - testCreateInRemotePrivateRepo
       - testCreateWithRelativePath
