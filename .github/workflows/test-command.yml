@@ -26,7 +26,7 @@ jobs:
       - name: Close Pull Requests
         uses: ./.github/close-pull-requests
         with:
-          token: ${{ secrets.TEST_CASE_PAT_SIBLING }}
+          token: ${{ secrets.TEST_CASE_PAT_ORG }}
           repository: create-pull-request/create-pull-request-tests
 
       # Delete the test branches created in the fork
