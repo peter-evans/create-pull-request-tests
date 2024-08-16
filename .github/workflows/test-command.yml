@@ -1366,7 +1366,7 @@ jobs:
           branch: tests/push-branch-to-fork-with-fine-grained-pat
           push-to-fork: create-pull-request-machine-user/create-pull-request-tests
           sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
-          # maintainer-can-modify: false
+          maintainer-can-modify: false
       # Check outputs
       - name: Check the operation is 'created'
         if: steps.cpr.outputs.pull-request-operation != 'created'
