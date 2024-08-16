@@ -1228,6 +1228,23 @@ jobs:
     needs: beforeTest
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/create-github-app-token@v1
+        id: generate_token
+        with:
+          app-id: ${{ secrets.CPR_AUTH_APP_ID }}
+          private-key: ${{ secrets.CPR_AUTH_APP_PRIVATE_KEY }}
+          owner: create-pull-request
+          repositories: create-pull-request-tests
+      - name: Set token when sign-commits is false
+        if: needs.beforeTest.outputs.sign-commits == 'false'
+        run: |
+          echo "push_to_fork=create-pull-request-machine-user/create-pull-request-tests" >> $GITHUB_ENV
+          echo "token=${{ secrets.CPR_MACHINE_USER_TOKEN }}" >> $GITHUB_ENV
+      - name: Set token when sign-commits is true
+        if: needs.beforeTest.outputs.sign-commits == 'true'
+        run: |
+          echo "push_to_fork=create-pull-request/create-pull-request-tests" >> $GITHUB_ENV
+          echo "token=${{ steps.generate_token.outputs.token }}" >> $GITHUB_ENV
       - uses: actions/checkout@v4
       # Download the action artifact
       - uses: actions/download-artifact@v4
@@ -1241,10 +1258,10 @@ jobs:
         id: cpr
         uses: ./create-pull-request-local
         with:
-          token: ${{ secrets.CPR_MACHINE_USER_TOKEN }}
+          token: ${{ env.token }}
           title: testPushBranchToFork
           branch: tests/push-branch-to-fork
-          push-to-fork: create-pull-request-machine-user/create-pull-request-tests
+          push-to-fork: ${{ env.push_to_fork }}
           sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
       # Check outputs
       - name: Check the operation is 'created'
@@ -1254,7 +1271,7 @@ jobs:
         if: steps.cpr.outputs.pull-request-number == ''
         run: exit 1
       - name: Check the verification status of commits
-        if: steps.cpr.outputs.pull-request-commits-verified != 'false'
+        if: steps.cpr.outputs.pull-request-commits-verified != needs.beforeTest.outputs.sign-commits
         run: exit 1
 
 
