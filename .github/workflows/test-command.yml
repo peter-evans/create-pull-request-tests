@@ -15,12 +15,6 @@ jobs:
         uses: ./.github/close-pull-requests
         with:
           token: ${{ secrets.TEST_CASE_PAT }}
-          repository: peter-evans/create-pull-request-tests-remote
-
-      - name: Close Pull Requests
-        uses: ./.github/close-pull-requests
-        with:
-          token: ${{ secrets.TEST_CASE_PAT }}
           repository: peter-evans/create-pull-request-tests-remote-private
 
       - name: Close Pull Requests
