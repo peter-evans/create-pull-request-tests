@@ -892,6 +892,11 @@ jobs:
       - name: Check the verification status of commits
         if: steps.cpr.outputs.pull-request-commits-verified != needs.beforeTest.outputs.sign-commits
         run: exit 1
+      # Mark the PR as ready for review to test 'draft: always-true'
+      - name: Mark PR ready for review
+        run: gh pr ready "${{ steps.cpr.outputs.pull-request-url }}"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 
   testUpdateDraft:
@@ -913,7 +918,7 @@ jobs:
         with:
           title: testCreateUpdateDraft
           branch: tests/create-update-draft
-          draft: true
+          draft: always-true
           sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
       # Check outputs
       - name: Check the operation is 'updated'
