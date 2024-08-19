@@ -119,6 +119,8 @@ jobs:
       # Test
       - name: Create report file
         run: date +%s > report.txt
+      - name: Create a large file
+        run: truncate -s 50M largefile
       - name: Create Pull Request
         id: cpr
         uses: ./create-pull-request-local
@@ -193,6 +195,8 @@ jobs:
       # Test
       - name: Create report file
         run: date +%s > report.txt
+      - name: Create a large file
+        run: truncate -s 50M largefile
       - name: Create Pull Request
         id: cpr
         uses: ./create-pull-request-local
