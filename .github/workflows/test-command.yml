@@ -121,6 +121,11 @@ jobs:
         run: date +%s > report.txt
       - name: Create a large file
         run: truncate -s 39M largefile # 40MiB max
+      - name: Create 1000 1KB files
+        run: |
+          for i in {1..1000}; do
+            head -c 1024 /dev/urandom | base64 > "file_$i"
+          done
       - name: Create Pull Request
         id: cpr
         uses: ./create-pull-request-local
@@ -197,6 +202,11 @@ jobs:
         run: date +%s > report.txt
       - name: Create a large file
         run: truncate -s 39M largefile # 40MiB max
+      - name: Create 1000 1KB files
+        run: |
+          for i in {1..1000}; do
+            head -c 1024 /dev/urandom | base64 > "file_$i"
+          done
       - name: Create Pull Request
         id: cpr
         uses: ./create-pull-request-local
