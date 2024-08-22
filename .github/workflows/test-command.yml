@@ -43,6 +43,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       sign-commits: ${{ steps.vars.outputs.sign-commits }}
+      perf: ${{ steps.vars.outputs.perf }}
     steps:
       # Get the target repository and ref
       - name: Get the target repository and ref
@@ -60,6 +61,9 @@ jobs:
           sign_commits=${{ github.event.client_payload.slash_command.args.named.sign-commits }}
           if [[ -z "$sign_commits" ]]; then sign_commits="false"; fi
           echo "sign-commits=$sign_commits" >> $GITHUB_OUTPUT
+          perf=${{ github.event.client_payload.slash_command.args.named.perf }}
+          if [[ -z "$perf" ]]; then perf="false"; fi
+          echo "perf=$perf" >> $GITHUB_OUTPUT
       # Checkout the ref to test
       - uses: actions/checkout@v4
         with:
@@ -122,6 +126,7 @@ jobs:
       - name: Create a large file
         run: truncate -s 39M largefile # 40MiB max
       - name: Create 1000 1KB files
+        if: needs.beforeTest.outputs.perf == 'true'
         run: |
           for i in {1..1000}; do
             head -c 1024 /dev/urandom | base64 > "file_$i"
@@ -203,6 +208,7 @@ jobs:
       - name: Create a large file
         run: truncate -s 39M largefile # 40MiB max
       - name: Create 1000 1KB files
+        if: needs.beforeTest.outputs.perf == 'true'
         run: |
           for i in {1..1000}; do
             head -c 1024 /dev/urandom | base64 > "file_$i"
