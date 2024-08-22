@@ -491,9 +491,11 @@ jobs:
           git config user.email 'cpr-test-user@users.noreply.github.com'
           date +%s > report.txt
           git commit -am "Commit during workflow 1"
+          # Test empty commits
+          git commit --allow-empty -m "Commit during workflow 2"
           date +%s > new-report.txt
           git add -A
-          git commit -m "Commit during workflow 2"
+          git commit -m "Commit during workflow 3"
       - name: Create report file
         run: date +%s > report.txt
       - name: Create Pull Request
