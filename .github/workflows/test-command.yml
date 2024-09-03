@@ -172,13 +172,13 @@ jobs:
       - name: Check the verification status of commits
         if: steps.cpr.outputs.pull-request-commits-verified != needs.beforeTest.outputs.sign-commits
         run: exit 1
-      # Create a project card
-      - name: Create or Update Project Card
-        uses: peter-evans/create-or-update-project-card@v3
-        with:
-          project-name: Example Project
-          column-name: To do
-          issue-number: ${{ steps.cpr.outputs.pull-request-number }}
+      # # Create a project card
+      # - name: Create or Update Project Card
+      #   uses: peter-evans/create-or-update-project-card@v3
+      #   with:
+      #     project-name: Example Project
+      #     column-name: To do
+      #     issue-number: ${{ steps.cpr.outputs.pull-request-number }}
       # Add a label (to test that it won't be removed on update)
       - name: Add label
         uses: actions/github-script@v7
@@ -249,13 +249,13 @@ jobs:
       - name: Check the verification status of commits
         if: steps.cpr.outputs.pull-request-commits-verified != needs.beforeTest.outputs.sign-commits
         run: exit 1
-      # Update the project card
-      - name: Create or Update Project Card
-        uses: peter-evans/create-or-update-project-card@v3
-        with:
-          project-name: Example Project
-          column-name: To do
-          issue-number: ${{ steps.cpr.outputs.pull-request-number }}
+      # # Update the project card
+      # - name: Create or Update Project Card
+      #   uses: peter-evans/create-or-update-project-card@v3
+      #   with:
+      #     project-name: Example Project
+      #     column-name: To do
+      #     issue-number: ${{ steps.cpr.outputs.pull-request-number }}
 
 
   testIdenticalChangeCreate:
