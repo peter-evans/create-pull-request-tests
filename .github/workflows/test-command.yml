@@ -123,6 +123,8 @@ jobs:
       # Test
       - name: Create report file
         run: date +%s > report.txt
+      - name: Add a submodule
+        run: git submodule add https://github.com/peter-evans/blog
       - name: Create a large file
         run: truncate -s 39M largefile # 40MiB max
       - name: Create 1000 1KB files
@@ -205,6 +207,8 @@ jobs:
       # Test
       - name: Create report file
         run: date +%s > report.txt
+      - name: Add a submodule
+        run: git submodule add https://github.com/peter-evans/blog
       - name: Create a large file
         run: truncate -s 39M largefile # 40MiB max
       - name: Create 1000 1KB files
