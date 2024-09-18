@@ -124,7 +124,7 @@ jobs:
       - name: Create report file
         run: date +%s > report.txt
       - name: Add a symlink to report.txt
-        run: ln -s report.txt report-symlink.txt
+        run: ln -s report.txt report-symlink
       - name: Add a submodule
         run: git submodule add https://github.com/peter-evans/blog
       - name: Create a large file
@@ -210,7 +210,7 @@ jobs:
       - name: Create report file
         run: date +%s > report.txt
       - name: Add a symlink to report.txt
-        run: ln -s report.txt report-symlink.txt
+        run: ln -s report.txt report-symlink
       - name: Add a submodule
         run: git submodule add https://github.com/peter-evans/blog
       - name: Create a large file
