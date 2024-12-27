@@ -123,6 +123,8 @@ jobs:
       # Test
       - name: Create report file
         run: date +%s > report.txt
+      - name: Create file with unicode filename
+        run: date +%s > unicode→in→filename.txt
       - name: Add a symlink to report.txt
         run: ln -s report.txt report-symlink
       - name: Add a submodule
@@ -209,6 +211,8 @@ jobs:
       # Test
       - name: Create report file
         run: date +%s > report.txt
+      - name: Create file with unicode filename
+        run: date +%s > unicode→in→filename.txt
       - name: Add a symlink to report.txt
         run: ln -s report.txt report-symlink
       - name: Add a submodule
