@@ -1647,9 +1647,9 @@ jobs:
           sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
         env:
           https_proxy: http://localhost:8443
-      - name: Stop proxy
+      - name: Disable firewall
         run: |
-          docker stop proxy
+          sudo ufw disable
       # Check outputs
       - name: Check the operation is 'created'
         if: steps.cpr.outputs.pull-request-operation != 'created'
