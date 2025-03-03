@@ -164,7 +164,7 @@ jobs:
             report
             automated pr
           assignees: retepsnave
-          reviewers: retepsnave
+          reviewers: actions-bot
           milestone: 1
           branch: tests/branch/create-update
           sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
@@ -247,7 +247,7 @@ jobs:
             report
             automated pr
           assignees: retepsnave
-          reviewers: retepsnave
+          reviewers: actions-bot
           milestone: 1
           branch: tests/branch/create-update
           sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
