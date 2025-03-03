@@ -163,8 +163,8 @@ jobs:
           labels: |
             report
             automated pr
-          assignees: peter-evans
-          reviewers: peter-evans
+          assignees: retepsnave
+          reviewers: retepsnave
           milestone: 1
           branch: tests/branch/create-update
           sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
@@ -246,8 +246,8 @@ jobs:
           labels: |
             report
             automated pr
-          assignees: peter-evans
-          reviewers: peter-evans
+          assignees: retepsnave
+          reviewers: retepsnave
           milestone: 1
           branch: tests/branch/create-update
           sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
