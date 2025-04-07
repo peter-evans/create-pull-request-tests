@@ -1069,7 +1069,7 @@ jobs:
     needs: beforeTest
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/create-github-app-token@v1
+      - uses: actions/create-github-app-token@v2
         id: generate_token
         with:
           app-id: ${{ secrets.CPR_AUTH_APP_ID }}
@@ -1117,7 +1117,7 @@ jobs:
     needs: beforeTest
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/create-github-app-token@v1
+      - uses: actions/create-github-app-token@v2
         id: generate_token
         with:
           app-id: ${{ secrets.CPR_AUTH_APP_ID }}
@@ -1271,7 +1271,7 @@ jobs:
     needs: beforeTest
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/create-github-app-token@v1
+      - uses: actions/create-github-app-token@v2
         id: generate_token
         with:
           app-id: ${{ secrets.CPR_AUTH_APP_ID }}
@@ -1328,7 +1328,7 @@ jobs:
     needs: [beforeTest, testPushBranchToForkCreate]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/create-github-app-token@v1
+      - uses: actions/create-github-app-token@v2
         id: generate_token
         with:
           app-id: ${{ secrets.CPR_AUTH_APP_ID }}
