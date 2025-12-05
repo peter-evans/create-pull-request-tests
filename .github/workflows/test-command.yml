@@ -23,6 +23,12 @@ jobs:
           token: ${{ secrets.TEST_CASE_PAT_ORG }}
           repository: create-pull-request/create-pull-request-tests-remote-private
 
+      - name: Close Pull Requests
+        uses: ./.github/close-pull-requests
+        with:
+          token: ${{ secrets.TEST_CASE_PAT_ORG }}
+          repository: create-pull-request/create-pull-request-tests-multi-fork
+
       # Delete the test branches created in the fork
       - uses: actions/checkout@v6
         with:
@@ -1162,6 +1168,55 @@ jobs:
         run: exit 1
 
 
+  testCreateInRemoteRepoMultiForkSameOwner:
+    needs: beforeTest
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/create-github-app-token@v2
+        id: generate_token
+        with:
+          app-id: ${{ secrets.CPR_AUTH_APP_ID }}
+          private-key: ${{ secrets.CPR_AUTH_APP_PRIVATE_KEY }}
+          owner: create-pull-request
+          repositories: create-pull-request-tests-multi-fork
+      - name: Set token when sign-commits is false
+        if: needs.beforeTest.outputs.sign-commits == 'false'
+        run: echo "token=${{ secrets.TEST_CASE_PAT_ORG }}" >> $GITHUB_ENV
+      - name: Set token when sign-commits is true
+        if: needs.beforeTest.outputs.sign-commits == 'true'
+        run: echo "token=${{ steps.generate_token.outputs.token }}" >> $GITHUB_ENV
+      - uses: actions/checkout@v6
+        with:
+          token: ${{ env.token }}
+          repository: create-pull-request/create-pull-request-tests-multi-fork
+      # Download the action artifact
+      - uses: actions/download-artifact@v6
+        with:
+          name: create-pull-request
+          path: create-pull-request-local
+      # Test
+      - name: Create report file
+        run: date +%s > report.txt
+      - name: Create Pull Request
+        id: cpr
+        uses: ./create-pull-request-local
+        with:
+          token: ${{ env.token }}
+          title: testCreateInRemoteRepoMultiForkSameOwner
+          branch: tests/create-in-remote-repo-multi-fork-same-owner
+          sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
+      # Check outputs
+      - name: Check the operation is 'created'
+        if: steps.cpr.outputs.pull-request-operation != 'created'
+        run: exit 1
+      - name: Check a pull request number exists
+        if: steps.cpr.outputs.pull-request-number == ''
+        run: exit 1
+      - name: Check the verification status of commits
+        if: steps.cpr.outputs.pull-request-commits-verified != needs.beforeTest.outputs.sign-commits
+        run: exit 1
+
+
   testCreateWithRelativePath:
     needs: beforeTest
     runs-on: ubuntu-latest
@@ -1717,6 +1772,7 @@ jobs:
       - testCreateWithBranchTokenPAT
       - testCreateInRemoteRepo
       - testCreateInRemotePrivateRepo
+      - testCreateInRemoteRepoMultiForkSameOwner
       - testCreateWithRelativePath
       - testCreateBranchViaSSH
       - testPushBranchToForkUpdate
