@@ -1801,6 +1801,38 @@ jobs:
         run: exit 1
 
 
+  testCheckoutV5:
+    needs: beforeTest
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5 # DO NOT UPDATE
+      # Download the action artifact
+      - uses: actions/download-artifact@v7
+        with:
+          name: create-pull-request
+          path: create-pull-request-local
+      # Test
+      - name: Create report file
+        run: date +%s > report.txt
+      - name: Create Pull Request
+        id: cpr
+        uses: ./create-pull-request-local
+        with:
+          title: testCheckoutV5
+          branch: tests/branch/checkout-v5
+          sign-commits: ${{ needs.beforeTest.outputs.sign-commits }}
+      # Check outputs
+      - name: Check the operation is 'created'
+        if: steps.cpr.outputs.pull-request-operation != 'created'
+        run: exit 1
+      - name: Check a pull request number exists
+        if: steps.cpr.outputs.pull-request-number == ''
+        run: exit 1
+      - name: Check the verification status of commits
+        if: steps.cpr.outputs.pull-request-commits-verified != needs.beforeTest.outputs.sign-commits
+        run: exit 1
+
+        
   afterTest:
     needs:
       - createRunLink
@@ -1834,6 +1866,7 @@ jobs:
       - testUbuntuContainer
       - testProxySupport
       - testNoProxySupport
+      - testCheckoutV5
     runs-on: ubuntu-latest
     steps:
       # Add reaction to the comment
