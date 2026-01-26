@@ -1805,7 +1805,7 @@ jobs:
     needs: beforeTest
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5 # DO NOT UPDATE
+      - uses: actions/checkout@v6 # DO NOT UPDATE
       # Download the action artifact
       - uses: actions/download-artifact@v7
         with:
