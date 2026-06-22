@@ -6,7 +6,7 @@ jobs:
   clean:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       # Clean up pull requests and branches
       - name: Close Pull Requests
         uses: ./.github/close-pull-requests
@@ -30,7 +30,7 @@ jobs:
           repository: create-pull-request/create-pull-request-tests-multi-fork
 
       # Delete the test branches created in the fork
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           token: ${{ secrets.CPR_MACHINE_USER_TOKEN }}
           repository: create-pull-request-machine-user/create-pull-request-tests
@@ -71,7 +71,7 @@ jobs:
           if [[ -z "$perf" ]]; then perf="false"; fi
           echo "perf=$perf" >> $GITHUB_OUTPUT
       # Checkout the ref to test
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           token: ${{ secrets.ACTIONS_BOT_TOKEN }}
           repository: ${{ steps.vars.outputs.repository }}
@@ -120,7 +120,7 @@ jobs:
     needs: beforeTest
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       # Download the action artifact
       - uses: actions/download-artifact@v7
         with:
@@ -208,7 +208,7 @@ jobs:
     needs: [beforeTest, testCreate]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       # Download the action artifact
       - uses: actions/download-artifact@v7
         with:
@@ -280,7 +280,7 @@ jobs:
     needs: beforeTest
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       # Download the action artifact
       - uses: actions/download-artifact@v7
         with:
@@ -312,7 +312,7 @@ jobs:
     needs: [beforeTest, testIdenticalChangeCreate]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       # Download the action artifact
       - uses: actions/download-artifact@v7
         with:
@@ -344,7 +344,7 @@ jobs:
     needs: beforeTest
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       # Download the action artifact
       - uses: actions/download-artifact@v7
         with:
@@ -376,7 +376,7 @@ jobs:
     needs: [beforeTest, testNoDiffCreate]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       # Download the action artifact
       - uses: actions/download-artifact@v7
         with:
@@ -402,7 +402,7 @@ jobs:
     needs: beforeTest
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       # Create test base branch
       - name: Create test base
         run: |
@@ -441,7 +441,7 @@ jobs:
     needs: [beforeTest, testCommitsOnBaseCreate]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           ref: tests/base/commits-on-base
       # Create commits on the test base branch
@@ -461,7 +461,7 @@ jobs:
     needs: [beforeTest, testCommitsOnBaseCommit]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           ref: tests/base/commits-on-base
       # Download the action artifact
@@ -496,7 +496,7 @@ jobs:
     needs: beforeTest
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       # Download the action artifact
       - uses: actions/download-artifact@v7
         with:
@@ -539,7 +539,7 @@ jobs:
     needs: beforeTest
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       # Create test base branch
       - name: Create test base
         run: |
@@ -554,7 +554,7 @@ jobs:
     needs: [beforeTest, testWorkingBaseNotBaseSetup]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           ref: tests/base/working-base-not-base
       # Download the action artifact
@@ -590,7 +590,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # Checkout the HEAD commit to put in detached HEAD state
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           ref: ${{ github.sha }}
       # Download the action artifact
@@ -626,7 +626,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # Checkout the HEAD commit to put in detached HEAD state
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           ref: ${{ github.sha }}
       # Download the action artifact
@@ -661,7 +661,7 @@ jobs:
     needs: beforeTest
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       # Download the action artifact
       - uses: actions/download-artifact@v7
         with:
@@ -700,7 +700,7 @@ jobs:
     needs: [beforeTest, testCreateOnUpToDateBranchFirst]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       # Download the action artifact
       - uses: actions/download-artifact@v7
         with:
@@ -736,7 +736,7 @@ jobs:
         platform: [ubuntu-latest, macos-latest, windows-latest]
     runs-on: ${{ matrix.platform }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       # Download the action artifact
       - uses: actions/download-artifact@v7
         with:
@@ -774,7 +774,7 @@ jobs:
     needs: beforeTest
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       # Download the action artifact
       - uses: actions/download-artifact@v7
         with:
@@ -808,7 +808,7 @@ jobs:
     needs: beforeTest
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       # Download the action artifact
       - uses: actions/download-artifact@v7
         with:
@@ -843,7 +843,7 @@ jobs:
     needs: beforeTest
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       # Download the action artifact
       - uses: actions/download-artifact@v7
         with:
@@ -905,7 +905,7 @@ jobs:
     needs: beforeTest
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       # Download the action artifact
       - uses: actions/download-artifact@v7
         with:
@@ -943,7 +943,7 @@ jobs:
     needs: [beforeTest, testCreateDraft]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       # Download the action artifact
       - uses: actions/download-artifact@v7
         with:
@@ -976,7 +976,7 @@ jobs:
     needs: beforeTest
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       # Download the action artifact
       - uses: actions/download-artifact@v7
         with:
@@ -1009,7 +1009,7 @@ jobs:
     needs: [beforeTest, testCreateWithPAT]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       # Download the action artifact
       - uses: actions/download-artifact@v7
         with:
@@ -1042,7 +1042,7 @@ jobs:
     needs: beforeTest
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       # Download the action artifact
       - uses: actions/download-artifact@v7
         with:
@@ -1088,7 +1088,7 @@ jobs:
       - name: Set token when sign-commits is true
         if: needs.beforeTest.outputs.sign-commits == 'true'
         run: echo "token=${{ steps.generate_token.outputs.token }}" >> $GITHUB_ENV
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           repository: create-pull-request/create-pull-request-tests
       # Download the action artifact
@@ -1136,7 +1136,7 @@ jobs:
       - name: Set token when sign-commits is true
         if: needs.beforeTest.outputs.sign-commits == 'true'
         run: echo "token=${{ steps.generate_token.outputs.token }}" >> $GITHUB_ENV
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           token: ${{ env.token }}
           repository: create-pull-request/create-pull-request-tests-remote-private
@@ -1185,7 +1185,7 @@ jobs:
       - name: Set token when sign-commits is true
         if: needs.beforeTest.outputs.sign-commits == 'true'
         run: echo "token=${{ steps.generate_token.outputs.token }}" >> $GITHUB_ENV
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           token: ${{ env.token }}
           repository: create-pull-request/create-pull-request-tests-multi-fork
@@ -1234,7 +1234,7 @@ jobs:
       - name: Set token when sign-commits is true
         if: needs.beforeTest.outputs.sign-commits == 'true'
         run: echo "token=${{ steps.generate_token.outputs.token }}" >> $GITHUB_ENV
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           token: ${{ env.token }}
           repository: create-pull-request/create-pull-request-tests-multi-fork
@@ -1270,7 +1270,7 @@ jobs:
     needs: beforeTest
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           path: relative-path
       # Download the action artifact
@@ -1306,7 +1306,7 @@ jobs:
     needs: beforeTest
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       # Download the action artifact
       - uses: actions/download-artifact@v7
         with:
@@ -1341,7 +1341,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # Checkout via SSH
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
       # Download the action artifact
@@ -1396,7 +1396,7 @@ jobs:
           echo "branch_token=${{ steps.generate_token.outputs.token }}" >> $GITHUB_ENV
           echo "push_to_fork=create-pull-request/create-pull-request-tests" >> $GITHUB_ENV
           echo "maintainer_can_modify=false" >> $GITHUB_ENV
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       # Download the action artifact
       - uses: actions/download-artifact@v7
         with:
@@ -1453,7 +1453,7 @@ jobs:
           echo "branch_token=${{ steps.generate_token.outputs.token }}" >> $GITHUB_ENV
           echo "push_to_fork=create-pull-request/create-pull-request-tests" >> $GITHUB_ENV
           echo "maintainer_can_modify=false" >> $GITHUB_ENV
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       # Download the action artifact
       - uses: actions/download-artifact@v7
         with:
@@ -1489,7 +1489,7 @@ jobs:
     needs: beforeTest
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       # Download the action artifact
       - uses: actions/download-artifact@v7
         with:
@@ -1532,7 +1532,7 @@ jobs:
       # be created with read access for checkout. The same deploy key in
       # the fork needs write access.
       # Checkout via SSH
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           ssh-key: ${{ secrets.CPR_MACHINE_USER_SSH_PRIVATE_KEY }}
       # Download the action artifact
@@ -1568,7 +1568,7 @@ jobs:
     needs: beforeTest
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           repository: create-pull-request/create-pull-request-tests
       # Download the action artifact
@@ -1604,7 +1604,7 @@ jobs:
     needs: beforeTest
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       # Download the action artifact
       - uses: actions/download-artifact@v7
         with:
@@ -1649,7 +1649,7 @@ jobs:
     steps:
       - name: Install dependencies
         run: apk --no-cache add git
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       # Download the action artifact
       - uses: actions/download-artifact@v7
         with:
@@ -1689,7 +1689,7 @@ jobs:
           apt-get install -y software-properties-common
           add-apt-repository -y ppa:git-core/ppa
           apt-get install -y git
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       # Download the action artifact
       - uses: actions/download-artifact@v7
         with:
@@ -1721,7 +1721,7 @@ jobs:
     needs: beforeTest
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       # Download the action artifact
       - uses: actions/download-artifact@v7
         with:
@@ -1770,7 +1770,7 @@ jobs:
     needs: beforeTest
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       # Download the action artifact
       - uses: actions/download-artifact@v7
         with:
@@ -1805,7 +1805,7 @@ jobs:
     needs: beforeTest
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5 # DO NOT UPDATE
+      - uses: actions/checkout@v7 # DO NOT UPDATE
       # Download the action artifact
       - uses: actions/download-artifact@v7
         with:
