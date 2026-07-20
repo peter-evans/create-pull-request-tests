@@ -78,7 +78,7 @@ jobs:
           ref: ${{ steps.vars.outputs.ref }}
       # Build
       - if: steps.vars.outputs.build == 'true'
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version-file: package.json
       - if: steps.vars.outputs.build == 'true'
